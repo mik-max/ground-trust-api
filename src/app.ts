@@ -23,4 +23,18 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', message: 'DrawProof API is running' });
 });
 
+app.get('/api/stats', async (_req, res) => {
+  try {
+    const prisma = (await import('./config/prisma')).default;
+    const [raffles, entries, draws] = await Promise.all([
+      prisma.raffle.count({ where: { isPrivate: false } }),
+      prisma.entry.count(),
+      prisma.auditLog.count(),
+    ]);
+    res.json({ raffles, entries, draws });
+  } catch {
+    res.json({ raffles: 0, entries: 0, draws: 0 });
+  }
+});
+
 export default app;
