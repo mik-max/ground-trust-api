@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PARTICIPANT
+  BUSINESS
+}
+
+enum RaffleStatus {
+  DRAFT
+  ACTIVE
+  ENDED
+  CANCELLED
+}
+
+enum DrawAlgorithm {
+  UNIFORM
+  WEIGHTED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String
+  password     String
+  role         Role     @default(PARTICIPANT)
+  businessName String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  raffles Raffle[]
+  entries Entry[]
+}
+
+model Raffle {
+  id             String        @id @default(uuid())
+  name           String
+  description    String
+  prize          String
+  status         RaffleStatus  @default(DRAFT)
+  isPrivate      Boolean       @default(false)
+  inviteToken    String?       @unique
+  algorithm      DrawAlgorithm @default(UNIFORM)
+  winnersCount   Int           @default(1)
+  maxParticipants Int?
+  startDate      DateTime
+  endDate        DateTime
+  drawDate       DateTime
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  createdBy   User   @relation(fields: [createdById], references: [id])
+  createdById String
+
+  entries  Entry[]
+  auditLog AuditLog?
+}
+
+model Entry {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  isFlagged Boolean  @default(false)
+  flagReason String?
+  riskScore Float    @default(0)
+
+  raffle   Raffle @relation(fields: [raffleId], references: [id])
+  raffleId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([raffleId, userId])
+}
+
+model AuditLog {
+  id              String   @id @default(uuid())
+  drawExecutedAt  DateTime @default(now())
+  participantCount Int
+  randomSeed      String
+  algorithm       DrawAlgorithm
+  winnerIds       String[]
+  createdAt       DateTime @default(now())
+
+  raffle   Raffle @relation(fields: [raffleId], references: [id])
+  raffleId String @unique
+}
