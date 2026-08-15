@@ -23,6 +23,35 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', message: 'DrawProof API is running' });
 });
 
+app.get('/api/verify/:id', async (req, res) => {
+  try {
+    const prisma = (await import('./config/prisma')).default;
+    const raffle = await prisma.raffle.findFirst({
+      where: { id: req.params.id as string, isPrivate: false },
+      select: {
+        id: true,
+        name: true,
+        prize: true,
+        status: true,
+        drawDate: true,
+        winnersCount: true,
+        algorithm: true,
+        auditLog: true,
+        _count: { select: { entries: true } },
+      },
+    });
+
+    if (!raffle) {
+      res.status(404).json({ message: 'Raffle not found' });
+      return;
+    }
+
+    res.json({ ...raffle, entriesCount: raffle._count.entries, _count: undefined });
+  } catch {
+    res.status(500).json({ message: 'Verification lookup failed' });
+  }
+});
+
 app.get('/api/stats', async (_req, res) => {
   try {
     const prisma = (await import('./config/prisma')).default;
