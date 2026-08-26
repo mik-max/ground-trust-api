@@ -1,6 +1,7 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import prisma from "../config/prisma";
 import { getAnthropicClient } from "../config/anthropic";
+import { transcribeAudio } from "./stt.service";
 import { Aspect, Prisma } from "../generated/prisma";
 
 const ASPECTS: Aspect[] = ["power", "water", "security", "roads_flooding", "accessibility"];
@@ -64,16 +65,29 @@ function parseResponse(raw: string): { detectedLanguage: string; translatedText:
   return { detectedLanguage: parsed.detectedLanguage, translatedText: parsed.translatedText, aspects };
 }
 
-// files/HANDOFF.md §3 — translate + classify step of the NLP pipeline.
-// Speech-to-text isn't wired yet (voice reviews have no transcript to
-// process until that lands — see BACKLOG.md), so this only runs for
-// reviews that already have originalText. Sentiment/aspects here are a
-// secondary signal only — HANDOFF §2.2 is explicit that the structured
-// rating aggregate stays the score of record, so a failure here never
-// blocks review submission or scoring; it just leaves nlpAspects null.
+// files/HANDOFF.md §3 — full pipeline: transcribe (if voice, per §3's
+// speech-to-text step), then translate + classify. Sentiment/aspects here
+// are a secondary signal only — HANDOFF §2.2 is explicit that the
+// structured rating aggregate stays the score of record, so a failure
+// anywhere in this chain never blocks review submission or scoring; it
+// just leaves nlpAspects (and, for voice, originalText) null.
 export async function processReview(reviewId: string): Promise<void> {
-  const review = await prisma.review.findUnique({ where: { id: reviewId } });
-  if (!review || !review.originalText || review.nlpAspects !== null) {
+  let review = await prisma.review.findUnique({ where: { id: reviewId } });
+  if (!review || review.nlpAspects !== null) {
+    return;
+  }
+
+  if (!review.originalText && review.originalAudioRef) {
+    const transcript = await transcribeAudio(review.originalAudioRef);
+    if (transcript) {
+      review = await prisma.review.update({
+        where: { id: reviewId },
+        data: { originalText: transcript },
+      });
+    }
+  }
+
+  if (!review.originalText) {
     return;
   }
 

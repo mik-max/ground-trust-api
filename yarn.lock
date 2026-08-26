@@ -721,6 +721,11 @@ gopd@^1.2.0:
   resolved "https://registry.yarnpkg.com/gopd/-/gopd-1.2.0.tgz#89f56b8217bdbc8802bd299df6d7f1081d7e51a1"
   integrity sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==
 
+groq-sdk@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/groq-sdk/-/groq-sdk-1.6.0.tgz#6938848229935425e29aa5a9b225b50f4fbc89a9"
+  integrity sha512-ggMgo6n84aZdNObgkSbSxWrdAq4wABsViIRb5e4N15bMUtDLZVhqlgZOI7X4TeqdBMdaVUOuUdZxAZIp06u0vw==
+
 has-symbols@^1.0.3, has-symbols@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.1.0.tgz#fc9c6a783a084951d0b971fe1018de813707a338"

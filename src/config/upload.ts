@@ -39,3 +39,11 @@ export const uploadAudio = multer({
     cb(null, true);
   },
 });
+
+// Maps a stored originalAudioRef (e.g. "/uploads/audio/<uuid>.webm") back to
+// the file on disk, for the STT step to read. area.controller.ts already
+// validates refs match this exact shape before they're ever saved to a
+// Review, so this only needs to strip the known-good prefix.
+export function audioRefToFilePath(ref: string): string {
+  return path.join(AUDIO_DIR, path.basename(ref));
+}
