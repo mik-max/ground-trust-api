@@ -1,154 +1,49 @@
-import { PrismaClient, RaffleStatus, DrawAlgorithm } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
+import { PrismaClient } from "../src/generated/prisma";
 
 const prisma = new PrismaClient();
 
+const AREAS = [
+  { name: "Lekki Phase 1", city: "Lagos", state: "Lagos", geoCentroidLat: 6.4478, geoCentroidLng: 3.4726, geoRadiusMeters: 3000 },
+  { name: "Wuse 2", city: "Abuja", state: "FCT", geoCentroidLat: 9.0833, geoCentroidLng: 7.4833, geoRadiusMeters: 2500 },
+  { name: "GRA Ikeja", city: "Lagos", state: "Lagos", geoCentroidLat: 6.5833, geoCentroidLng: 3.35, geoRadiusMeters: 2000 },
+  { name: "Independence Layout", city: "Enugu", state: "Enugu", geoCentroidLat: 6.4483, geoCentroidLng: 7.5, geoRadiusMeters: 2500 },
+];
+
+const DEMO_USERS = [
+  { fullName: "Demo Resident", email: "resident@example.com", role: "resident" as const },
+  { fullName: "Demo Newcomer", email: "newcomer@example.com", role: "newcomer" as const },
+  { fullName: "Demo Government", email: "gov@example.com", role: "government" as const },
+];
+
 async function main() {
-  const hashedPassword = await bcrypt.hash('password123', 12);
+  const passwordHash = await bcrypt.hash("password123", 10);
 
-  const business = await prisma.user.upsert({
-    where: { email: 'business@demo.com' },
-    update: {},
-    create: {
-      email: 'business@demo.com',
-      name: 'Demo Business',
-      password: hashedPassword,
-      role: 'BUSINESS',
-      businessName: 'TechGiveaways Ltd',
-    },
-  });
-
-  await prisma.user.upsert({
-    where: { email: 'participant@demo.com' },
-    update: {},
-    create: {
-      email: 'participant@demo.com',
-      name: 'Demo Participant',
-      password: hashedPassword,
-      role: 'PARTICIPANT',
-    },
-  });
-
-  const now = new Date();
-  const inOneHour = new Date(now.getTime() + 60 * 60 * 1000);
-  const in3Days = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
-  const in7Days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-  const in14Days = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
-  const in30Days = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-  const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-
-  const raffles = [
-    {
-      name: 'MacBook Pro M4 Giveaway',
-      description: 'Win a brand new MacBook Pro M4 with 16GB RAM and 512GB SSD. One lucky winner will be selected at random from all valid entries. The draw is fully auditable — every participant can verify the result.',
-      prize: 'MacBook Pro M4 (16GB / 512GB)',
-      status: RaffleStatus.ACTIVE,
-      startDate: oneWeekAgo,
-      endDate: in7Days,
-      drawDate: in7Days,
-      maxParticipants: 500,
-      winnersCount: 1,
-      algorithm: DrawAlgorithm.UNIFORM,
-    },
-    {
-      name: 'iPhone 16 Pro Max Bundle',
-      description: 'Enter for a chance to win an iPhone 16 Pro Max complete with AirPods Pro and MagSafe charger. Full draw audit log published immediately after the draw.',
-      prize: 'iPhone 16 Pro Max + AirPods Pro',
-      status: RaffleStatus.ACTIVE,
-      startDate: oneWeekAgo,
-      endDate: in3Days,
-      drawDate: in3Days,
-      maxParticipants: 1000,
-      winnersCount: 1,
-      algorithm: DrawAlgorithm.UNIFORM,
-    },
-    {
-      name: 'PlayStation 5 + 3 Games',
-      description: 'Win a PlayStation 5 Disc Edition bundled with 3 top-rated games of your choice. Transparent draw — seed and algorithm published before entries open.',
-      prize: 'PlayStation 5 + 3 Games',
-      status: RaffleStatus.ACTIVE,
-      startDate: oneWeekAgo,
-      endDate: in14Days,
-      drawDate: in14Days,
-      maxParticipants: 2000,
-      winnersCount: 1,
-      algorithm: DrawAlgorithm.UNIFORM,
-    },
-    {
-      name: '$5,000 Cash Prize Draw',
-      description: 'Win five thousand dollars cash, paid directly to your bank account or via PayPal within 3 business days of the draw. Three winners selected.',
-      prize: '$5,000 USD Cash',
-      status: RaffleStatus.ACTIVE,
-      startDate: now,
-      endDate: in30Days,
-      drawDate: in30Days,
-      maxParticipants: 5000,
-      winnersCount: 3,
-      algorithm: DrawAlgorithm.UNIFORM,
-    },
-    {
-      name: 'Gaming PC Build (RTX 4080)',
-      description: 'A fully assembled, high-end gaming PC featuring an RTX 4080, Intel i9, 32GB DDR5, and 2TB NVMe. Shipped worldwide.',
-      prize: 'Custom Gaming PC (RTX 4080 Super)',
-      status: RaffleStatus.ACTIVE,
-      startDate: oneWeekAgo,
-      endDate: in14Days,
-      drawDate: in14Days,
-      maxParticipants: null,
-      winnersCount: 1,
-      algorithm: DrawAlgorithm.UNIFORM,
-    },
-    {
-      name: 'Apple Watch Ultra 2',
-      description: 'Premium smartwatch giveaway. The Apple Watch Ultra 2 in titanium, with Alpine Loop band included.',
-      prize: 'Apple Watch Ultra 2 + Alpine Loop',
-      status: RaffleStatus.ACTIVE,
-      startDate: now,
-      endDate: in30Days,
-      drawDate: in30Days,
-      maxParticipants: 800,
-      winnersCount: 2,
-      algorithm: DrawAlgorithm.UNIFORM,
-    },
-    {
-      name: 'Luxury Hotel Weekend (Paris)',
-      description: 'Win a 3-night stay for two at a 5-star hotel in Paris, including breakfast and airport transfers.',
-      prize: '3-Night Paris Hotel Stay for 2',
-      status: RaffleStatus.ACTIVE,
-      startDate: inOneHour,
-      endDate: in14Days,
-      drawDate: in14Days,
-      maxParticipants: 300,
-      winnersCount: 1,
-      algorithm: DrawAlgorithm.UNIFORM,
-    },
-    {
-      name: 'Sony WH-1000XM5 Headphones',
-      description: 'Five lucky winners each receive a pair of Sony WH-1000XM5 noise-cancelling headphones. The draw is open to all registered participants.',
-      prize: 'Sony WH-1000XM5 Headphones',
-      status: RaffleStatus.ENDED,
-      startDate: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000),
-      endDate: yesterday,
-      drawDate: yesterday,
-      maxParticipants: 1000,
-      winnersCount: 5,
-      algorithm: DrawAlgorithm.UNIFORM,
-    },
-  ];
-
-  for (const raffle of raffles) {
-    await prisma.raffle.create({
-      data: {
-        ...raffle,
-        createdById: business.id,
-      },
+  for (const area of AREAS) {
+    await prisma.area.upsert({
+      where: { id: area.name.toLowerCase().replace(/\s+/g, "-") },
+      update: {},
+      create: { id: area.name.toLowerCase().replace(/\s+/g, "-"), ...area },
     });
   }
 
-  console.log('Seed complete — 2 users, 8 raffles');
+  for (const user of DEMO_USERS) {
+    await prisma.user.upsert({
+      where: { email: user.email },
+      update: {},
+      create: { ...user, passwordHash, authProvider: "email" },
+    });
+  }
+
+  console.log(`Seeded ${AREAS.length} areas and ${DEMO_USERS.length} demo users.`);
+  console.log("Demo login password for all seeded users: password123");
 }
 
 main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

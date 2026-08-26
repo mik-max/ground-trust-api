@@ -1,0 +1,141 @@
+import prisma from "../config/prisma";
+import { Aspect, Band, ConfidenceLevel } from "../generated/prisma";
+import {
+  FLAGGABLE_ASPECTS,
+  FLAG_THRESHOLD,
+  MIN_N_FOR_FLAG,
+  MIN_N_HIGH,
+  MIN_N_MEDIUM,
+  MIN_WEEKS_PERSISTENT,
+  TRUST_WEIGHT_BY_TIER,
+} from "../config/constants";
+
+const RATING_FIELD: Record<Aspect, "ratingPower" | "ratingWater" | "ratingSecurity" | "ratingRoadsFlooding" | "ratingAccessibility"> = {
+  power: "ratingPower",
+  water: "ratingWater",
+  security: "ratingSecurity",
+  roads_flooding: "ratingRoadsFlooding",
+  accessibility: "ratingAccessibility",
+};
+
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+export function bandFromScore(score: number): Band {
+  if (score >= 4.0) return "excellent";
+  if (score >= 3.0) return "good";
+  if (score >= 2.0) return "fair";
+  return "poor";
+}
+
+export function confidenceFromN(n: number): ConfidenceLevel {
+  if (n < MIN_N_MEDIUM) return "low";
+  if (n < MIN_N_HIGH) return "medium";
+  return "high";
+}
+
+export interface RecomputeResult {
+  score: number;
+  band: Band;
+  contributorCount: number;
+  confidence: ConfidenceLevel;
+}
+
+// Implements files/HANDOFF.md §4.3 recomputeAreaScore. There is no scheduled
+// weekly job yet (deferred to a later pass), so this runs synchronously after
+// each review submission. The "consecutive weeks below threshold" streak is
+// approximated by gating increments on the Flag row's `triggeredAt` — a
+// streak only advances once at least 7 days have passed since it was last
+// bumped, so rapid repeat submissions in the same week don't over-count.
+export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promise<RecomputeResult | null> {
+  const ratingField = RATING_FIELD[aspect];
+
+  const reviews = await prisma.review.findMany({
+    where: {
+      areaId,
+      moderationStatus: "approved",
+      [ratingField]: { not: null },
+    },
+    select: { userId: true, [ratingField]: true },
+  });
+
+  if (reviews.length === 0) {
+    return null;
+  }
+
+  const residencies = await prisma.userAreaResidency.findMany({
+    where: { areaId, userId: { in: reviews.map((r) => r.userId) } },
+  });
+  const weightByUser = new Map(residencies.map((r) => [r.userId, r.trustWeight]));
+
+  let weightedSum = 0;
+  let weightTotal = 0;
+  const distinctUsers = new Set<string>();
+
+  for (const review of reviews) {
+    const rating = review[ratingField as keyof typeof review] as number;
+    const weight = weightByUser.get(review.userId) ?? TRUST_WEIGHT_BY_TIER.tier0;
+    weightedSum += rating * weight;
+    weightTotal += weight;
+    distinctUsers.add(review.userId);
+  }
+
+  const score = weightedSum / weightTotal;
+  const contributorCount = distinctUsers.size;
+  const confidence = confidenceFromN(contributorCount);
+  const band = bandFromScore(score);
+
+  await prisma.areaScore.upsert({
+    where: { areaId_aspect: { areaId, aspect } },
+    create: { areaId, aspect, score, band, contributorCount, confidenceLevel: confidence },
+    update: { score, band, contributorCount, confidenceLevel: confidence },
+  });
+
+  if (
+    (FLAGGABLE_ASPECTS as readonly string[]).includes(aspect) &&
+    score <= FLAG_THRESHOLD &&
+    contributorCount >= MIN_N_FOR_FLAG
+  ) {
+    await bumpFlagStreak(areaId, aspect);
+  } else {
+    await resetFlagStreak(areaId, aspect);
+  }
+
+  return { score, band, contributorCount, confidence };
+}
+
+async function bumpFlagStreak(areaId: string, aspect: Aspect) {
+  const existing = await prisma.flag.findFirst({
+    where: { areaId, aspect, resolved: false },
+  });
+
+  if (!existing) {
+    await prisma.flag.create({
+      data: { areaId, aspect, triggeredAt: new Date(), consecutiveWeeksBelowThreshold: 1 },
+    });
+    return;
+  }
+
+  const dueForBump = Date.now() - existing.triggeredAt.getTime() >= WEEK_MS;
+  if (dueForBump) {
+    await prisma.flag.update({
+      where: { id: existing.id },
+      data: {
+        triggeredAt: new Date(),
+        consecutiveWeeksBelowThreshold: existing.consecutiveWeeksBelowThreshold + 1,
+      },
+    });
+  }
+}
+
+async function resetFlagStreak(areaId: string, aspect: Aspect) {
+  await prisma.flag.updateMany({
+    where: { areaId, aspect, resolved: false },
+    data: { resolved: true, resolvedAt: new Date() },
+  });
+}
+
+// A Flag row exists as soon as an aspect first crosses threshold, so the
+// streak can be tracked — but it's only "actionable" for government once
+// it's persisted for MIN_WEEKS_PERSISTENT. Callers listing flags should use
+// this to filter, not just `resolved: false`.
+export const MIN_WEEKS_PERSISTENT_FOR_DISPLAY = MIN_WEEKS_PERSISTENT;

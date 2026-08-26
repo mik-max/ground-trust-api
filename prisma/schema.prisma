@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -8,85 +9,175 @@ datasource db {
 }
 
 enum Role {
-  PARTICIPANT
-  BUSINESS
+  resident
+  newcomer
+  government
+  admin
 }
 
-enum RaffleStatus {
-  DRAFT
-  ACTIVE
-  ENDED
-  CANCELLED
+enum AuthProvider {
+  email
+  google
 }
 
-enum DrawAlgorithm {
-  UNIFORM
-  WEIGHTED
+enum VerificationTier {
+  tier0
+  tier1
+  tier2
+  tier3
+}
+
+enum VerificationEventType {
+  gps_sample
+  tier_upgrade
+  manual_review
+}
+
+enum Aspect {
+  power
+  water
+  security
+  roads_flooding
+  accessibility
+}
+
+enum Band {
+  poor
+  fair
+  good
+  excellent
+}
+
+enum ConfidenceLevel {
+  low
+  medium
+  high
+}
+
+enum ModerationStatus {
+  approved
+  pending
+  rejected
 }
 
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  name         String
-  password     String
-  role         Role     @default(PARTICIPANT)
-  businessName String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id           String       @id @default(cuid())
+  fullName     String
+  email        String       @unique
+  passwordHash String?
+  authProvider AuthProvider @default(email)
+  role         Role
+  createdAt    DateTime     @default(now())
 
-  raffles Raffle[]
-  entries Entry[]
+  reviews             Review[]
+  verificationEvents  VerificationEvent[]
+  residencies         UserAreaResidency[]
 }
 
-model Raffle {
-  id             String        @id @default(uuid())
-  name           String
-  description    String
-  prize          String
-  status         RaffleStatus  @default(DRAFT)
-  isPrivate      Boolean       @default(false)
-  inviteToken    String?       @unique
-  algorithm      DrawAlgorithm @default(UNIFORM)
-  winnersCount   Int           @default(1)
-  maxParticipants Int?
-  startDate      DateTime
-  endDate        DateTime
-  drawDate       DateTime
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+// Append-only log powering tier computation. Raw GPS coordinates are never
+// stored here or anywhere else — only the derived night-presence signal.
+model VerificationEvent {
+  id             String                @id @default(cuid())
+  userId         String
+  user           User                  @relation(fields: [userId], references: [id])
+  areaId         String
+  area           Area                  @relation(fields: [areaId], references: [id])
+  eventType      VerificationEventType
+  sampledAtNight Boolean               @default(false)
+  createdAt      DateTime              @default(now())
 
-  createdBy   User   @relation(fields: [createdById], references: [id])
-  createdById String
-
-  entries  Entry[]
-  auditLog AuditLog?
+  @@index([userId, areaId])
 }
 
-model Entry {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  isFlagged Boolean  @default(false)
-  flagReason String?
-  riskScore Float    @default(0)
+// Derived/summary table, recomputed from VerificationEvent. Kept separate so
+// the hot read path (area profile) never touches the raw event log.
+model UserAreaResidency {
+  userId           String
+  areaId           String
+  verificationTier VerificationTier @default(tier0)
+  confirmedSince   DateTime?
+  trustWeight      Float            @default(0.3)
 
-  raffle   Raffle @relation(fields: [raffleId], references: [id])
-  raffleId String
+  user User @relation(fields: [userId], references: [id])
+  area Area @relation(fields: [areaId], references: [id])
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  @@unique([raffleId, userId])
+  @@id([userId, areaId])
 }
 
-model AuditLog {
-  id              String   @id @default(uuid())
-  drawExecutedAt  DateTime @default(now())
-  participantCount Int
-  randomSeed      String
-  algorithm       DrawAlgorithm
-  winnerIds       String[]
+model Area {
+  id              String   @id @default(cuid())
+  name            String
+  city            String
+  state           String
+  geoCentroidLat  Float
+  geoCentroidLng  Float
+  geoRadiusMeters Int
   createdAt       DateTime @default(now())
 
-  raffle   Raffle @relation(fields: [raffleId], references: [id])
-  raffleId String @unique
+  reviews            Review[]
+  scores             AreaScore[]
+  flags              Flag[]
+  residencies        UserAreaResidency[]
+  verificationEvents VerificationEvent[]
+}
+
+model Review {
+  id     String @id @default(cuid())
+  areaId String
+  area   Area   @relation(fields: [areaId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  originalText     String?
+  originalLanguage String?
+  originalAudioRef String?
+  translatedText   String?
+  submittedAt      DateTime @default(now())
+
+  // Structured ratings, 1-5, nullable if that aspect wasn't rated.
+  ratingPower           Int?
+  ratingWater           Int?
+  ratingSecurity        Int?
+  ratingRoadsFlooding   Int?
+  ratingAccessibility   Int?
+
+  // [{aspect, sentiment, confidence}, ...] — populated once the NLP pipeline exists.
+  nlpAspects Json?
+
+  // Snapshot at submission time so historical scores stay explainable even if
+  // the contributor's trust weight changes later.
+  trustWeightAtSubmission Float
+
+  // Only 'approved' reviews are included in recomputeAreaScore.
+  moderationStatus ModerationStatus @default(approved)
+
+  @@index([areaId])
+  @@index([userId])
+}
+
+model AreaScore {
+  areaId           String
+  aspect           Aspect
+  score            Float
+  band             Band
+  contributorCount Int
+  confidenceLevel  ConfidenceLevel
+  lastUpdated      DateTime        @updatedAt
+
+  area Area @relation(fields: [areaId], references: [id])
+
+  @@id([areaId, aspect])
+}
+
+model Flag {
+  id                             String    @id @default(cuid())
+  areaId                         String
+  area                           Area      @relation(fields: [areaId], references: [id])
+  aspect                         Aspect
+  triggeredAt                    DateTime
+  consecutiveWeeksBelowThreshold Int
+  resolved                       Boolean   @default(false)
+  resolvedAt                     DateTime?
+
+  @@index([areaId, resolved])
 }

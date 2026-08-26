@@ -1,8 +1,10 @@
-import 'dotenv/config';
-import app from './src/app';
+import dotenv from "dotenv";
+dotenv.config();
 
-const PORT = process.env.PORT || 8000;
+import app from "./src/app";
 
-app.listen(PORT, () => {
-  console.log(`DrawProof API running on port ${PORT} [${process.env.NODE_ENV}]`);
+const port = process.env.PORT ?? 8000;
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
 });
