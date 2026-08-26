@@ -26,6 +26,20 @@ export const TRUST_WEIGHT_BY_TIER = {
   tier3: 1.2,
 } as const;
 
+// Tier-progression thresholds, per files/HANDOFF.md §2.1. Starting values —
+// tune post-launch like the flag-engine thresholds above. HANDOFF gives an
+// explicit number for tier2 ("60+ days") but not tier1 ("repeated... samples")
+// — TIER1_MIN_NIGHT_SAMPLES is this project's own reasonable starting point.
+export const TIER1_MIN_NIGHT_SAMPLES = Number(process.env.TIER1_MIN_NIGHT_SAMPLES ?? 5);
+export const TIER2_MIN_DAYS_SINCE_CONFIRMED = Number(process.env.TIER2_MIN_DAYS_SINCE_CONFIRMED ?? 60);
+
+// Nigeria runs a single fixed offset (WAT, UTC+1, no DST) — cheaper and more
+// robust than a timezone library or trusting a client-supplied timestamp for
+// a signal that feeds trust weighting.
+export const NIGERIA_UTC_OFFSET_HOURS = 1;
+export const NIGHT_START_HOUR = 21; // 9pm local
+export const NIGHT_END_HOUR = 6; // 6am local
+
 // Reverse lookup for displaying the tier a review was submitted at (reviews
 // only store the snapshotted weight, not the tier label, per files/HANDOFF.md
 // §4.1's trustWeightAtSubmission field).
