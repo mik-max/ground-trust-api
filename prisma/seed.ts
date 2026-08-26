@@ -14,6 +14,11 @@ const DEMO_USERS = [
   { fullName: "Demo Resident", email: "resident@example.com", role: "resident" as const },
   { fullName: "Demo Newcomer", email: "newcomer@example.com", role: "newcomer" as const },
   { fullName: "Demo Government", email: "gov@example.com", role: "government" as const },
+  // Government accounts are admin-provisioned, not self-service (files/HANDOFF.md
+  // §2.5) — but nothing seeds the *first* admin either, so this demo account is
+  // the bootstrap path for this project, matching the "admin CLI/script" option
+  // HANDOFF suggests for that provisioning route.
+  { fullName: "Demo Admin", email: "admin@example.com", role: "admin" as const },
 ];
 
 async function main() {
