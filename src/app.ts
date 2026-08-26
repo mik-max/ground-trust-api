@@ -4,6 +4,7 @@ import adminRoutes from "./routes/admin.routes";
 import areaRoutes from "./routes/area.routes";
 import authRoutes from "./routes/auth.routes";
 import govRoutes from "./routes/gov.routes";
+import internalRoutes from "./routes/internal.routes";
 import uploadRoutes from "./routes/upload.routes";
 import verificationRoutes from "./routes/verification.routes";
 import { UPLOADS_DIR } from "./config/upload";
@@ -22,6 +23,7 @@ app.use("/api/verification", verificationRoutes);
 app.use("/api/gov", govRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/uploads", uploadRoutes);
+app.use("/api/internal", internalRoutes);
 
 // Catches multer errors (oversized/wrong-mimetype uploads) and anything
 // else passed to next(err), so clients get JSON instead of Express's

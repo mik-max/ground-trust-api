@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../config/prisma";
 import { Aspect } from "../generated/prisma";
 import { bandFromScore, confidenceFromN, recomputeAreaScore } from "../services/scoring.service";
+import { processReview } from "../services/nlp.service";
 import { TRUST_WEIGHT_BY_TIER, tierFromWeight } from "../config/constants";
 
 const ASPECTS: Aspect[] = ["power", "water", "security", "roads_flooding", "accessibility"];
@@ -169,6 +170,11 @@ export async function createReview(req: Request, res: Response) {
   for (const aspect of Object.keys(ratings) as Aspect[]) {
     await recomputeAreaScore(areaId, aspect);
   }
+
+  // Fire-and-forget: translation/classification is a secondary signal
+  // (files/HANDOFF.md §2.2 — the structured rating aggregate stays the
+  // score of record), so it doesn't block the response or review creation.
+  processReview(review.id).catch((err) => console.error(`[nlp] Unhandled error for review ${review.id}:`, err));
 
   return res.status(201).json({ review });
 }
