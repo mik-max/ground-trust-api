@@ -40,12 +40,15 @@ export interface RecomputeResult {
   confidence: ConfidenceLevel;
 }
 
-// Implements files/HANDOFF.md §4.3 recomputeAreaScore. There is no scheduled
-// weekly job yet (deferred to a later pass), so this runs synchronously after
-// each review submission. The "consecutive weeks below threshold" streak is
-// approximated by gating increments on the Flag row's `triggeredAt` — a
-// streak only advances once at least 7 days have passed since it was last
-// bumped, so rapid repeat submissions in the same week don't over-count.
+// Implements files/HANDOFF.md §4.3 recomputeAreaScore. Runs synchronously
+// after each review submission for immediate feedback, and is swept weekly
+// for every area/aspect regardless of new activity by jobs/recompute.job.ts
+// — that sweep is what actually makes the flag streak's "weeks persistent"
+// mean calendar weeks, not review-submission coincidence. The "consecutive
+// weeks below threshold" streak still gates increments on the Flag row's
+// `triggeredAt` (at least 7 days since the last bump) as a safety net
+// against an interleaved on-demand call double-bumping within the same
+// week the scheduled sweep already covered.
 export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promise<RecomputeResult | null> {
   const ratingField = RATING_FIELD[aspect];
 

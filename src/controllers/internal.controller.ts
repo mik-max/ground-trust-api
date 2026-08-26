@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
 import { processReview } from "../services/nlp.service";
+import { recomputeAll } from "../jobs/recompute.job";
 
 // files/HANDOFF.md §3 — "internal service interface" for the NLP pipeline.
 // createReview already triggers this fire-and-forget on submission; this
@@ -24,4 +25,13 @@ export async function triggerNlpProcess(req: Request, res: Response) {
   }
 
   return res.json({ review });
+}
+
+// files/HANDOFF.md §4.3 — the real weekly sweep (jobs/recompute.job.ts)
+// runs Sunday 3am automatically; this is the manual trigger for testing/
+// demoing it without waiting for the schedule. Admin-only, same reasoning
+// as triggerNlpProcess above.
+export async function triggerRecomputeAll(_req: Request, res: Response) {
+  await recomputeAll();
+  return res.json({ ok: true });
 }
