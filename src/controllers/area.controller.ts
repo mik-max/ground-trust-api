@@ -116,14 +116,18 @@ export async function getAreaReviews(req: Request, res: Response) {
 export async function createReview(req: Request, res: Response) {
   const { id: areaId } = req.params;
   const userId = req.auth!.userId;
-  const { originalText, originalLanguage, ratings } = req.body as {
+  const { originalText, originalLanguage, originalAudioRef, ratings } = req.body as {
     originalText?: string;
     originalLanguage?: string;
+    originalAudioRef?: string;
     ratings?: Partial<Record<Aspect, number>>;
   };
 
   if (!ratings || Object.keys(ratings).length === 0) {
     return res.status(400).json({ error: "At least one aspect rating is required" });
+  }
+  if (originalAudioRef && !/^\/uploads\/audio\/[\w-]+\.\w+$/.test(originalAudioRef)) {
+    return res.status(400).json({ error: "Invalid audio reference" });
   }
   for (const [aspect, rating] of Object.entries(ratings)) {
     if (!ASPECTS.includes(aspect as Aspect) || rating < 1 || rating > 5) {
@@ -156,6 +160,7 @@ export async function createReview(req: Request, res: Response) {
       userId,
       originalText,
       originalLanguage,
+      originalAudioRef,
       trustWeightAtSubmission: residency.trustWeight,
       ...ratingData,
     },
