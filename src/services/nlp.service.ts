@@ -2,9 +2,10 @@ import type Anthropic from "@anthropic-ai/sdk";
 import prisma from "../config/prisma";
 import { getAnthropicClient } from "../config/anthropic";
 import { transcribeAudio } from "./stt.service";
+import { moderateText } from "./moderation.service";
+import { recomputeReviewAspects } from "./scoring.service";
 import { Aspect, Prisma } from "../generated/prisma";
-
-const ASPECTS: Aspect[] = ["power", "water", "security", "roads_flooding", "accessibility"];
+import { ASPECTS } from "../config/constants";
 const SENTIMENTS = ["positive", "neutral", "negative"] as const;
 type Sentiment = (typeof SENTIMENTS)[number];
 
@@ -66,14 +67,19 @@ function parseResponse(raw: string): { detectedLanguage: string; translatedText:
 }
 
 // files/HANDOFF.md §3 — full pipeline: transcribe (if voice, per §3's
-// speech-to-text step), then translate + classify. Sentiment/aspects here
-// are a secondary signal only — HANDOFF §2.2 is explicit that the
-// structured rating aggregate stays the score of record, so a failure
-// anywhere in this chain never blocks review submission or scoring; it
-// just leaves nlpAspects (and, for voice, originalText) null.
+// speech-to-text step), moderate, then translate + classify. Moderation
+// (files/ADDENDUM.md §3) is deliberately its own independent phase below,
+// not nested inside the Claude translate/classify call: a review's public
+// eligibility can't depend on an unrelated, optional pipeline step (ADDENDUM
+// says to check the *translated* text, but if ANTHROPIC_API_KEY is unset —
+// same "missing key = skip" pattern used everywhere else in this project —
+// translation never runs, and gating moderation on its result would strand
+// every text review in "pending" forever, with no key at fault for that at
+// all). So moderation checks the original text and resolves independently
+// of whether translation/classification ever succeeds.
 export async function processReview(reviewId: string): Promise<void> {
   let review = await prisma.review.findUnique({ where: { id: reviewId } });
-  if (!review || review.nlpAspects !== null) {
+  if (!review) {
     return;
   }
 
@@ -90,6 +96,31 @@ export async function processReview(reviewId: string): Promise<void> {
   if (!review.originalText) {
     return;
   }
+  const originalText = review.originalText;
+
+  // Phase 1: moderation. Runs when moderationStatus is "pending" (the
+  // normal case — set at creation for text reviews), or for a voice review
+  // that's still at its default "approved" with nothing checked yet
+  // (nlpAspects === null pins this to "never fully processed" — without it,
+  // an admin manually re-triggering POST /internal/nlp/process on an
+  // already-processed, already-human-approved voice review would look
+  // identical to "first check" and could silently re-flag it).
+  const voiceReviewNeedsFirstCheck =
+    review.originalAudioRef && review.moderationStatus === "approved" && review.nlpAspects === null;
+  if (review.moderationStatus === "pending" || voiceReviewNeedsFirstCheck) {
+    const decision = await moderateText(originalText);
+    if (decision !== review.moderationStatus) {
+      review = await prisma.review.update({ where: { id: reviewId }, data: { moderationStatus: decision } });
+      await recomputeReviewAspects(review);
+    }
+  }
+
+  // Phase 2: translate + classify. Independent of phase 1's outcome —
+  // nlpAspects is a secondary signal (files/HANDOFF.md §2.2) whether or not
+  // the review is publicly visible yet.
+  if (review.nlpAspects !== null) {
+    return;
+  }
 
   const client = getAnthropicClient();
   if (!client) {
@@ -102,7 +133,7 @@ export async function processReview(reviewId: string): Promise<void> {
       model: "claude-opus-5",
       max_tokens: 1024,
       system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: review.originalText }],
+      messages: [{ role: "user", content: originalText }],
     });
 
     const textBlock = response.content.find((b): b is Anthropic.TextBlock => b.type === "text");

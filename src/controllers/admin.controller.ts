@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import prisma from "../config/prisma";
+import { recomputeReviewAspects } from "../services/scoring.service";
 
 // Government accounts are never self-service — an authenticated admin
 // provisions them directly, per files/HANDOFF.md §2.5. No invite-email flow
@@ -33,4 +34,49 @@ export async function createGovernmentAccount(req: Request, res: Response) {
   return res.status(201).json({
     account: { id: account.id, fullName: account.fullName, email: account.email },
   });
+}
+
+// files/ADDENDUM.md §3 — the human-in-the-loop half of the two-layer
+// moderation design. "At MVP scale this can be a simple admin list view,
+// not a workflow engine" — so no assignment, no state beyond
+// pending/approved/rejected.
+export async function listPendingReviews(_req: Request, res: Response) {
+  const reviews = await prisma.review.findMany({
+    where: { moderationStatus: "pending" },
+    orderBy: { submittedAt: "asc" },
+    include: {
+      user: { select: { id: true, fullName: true } },
+      area: { select: { id: true, name: true, city: true, state: true } },
+    },
+  });
+  return res.json({ reviews });
+}
+
+export async function moderateReview(req: Request, res: Response) {
+  const { id } = req.params;
+  const { decision } = req.body as { decision?: "approved" | "rejected" };
+
+  if (decision !== "approved" && decision !== "rejected") {
+    return res.status(400).json({ error: "decision must be 'approved' or 'rejected'" });
+  }
+
+  const review = await prisma.review.findUnique({ where: { id } });
+  if (!review) {
+    return res.status(404).json({ error: "Review not found" });
+  }
+  if (review.moderationStatus !== "pending") {
+    return res.status(409).json({ error: "This review has already been moderated" });
+  }
+
+  const updated = await prisma.review.update({
+    where: { id },
+    data: { moderationStatus: decision },
+  });
+
+  // Only matters for "approved" (a rejected review was never counted and
+  // stays that way), but recomputing unconditionally is simpler and correct
+  // either way — recomputeAreaScore just reflects whatever's in the DB now.
+  await recomputeReviewAspects(updated);
+
+  return res.json({ review: updated });
 }

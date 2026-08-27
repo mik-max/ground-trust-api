@@ -1,5 +1,5 @@
 import prisma from "../config/prisma";
-import { Aspect, Band, ConfidenceLevel } from "../generated/prisma";
+import { Aspect, Band, ConfidenceLevel, Review } from "../generated/prisma";
 import {
   FLAGGABLE_ASPECTS,
   FLAG_THRESHOLD,
@@ -7,16 +7,9 @@ import {
   MIN_N_HIGH,
   MIN_N_MEDIUM,
   MIN_WEEKS_PERSISTENT,
+  RATING_FIELD_BY_ASPECT,
   TRUST_WEIGHT_BY_TIER,
 } from "../config/constants";
-
-const RATING_FIELD: Record<Aspect, "ratingPower" | "ratingWater" | "ratingSecurity" | "ratingRoadsFlooding" | "ratingAccessibility"> = {
-  power: "ratingPower",
-  water: "ratingWater",
-  security: "ratingSecurity",
-  roads_flooding: "ratingRoadsFlooding",
-  accessibility: "ratingAccessibility",
-};
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -50,7 +43,7 @@ export interface RecomputeResult {
 // against an interleaved on-demand call double-bumping within the same
 // week the scheduled sweep already covered.
 export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promise<RecomputeResult | null> {
-  const ratingField = RATING_FIELD[aspect];
+  const ratingField = RATING_FIELD_BY_ASPECT[aspect];
 
   const reviews = await prisma.review.findMany({
     where: {
@@ -104,6 +97,19 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
   }
 
   return { score, band, contributorCount, confidence };
+}
+
+// Recomputes every aspect a given review actually rated. Shared by callers
+// that flip a review's public eligibility after the fact — the automated
+// moderation check (nlp.service.ts) and a human admin's approve/reject
+// decision (admin.controller.ts) — since either direction (newly counted or
+// newly excluded) needs the same aspects re-aggregated.
+export async function recomputeReviewAspects(review: Review): Promise<void> {
+  for (const aspect of Object.keys(RATING_FIELD_BY_ASPECT) as Aspect[]) {
+    if (review[RATING_FIELD_BY_ASPECT[aspect]] !== null) {
+      await recomputeAreaScore(review.areaId, aspect);
+    }
+  }
 }
 
 async function bumpFlagStreak(areaId: string, aspect: Aspect) {

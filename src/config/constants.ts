@@ -1,3 +1,19 @@
+import { Aspect } from "../generated/prisma";
+
+export const ASPECTS: Aspect[] = ["power", "water", "security", "roads_flooding", "accessibility"];
+
+// Review's rating columns are one-per-aspect (files/HANDOFF.md §4.1) rather
+// than a single JSON blob, so every place that reads/writes a rating by
+// aspect needs this mapping — centralized here since it had drifted into
+// four separate copies (area/admin controllers, scoring/nlp services).
+export const RATING_FIELD_BY_ASPECT: Record<Aspect, "ratingPower" | "ratingWater" | "ratingSecurity" | "ratingRoadsFlooding" | "ratingAccessibility"> = {
+  power: "ratingPower",
+  water: "ratingWater",
+  security: "ratingSecurity",
+  roads_flooding: "ratingRoadsFlooding",
+  accessibility: "ratingAccessibility",
+};
+
 // Flag-engine / confidence thresholds, per files/ADDENDUM.md §2. Deliberately
 // read from env with these values as fallback defaults, so they're tunable
 // post-launch without a redeploy.
@@ -10,13 +26,7 @@ export const MIN_WEEKS_PERSISTENT = Number(process.env.MIN_WEEKS_PERSISTENT ?? 4
 
 // All five aspects are flaggable — security is simply the primary one by
 // project direction, not a schema-level distinction (files/HANDOFF.md §2.5.4).
-export const FLAGGABLE_ASPECTS = [
-  "power",
-  "water",
-  "security",
-  "roads_flooding",
-  "accessibility",
-] as const;
+export const FLAGGABLE_ASPECTS = ASPECTS;
 
 // Tier -> trust weight multiplier, per files/HANDOFF.md §2.1.
 export const TRUST_WEIGHT_BY_TIER = {

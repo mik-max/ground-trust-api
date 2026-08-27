@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { createGovernmentAccount, listGovernmentAccounts } from "../controllers/admin.controller";
+import {
+  createGovernmentAccount,
+  listGovernmentAccounts,
+  listPendingReviews,
+  moderateReview,
+} from "../controllers/admin.controller";
 import { requireAuth, requireRole } from "../middleware/auth.middleware";
 
 const router = Router();
@@ -7,5 +12,7 @@ const router = Router();
 router.use(requireAuth, requireRole("admin"));
 router.get("/government-accounts", listGovernmentAccounts);
 router.post("/government-accounts", createGovernmentAccount);
+router.get("/reviews/pending", listPendingReviews);
+router.post("/reviews/:id/moderate", moderateReview);
 
 export default router;

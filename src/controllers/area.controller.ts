@@ -3,16 +3,7 @@ import prisma from "../config/prisma";
 import { Aspect } from "../generated/prisma";
 import { bandFromScore, confidenceFromN, recomputeAreaScore } from "../services/scoring.service";
 import { processReview } from "../services/nlp.service";
-import { TRUST_WEIGHT_BY_TIER, tierFromWeight } from "../config/constants";
-
-const ASPECTS: Aspect[] = ["power", "water", "security", "roads_flooding", "accessibility"];
-const RATING_FIELD: Record<Aspect, string> = {
-  power: "ratingPower",
-  water: "ratingWater",
-  security: "ratingSecurity",
-  roads_flooding: "ratingRoadsFlooding",
-  accessibility: "ratingAccessibility",
-};
+import { ASPECTS, RATING_FIELD_BY_ASPECT, TRUST_WEIGHT_BY_TIER, tierFromWeight } from "../config/constants";
 
 // Shared by listAreas (compact Evidence Stacks) and getArea (full stack) so
 // both surfaces stay consistent with a single source of computation.
@@ -152,9 +143,14 @@ export async function createReview(req: Request, res: Response) {
 
   const ratingData: Record<string, number> = {};
   for (const [aspect, rating] of Object.entries(ratings)) {
-    ratingData[RATING_FIELD[aspect as Aspect]] = rating as number;
+    ratingData[RATING_FIELD_BY_ASPECT[aspect as Aspect]] = rating as number;
   }
 
+  // files/ADDENDUM.md §3 — text is checked before it's eligible to go
+  // public, so a review submitted with text starts pending rather than the
+  // schema's default approved; the automated check (part of the NLP
+  // pipeline below) clears it moments later. A voice-only review has
+  // nothing to check yet, so it stays approved until a transcript exists.
   const review = await prisma.review.create({
     data: {
       areaId,
@@ -163,6 +159,7 @@ export async function createReview(req: Request, res: Response) {
       originalLanguage,
       originalAudioRef,
       trustWeightAtSubmission: residency.trustWeight,
+      moderationStatus: originalText ? "pending" : "approved",
       ...ratingData,
     },
   });
