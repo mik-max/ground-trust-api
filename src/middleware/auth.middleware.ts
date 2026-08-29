@@ -32,6 +32,25 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+// For endpoints that are publicly readable but render differently for a
+// logged-in role (e.g. review audio is government-only — see
+// getAreaReviews) — decodes the token if one is present and valid, but
+// never rejects the request either way.
+export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
+  const header = req.headers.authorization;
+  const token = header?.startsWith("Bearer ") ? header.slice(7) : undefined;
+
+  if (token) {
+    try {
+      req.auth = jwt.verify(token, process.env.JWT_SECRET as string) as AuthPayload;
+    } catch {
+      // Invalid/expired token on an optional-auth route just means "treat as
+      // anonymous" — unlike requireAuth, this is not an error.
+    }
+  }
+  next();
+}
+
 // Structurally separates resident/newcomer/government/admin endpoints
 // (files/HANDOFF.md §5) — a role not in `roles` is rejected outright.
 export function requireRole(...roles: Role[]) {

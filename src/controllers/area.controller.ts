@@ -3,6 +3,7 @@ import prisma from "../config/prisma";
 import { Aspect } from "../generated/prisma";
 import { bandFromScore, confidenceFromN, recomputeAreaScore } from "../services/scoring.service";
 import { processReview } from "../services/nlp.service";
+import { haversineDistanceMeters } from "../services/verification.service";
 import { ASPECTS, RATING_FIELD_BY_ASPECT, TRUST_WEIGHT_BY_TIER, tierFromWeight } from "../config/constants";
 
 // Shared by listAreas (compact Evidence Stacks) and getArea (full stack) so
@@ -91,15 +92,51 @@ export async function getAreaReviews(req: Request, res: Response) {
     prisma.review.count({ where: { areaId: id, moderationStatus: "approved" } }),
   ]);
 
+  // Privacy: a voice review's raw recording is the reviewer's actual voice,
+  // not just their words — residents/newcomers/visitors only ever get the
+  // transcribed/translated text (already computed by the STT pipeline, see
+  // stt.service.ts), never the audio file itself. Government accounts get
+  // the real recording, since they're verifying conditions in an official
+  // capacity rather than just browsing. This route has no requireAuth (it's
+  // publicly readable), so "government" here comes from optionalAuth —
+  // req.auth is only set if a valid token was actually presented.
+  const isGovernment = req.auth?.role === "government";
+
   // Reviewer's tier isn't stored directly on Review (only the weight
   // snapshot is, for historical explainability) — derive it for display,
   // per GroundTruth_Design_Implementation_Guide.md §3.9's Review card spec.
   const reviewsWithTier = reviews.map((r) => ({
     ...r,
+    // hasVoiceRecording survives even when the audio itself is hidden, so
+    // the UI can still say "this was a voice review" (transparency) without
+    // exposing the recording to non-government viewers.
+    hasVoiceRecording: r.originalAudioRef !== null,
+    originalAudioRef: isGovernment ? r.originalAudioRef : null,
     tierAtSubmission: tierFromWeight(r.trustWeightAtSubmission),
   }));
 
   return res.json({ reviews: reviewsWithTier, page, pageSize, total });
+}
+
+// files/BACKLOG.md — location-search discovery: a visitor types a real
+// Nigerian place name (via the geocode search proxy) and we check whether
+// any seeded Area's geofence actually contains that point, using the same
+// haversine check GPS-tier-upgrade sampling already relies on. Areas are a
+// small, admin-curated set (not user-generated), so a full table scan here
+// is fine at this scale — no spatial index needed.
+export async function findNearestArea(req: Request, res: Response) {
+  const lat = Number(req.query.lat);
+  const lng = Number(req.query.lng);
+  if (Number.isNaN(lat) || Number.isNaN(lng)) {
+    return res.status(400).json({ error: "lat and lng query params are required" });
+  }
+
+  const areas = await prisma.area.findMany();
+  const match = areas.find(
+    (area) => haversineDistanceMeters(lat, lng, area.geoCentroidLat, area.geoCentroidLng) <= area.geoRadiusMeters
+  );
+
+  return res.json({ area: match ?? null });
 }
 
 // Structured ratings required, text/audio optional. Auto-provisions the
