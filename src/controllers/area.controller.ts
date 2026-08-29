@@ -44,14 +44,17 @@ export async function listAreas(req: Request, res: Response) {
   const query = typeof req.query.query === "string" ? req.query.query : undefined;
 
   const areaRows = await prisma.area.findMany({
-    where: query
-      ? {
-          OR: [
-            { name: { contains: query, mode: "insensitive" } },
-            { city: { contains: query, mode: "insensitive" } },
-          ],
-        }
-      : undefined,
+    where: {
+      status: "approved",
+      ...(query
+        ? {
+            OR: [
+              { name: { contains: query, mode: "insensitive" } },
+              { city: { contains: query, mode: "insensitive" } },
+            ],
+          }
+        : {}),
+    },
     orderBy: { name: "asc" },
   });
 
@@ -64,11 +67,18 @@ export async function listAreas(req: Request, res: Response) {
 
 // Full Evidence Stack payload per files/HANDOFF.md §5:
 // { area, overall: {score, band, N, confidence}, aspects: [...] }
+// A pending area (see createArea) is otherwise invisible everywhere, but the
+// resident who proposed it — or an admin, reviewing it — can still open its
+// profile directly by id, so submitting doesn't look like it vanished.
 export async function getArea(req: Request, res: Response) {
   const { id } = req.params;
 
   const area = await prisma.area.findUnique({ where: { id } });
   if (!area) {
+    return res.status(404).json({ error: "Area not found" });
+  }
+  const isOwnerOrAdmin = req.auth && (req.auth.userId === area.createdByUserId || req.auth.role === "admin");
+  if (area.status !== "approved" && !isOwnerOrAdmin) {
     return res.status(404).json({ error: "Area not found" });
   }
 
@@ -131,12 +141,62 @@ export async function findNearestArea(req: Request, res: Response) {
     return res.status(400).json({ error: "lat and lng query params are required" });
   }
 
-  const areas = await prisma.area.findMany();
+  const areas = await prisma.area.findMany({ where: { status: "approved" } });
   const match = areas.find(
     (area) => haversineDistanceMeters(lat, lng, area.geoCentroidLat, area.geoCentroidLng) <= area.geoRadiusMeters
   );
 
   return res.json({ area: match ?? null });
+}
+
+const MIN_RADIUS_METERS = 300;
+const MAX_RADIUS_METERS = 5000;
+const DEFAULT_RADIUS_METERS = 2000;
+
+// A resident who can't find their own neighbourhood (LocationSearchInput's
+// "not covered yet" state) can propose it here instead of being stuck
+// browsing only the admin-seeded set. Starts "pending" — invisible to
+// listAreas/findNearestArea/public getArea — until an admin approves it
+// (see admin.controller.ts's moderateArea), same shape as review moderation.
+export async function createArea(req: Request, res: Response) {
+  const userId = req.auth!.userId;
+  const { name, city, state, geoCentroidLat, geoCentroidLng, geoRadiusMeters } = req.body as {
+    name?: string;
+    city?: string;
+    state?: string;
+    geoCentroidLat?: number;
+    geoCentroidLng?: number;
+    geoRadiusMeters?: number;
+  };
+
+  if (!name?.trim() || !city?.trim() || !state?.trim()) {
+    return res.status(400).json({ error: "name, city, and state are required" });
+  }
+  if (typeof geoCentroidLat !== "number" || typeof geoCentroidLng !== "number") {
+    return res.status(400).json({ error: "geoCentroidLat and geoCentroidLng are required" });
+  }
+  if (geoCentroidLat < -90 || geoCentroidLat > 90 || geoCentroidLng < -180 || geoCentroidLng > 180) {
+    return res.status(400).json({ error: "geoCentroidLat/geoCentroidLng out of range" });
+  }
+  const radius = geoRadiusMeters ?? DEFAULT_RADIUS_METERS;
+  if (radius < MIN_RADIUS_METERS || radius > MAX_RADIUS_METERS) {
+    return res.status(400).json({ error: `geoRadiusMeters must be between ${MIN_RADIUS_METERS} and ${MAX_RADIUS_METERS}` });
+  }
+
+  const area = await prisma.area.create({
+    data: {
+      name: name.trim(),
+      city: city.trim(),
+      state: state.trim(),
+      geoCentroidLat,
+      geoCentroidLng,
+      geoRadiusMeters: radius,
+      status: "pending",
+      createdByUserId: userId,
+    },
+  });
+
+  return res.status(201).json({ area });
 }
 
 // Structured ratings required, text/audio optional. Auto-provisions the

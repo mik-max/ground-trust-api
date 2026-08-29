@@ -80,3 +80,36 @@ export async function moderateReview(req: Request, res: Response) {
 
   return res.json({ review: updated });
 }
+
+// A resident-proposed area (area.controller.ts's createArea) starts
+// "pending" and stays invisible to every public listing until an admin
+// approves it — same shape as review moderation, so this is deliberately
+// the review queue's twin rather than a new pattern.
+export async function listPendingAreas(_req: Request, res: Response) {
+  const areas = await prisma.area.findMany({
+    where: { status: "pending" },
+    orderBy: { createdAt: "asc" },
+    include: { createdBy: { select: { id: true, fullName: true, email: true } } },
+  });
+  return res.json({ areas });
+}
+
+export async function moderateArea(req: Request, res: Response) {
+  const { id } = req.params;
+  const { decision } = req.body as { decision?: "approved" | "rejected" };
+
+  if (decision !== "approved" && decision !== "rejected") {
+    return res.status(400).json({ error: "decision must be 'approved' or 'rejected'" });
+  }
+
+  const area = await prisma.area.findUnique({ where: { id } });
+  if (!area) {
+    return res.status(404).json({ error: "Area not found" });
+  }
+  if (area.status !== "pending") {
+    return res.status(409).json({ error: "This area has already been moderated" });
+  }
+
+  const updated = await prisma.area.update({ where: { id }, data: { status: decision } });
+  return res.json({ area: updated });
+}

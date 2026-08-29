@@ -72,6 +72,7 @@ model User {
   reviews             Review[]
   verificationEvents  VerificationEvent[]
   residencies         UserAreaResidency[]
+  createdAreas        Area[]
 }
 
 // Append-only log powering tier computation. Raw GPS coordinates are never
@@ -105,14 +106,21 @@ model UserAreaResidency {
 }
 
 model Area {
-  id              String   @id @default(cuid())
+  id              String            @id @default(cuid())
   name            String
   city            String
   state           String
   geoCentroidLat  Float
   geoCentroidLng  Float
   geoRadiusMeters Int
-  createdAt       DateTime @default(now())
+  createdAt       DateTime          @default(now())
+  // Admin-curated seed areas default straight to approved (no one to
+  // approve them against). A resident-proposed area (see area.controller.ts
+  // createArea) starts pending and is excluded from every public listing
+  // until an admin approves it — same moderation shape reviews already use.
+  status          ModerationStatus  @default(approved)
+  createdByUserId String?
+  createdBy       User?             @relation(fields: [createdByUserId], references: [id])
 
   reviews            Review[]
   scores             AreaScore[]
