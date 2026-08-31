@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import prisma from "../config/prisma";
 import { recomputeReviewAspects } from "../services/scoring.service";
+import { haversineDistanceMeters } from "../services/verification.service";
 
 // Government accounts are never self-service — an authenticated admin
 // provisions them directly, per files/HANDOFF.md §2.5. No invite-email flow
@@ -81,17 +82,57 @@ export async function moderateReview(req: Request, res: Response) {
   return res.json({ review: updated });
 }
 
-// A resident-proposed area (area.controller.ts's createArea) starts
-// "pending" and stays invisible to every public listing until an admin
-// approves it — same shape as review moderation, so this is deliberately
-// the review queue's twin rather than a new pattern.
+// A proposed area's name/city/state alone gives an admin nothing to judge
+// "is this actually a duplicate of somewhere we already have, or spam"
+// against — so alongside the raw submission, this computes the same kind
+// of proximity check findNearestArea already does for search: the closest
+// other area (any status, excluding itself) and its distance. Under this
+// is close enough that it's very likely the same real place described
+// twice; the frontend surfaces it as a warning rather than this endpoint
+// deciding for the admin — a duplicate name pattern ("Yaba" vs "Yaba
+// Road") or an oddly-worded proposal can still be spam even if the
+// coordinates are far from anything else, and a legitimately distinct
+// street can sit within this radius of its neighbourhood's centroid.
+const DUPLICATE_WARNING_METERS = 1500;
+
 export async function listPendingAreas(_req: Request, res: Response) {
-  const areas = await prisma.area.findMany({
-    where: { status: "pending" },
-    orderBy: { createdAt: "asc" },
-    include: { createdBy: { select: { id: true, fullName: true, email: true } } },
+  const [pending, allAreas] = await Promise.all([
+    prisma.area.findMany({
+      where: { status: "pending" },
+      orderBy: { createdAt: "asc" },
+      include: { createdBy: { select: { id: true, fullName: true, email: true } } },
+    }),
+    prisma.area.findMany({ select: { id: true, name: true, status: true, geoCentroidLat: true, geoCentroidLng: true } }),
+  ]);
+
+  const withDuplicateSignal = pending.map((area) => {
+    let nearest: { name: string; status: string; distanceMeters: number } | null = null;
+    for (const other of allAreas) {
+      if (other.id === area.id) continue;
+      const distanceMeters = haversineDistanceMeters(
+        area.geoCentroidLat,
+        area.geoCentroidLng,
+        other.geoCentroidLat,
+        other.geoCentroidLng
+      );
+      if (!nearest || distanceMeters < nearest.distanceMeters) {
+        nearest = { name: other.name, status: other.status, distanceMeters };
+      }
+    }
+
+    const otherPendingFromSameUser = pending.filter(
+      (p) => p.id !== area.id && p.createdByUserId === area.createdByUserId
+    ).length;
+
+    return {
+      ...area,
+      nearestOtherArea: nearest,
+      possibleDuplicate: nearest !== null && nearest.distanceMeters <= DUPLICATE_WARNING_METERS,
+      otherPendingFromSameUser,
+    };
   });
-  return res.json({ areas });
+
+  return res.json({ areas: withDuplicateSignal });
 }
 
 export async function moderateArea(req: Request, res: Response) {
