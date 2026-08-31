@@ -10,7 +10,6 @@ datasource db {
 
 enum Role {
   resident
-  newcomer
   government
   admin
 }

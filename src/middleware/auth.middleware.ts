@@ -51,7 +51,7 @@ export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
   next();
 }
 
-// Structurally separates resident/newcomer/government/admin endpoints
+// Structurally separates resident/government/admin endpoints
 // (files/HANDOFF.md §5) — a role not in `roles` is rejected outright.
 export function requireRole(...roles: Role[]) {
   return (req: Request, res: Response, next: NextFunction) => {

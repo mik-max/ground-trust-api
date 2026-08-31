@@ -5,8 +5,6 @@ import prisma from "../config/prisma";
 import { getGoogleClient } from "../config/googleAuth";
 import { Role } from "../generated/prisma";
 
-const SIGNUP_ROLES: Role[] = ["resident", "newcomer"];
-
 function signToken(userId: string, role: Role) {
   return jwt.sign({ userId, role }, process.env.JWT_SECRET as string, {
     expiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
@@ -14,16 +12,18 @@ function signToken(userId: string, role: Role) {
 }
 
 // Government and admin accounts are provisioned separately (see
-// admin.controller.ts) — this endpoint only accepts resident/newcomer,
-// per files/HANDOFF.md §2.5.
+// admin.controller.ts) — self-service signup only ever creates residents.
+// (There used to be a "newcomer" role here too — read/compare only, no
+// exclusive capability of its own, since every read path in this app is
+// already public with no login required. It added a role picker to the
+// signup form for zero actual access-control difference from browsing
+// anonymously, so it's gone; anyone wanting to just browse still can,
+// without an account at all.)
 export async function signup(req: Request, res: Response) {
-  const { fullName, email, password, role } = req.body;
+  const { fullName, email, password } = req.body;
 
-  if (!fullName || !email || !password || !role) {
-    return res.status(400).json({ error: "fullName, email, password, and role are required" });
-  }
-  if (!SIGNUP_ROLES.includes(role)) {
-    return res.status(400).json({ error: "role must be 'resident' or 'newcomer'" });
+  if (!fullName || !email || !password) {
+    return res.status(400).json({ error: "fullName, email, and password are required" });
   }
 
   const existing = await prisma.user.findUnique({ where: { email } });
@@ -33,7 +33,7 @@ export async function signup(req: Request, res: Response) {
 
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
-    data: { fullName, email, passwordHash, role, authProvider: "email" },
+    data: { fullName, email, passwordHash, role: "resident", authProvider: "email" },
   });
 
   const token = signToken(user.id, user.role);
@@ -71,11 +71,12 @@ export async function login(req: Request, res: Response) {
 // The frontend gets a signed ID token directly from Google Identity
 // Services and sends it here — verified against Google's public keys, no
 // authorization-code exchange, so GOOGLE_CLIENT_SECRET is never used (see
-// config/googleAuth.ts). `role` is only meaningful for a brand-new
-// account — the Register page sends its selected role; the Login page
-// omits it, since logging in shouldn't silently create an account.
+// config/googleAuth.ts). `isSignup` is only meaningful for a brand-new
+// account (self-service signup always creates a resident, see signup()
+// above) — the Register page sends true; the Login page omits it, since
+// logging in shouldn't silently create an account.
 export async function googleAuth(req: Request, res: Response) {
-  const { credential, role } = req.body as { credential?: string; role?: Role };
+  const { credential, isSignup } = req.body as { credential?: string; isSignup?: boolean };
 
   if (!credential) {
     return res.status(400).json({ error: "credential is required" });
@@ -104,14 +105,11 @@ export async function googleAuth(req: Request, res: Response) {
   let isNewUser = false;
 
   if (!user) {
-    if (!role) {
+    if (!isSignup) {
       return res.status(404).json({ error: "No account found for this Google email — register first" });
     }
-    if (!SIGNUP_ROLES.includes(role)) {
-      return res.status(400).json({ error: "role must be 'resident' or 'newcomer'" });
-    }
     user = await prisma.user.create({
-      data: { fullName, email, role, authProvider: "google" },
+      data: { fullName, email, role: "resident", authProvider: "google" },
     });
     isNewUser = true;
   }

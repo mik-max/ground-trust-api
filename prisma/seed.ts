@@ -31,7 +31,6 @@ const AREAS = [
 const FIXED_USERS = [
   { fullName: "Demo Admin", email: "admin@example.com", role: "admin" as const },
   { fullName: "Demo Government", email: "gov@example.com", role: "government" as const },
-  { fullName: "Demo Newcomer", email: "newcomer@example.com", role: "newcomer" as const },
   { fullName: "Demo Resident", email: "resident@example.com", role: "resident" as const },
 ];
 
@@ -224,7 +223,7 @@ async function main() {
   const reviewCount = Object.values(REVIEW_PLANS).reduce((sum, plans) => sum + plans.length, 0);
   console.log(`Seeded ${areaCount} areas, ${userCount} users, ${reviewCount} reviews.`);
   console.log("Demo login password for all seeded users: password123");
-  console.log("Fixed logins: admin@example.com, gov@example.com, newcomer@example.com, resident@example.com");
+  console.log("Fixed logins: admin@example.com, gov@example.com, resident@example.com");
 }
 
 main()
