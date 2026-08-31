@@ -16,11 +16,18 @@ function tierProgress(tier: string, confirmedSince: Date | null, nightSamples: n
   return null;
 }
 
-// Current tier + progress per area, for the "My Contributions" screen.
+// Current tier + progress per area, for the "My Contributions" screen. A
+// UserAreaResidency row alone doesn't mean "I contributed" — it's also
+// created silently by a background GPS check-in (useGpsPresenceSample fires
+// on the review page itself, before any review is actually submitted), so
+// just being verified as physically present somewhere isn't the same thing
+// as having reviewed it. This only lists areas the resident has actually
+// submitted at least one review for (any moderation status — the point is
+// "did I do this", not "is it currently public").
 export async function getVerificationStatus(req: Request, res: Response) {
   const userId = req.auth!.userId;
 
-  const [residencies, nightCounts] = await Promise.all([
+  const [residencies, nightCounts, reviewedAreaIds] = await Promise.all([
     prisma.userAreaResidency.findMany({
       where: { userId },
       include: { area: { select: { id: true, name: true, city: true, state: true, status: true } } },
@@ -30,13 +37,17 @@ export async function getVerificationStatus(req: Request, res: Response) {
       where: { userId, eventType: "gps_sample", sampledAtNight: true },
       _count: true,
     }),
+    prisma.review.findMany({ where: { userId }, select: { areaId: true }, distinct: ["areaId"] }),
   ]);
 
+  const reviewedSet = new Set(reviewedAreaIds.map((r) => r.areaId));
   const nightCountByArea = new Map(nightCounts.map((c) => [c.areaId, c._count]));
-  const withProgress = residencies.map((r) => ({
-    ...r,
-    progress: tierProgress(r.verificationTier, r.confirmedSince, nightCountByArea.get(r.areaId) ?? 0),
-  }));
+  const withProgress = residencies
+    .filter((r) => reviewedSet.has(r.areaId))
+    .map((r) => ({
+      ...r,
+      progress: tierProgress(r.verificationTier, r.confirmedSince, nightCountByArea.get(r.areaId) ?? 0),
+    }));
 
   return res.json({ residencies: withProgress });
 }
