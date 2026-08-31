@@ -23,7 +23,7 @@ export async function getVerificationStatus(req: Request, res: Response) {
   const [residencies, nightCounts] = await Promise.all([
     prisma.userAreaResidency.findMany({
       where: { userId },
-      include: { area: { select: { id: true, name: true, city: true, state: true } } },
+      include: { area: { select: { id: true, name: true, city: true, state: true, status: true } } },
     }),
     prisma.verificationEvent.groupBy({
       by: ["areaId"],
