@@ -59,6 +59,15 @@ enum ModerationStatus {
   rejected
 }
 
+// A government account's acknowledgement of a flag. Deliberately separate
+// from Flag.resolved: only residents' recovering scores resolve a flag —
+// government can say it has seen and is acting on one, not close it.
+enum FlagResponseStatus {
+  unacknowledged
+  acknowledged
+  in_progress
+}
+
 model User {
   id           String       @id @default(cuid())
   fullName     String
@@ -72,6 +81,7 @@ model User {
   verificationEvents  VerificationEvent[]
   residencies         UserAreaResidency[]
   createdAreas        Area[]
+  flagResponses       Flag[]
 }
 
 // Append-only log powering tier computation. Raw GPS coordinates are never
@@ -185,6 +195,12 @@ model Flag {
   consecutiveWeeksBelowThreshold Int
   resolved                       Boolean   @default(false)
   resolvedAt                     DateTime?
+
+  responseStatus      FlagResponseStatus @default(unacknowledged)
+  responseNote        String?
+  respondedAt         DateTime?
+  respondedByUserId   String?
+  respondedBy         User?              @relation(fields: [respondedByUserId], references: [id])
 
   @@index([areaId, resolved])
 }
