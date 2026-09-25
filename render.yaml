@@ -7,7 +7,10 @@ services:
     runtime: node
     plan: free
     region: frankfurt
-    buildCommand: yarn install --frozen-lockfile && yarn build
+    # --production=false: NODE_ENV=production would otherwise make yarn skip
+    # devDependencies (prisma, typescript), and the build would pick up a
+    # different global tsc or fail outright.
+    buildCommand: yarn install --frozen-lockfile --production=false && yarn build
     # Migrations run at start (not build) so they only apply once the
     # database is reachable from the running service.
     startCommand: yarn db:deploy && yarn start
