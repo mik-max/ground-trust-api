@@ -149,6 +149,14 @@ export const openApiSpec = {
           triggeredAt: { type: "string", format: "date-time" },
           consecutiveWeeksBelowThreshold: { type: "integer" },
           resolved: { type: "boolean" },
+          responseStatus: { type: "string", enum: ["unacknowledged", "acknowledged", "in_progress"] },
+          responseNote: { type: "string", nullable: true },
+          respondedAt: { type: "string", format: "date-time", nullable: true },
+          respondedBy: {
+            type: "object",
+            nullable: true,
+            properties: { id: { type: "string" }, fullName: { type: "string" } },
+          },
         },
       },
       Decision: {
@@ -382,10 +390,37 @@ export const openApiSpec = {
     "/gov/flags/{id}": {
       get: {
         tags: ["Government"],
-        summary: "One flag with its area",
+        summary: "One flag with its area and government response",
         security: auth,
         parameters: [idParam("Flag ID")],
         responses: { 200: ok("Flag", { type: "object", properties: { flag: ref("Flag") } }), 404: err("Flag not found"), ...AUTH_ERRORS },
+      },
+    },
+    "/gov/flags/{id}/response": {
+      patch: {
+        tags: ["Government"],
+        summary: "Acknowledge a flag or mark action as in progress",
+        description: "Records the government authority's response and an optional note. It never resolves the flag; only residents' recovering scores do.",
+        security: auth,
+        parameters: [idParam("Flag ID")],
+        requestBody: {
+          required: true,
+          ...json({
+            type: "object",
+            required: ["status"],
+            properties: {
+              status: { type: "string", enum: ["acknowledged", "in_progress"] },
+              note: { type: "string", example: "Police patrols scheduled from next week" },
+            },
+          }),
+        },
+        responses: {
+          200: ok("Updated flag", { type: "object", properties: { flag: ref("Flag") } }),
+          400: err("Invalid status or note"),
+          404: err("Flag not found"),
+          409: err("Flag already resolved"),
+          ...AUTH_ERRORS,
+        },
       },
     },
     "/admin/government-accounts": {
