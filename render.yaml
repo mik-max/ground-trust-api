@@ -1,0 +1,36 @@
+# Render Blueprint for the backend API. The frontend is deployed separately
+# on Vercel from its own repository; its vercel.json proxies /api and
+# /uploads to this service.
+services:
+  - type: web
+    name: groundtrust-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: yarn install --frozen-lockfile && yarn build
+    # Migrations run at start (not build) so they only apply once the
+    # database is reachable from the running service.
+    startCommand: yarn db:deploy && yarn start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      # Set these in the Render dashboard (not committed):
+      - key: DATABASE_URL
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
