@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import swaggerUi from "swagger-ui-express";
 import adminRoutes from "./routes/admin.routes";
 import areaRoutes from "./routes/area.routes";
 import authRoutes from "./routes/auth.routes";
@@ -9,6 +10,7 @@ import internalRoutes from "./routes/internal.routes";
 import uploadRoutes from "./routes/upload.routes";
 import verificationRoutes from "./routes/verification.routes";
 import { UPLOADS_DIR } from "./config/upload";
+import { openApiSpec } from "./docs/openapi";
 
 const app = express();
 
@@ -17,6 +19,9 @@ app.use(express.json());
 app.use("/uploads", express.static(UPLOADS_DIR));
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
+
+app.get("/api/docs/openapi.json", (_req, res) => res.json(openApiSpec));
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(openApiSpec, { customSiteTitle: "GroundTrust API" }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/areas", areaRoutes);
