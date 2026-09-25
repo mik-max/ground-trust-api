@@ -83,15 +83,20 @@ interface ReviewPlan {
 //    this is the one area that genuinely earns a Flag row, while power/
 //    water/roads/accessibility stay healthy, showing the flag is
 //    aspect-specific, not a verdict on the whole area.
+// Comments are in English plus three each in Nigerian Pidgin, Yoruba,
+// Hausa and Igbo (matched to the reviewer's name), attached to reviews that
+// already existed, so the ratings above, and the scores and flag they
+// produce, are unaffected. They exercise the translation and aspect/sentiment
+// pipeline on the supported local languages.
 const REVIEW_PLANS: Record<(typeof AREAS)[number]["name"], ReviewPlan[]> = {
   "GRA Ikeja": [
     { residentIndex: 0, ratings: { power: 3, water: 4, security: 2 }, text: "Power has improved a lot this year, but I still don't feel safe walking around after dark.", daysAgoSubmitted: 3 },
-    { residentIndex: 1, ratings: { power: 4, security: 2, roads_flooding: 3 }, daysAgoSubmitted: 5 },
+    { residentIndex: 1, ratings: { power: 4, security: 2, roads_flooding: 3 }, text: "Ọkụ latrik na-adị mma ebe a ugbu a. Mana nchekwa adịghị mma ma ọlị, ndị ohi batara n'ụlọ abụọ n'okporo ụzọ anyị n'ọnwa a.", daysAgoSubmitted: 5 },
     { residentIndex: 2, ratings: { power: 3, water: 3, security: 3, accessibility: 4 }, text: "Decent estate overall, close to the airport which is handy.", daysAgoSubmitted: 8 },
     { residentIndex: 3, ratings: { security: 2, roads_flooding: 2 }, daysAgoSubmitted: 10 },
-    { residentIndex: 4, ratings: { power: 4, water: 4, accessibility: 3 }, daysAgoSubmitted: 12 },
+    { residentIndex: 4, ratings: { power: 4, water: 4, accessibility: 3 }, text: "Wutar lantarki tana zuwa sosai a nan, ruwan famfo ma yana samuwa kullum. Amma hanyoyin tafiya ba su da sauƙi ga tsofaffi.", daysAgoSubmitted: 12 },
     { residentIndex: 5, ratings: { power: 2, security: 2, water: 3 }, text: "We've had a few break-ins reported on the estate WhatsApp group recently.", daysAgoSubmitted: 14 },
-    { residentIndex: 6, ratings: { power: 3, roads_flooding: 3, accessibility: 4 }, daysAgoSubmitted: 16 },
+    { residentIndex: 6, ratings: { power: 3, roads_flooding: 3, accessibility: 4 }, text: "Iná mànàmáná máa ń wá, ṣùgbọ́n kì í pẹ́. Ọ̀nà wa kò burú, àwọn àgbàlagbà sì lè rìn dé ọjà láìsí wàhálà.", daysAgoSubmitted: 16 },
     { residentIndex: 7, ratings: { security: 1, power: 3 }, text: "This is placeholder text simulating a review that gets flagged by moderation for testing.", daysAgoSubmitted: 18, moderationStatus: "pending" },
     // Same resident, a separate approved review — a realistic follow-up,
     // and keeps GRA Ikeja's overall approved-contributor count at a clean
@@ -101,35 +106,35 @@ const REVIEW_PLANS: Record<(typeof AREAS)[number]["name"], ReviewPlan[]> = {
     { residentIndex: 8, ratings: { power: 4, water: 3, security: 2 }, daysAgoSubmitted: 20 },
     { residentIndex: 9, ratings: { power: 3, security: 3, accessibility: 3 }, daysAgoSubmitted: 22 },
     { residentIndex: 10, ratings: { power: 3, water: 4, roads_flooding: 2 }, text: "Roads flood badly right at the estate gate whenever it rains hard.", daysAgoSubmitted: 25 },
-    { residentIndex: 11, ratings: { security: 2, power: 4 }, daysAgoSubmitted: 28 },
-    { residentIndex: 12, ratings: { power: 3, water: 3, security: 2, accessibility: 4 }, daysAgoSubmitted: 30 },
-    { residentIndex: 13, ratings: { power: 4, roads_flooding: 3 }, daysAgoSubmitted: 33 },
+    { residentIndex: 11, ratings: { security: 2, power: 4 }, text: "Light dey stay well for here, but security no good at all. Dem don rob people for our street two times this month.", daysAgoSubmitted: 28 },
+    { residentIndex: 12, ratings: { power: 3, water: 3, security: 2, accessibility: 4 }, text: "Ọ dị mfe ịga ahịa na ụlọ ọgwụ site n'ebe a. Mana anyị anaghị enwe udo n'abalị n'ihi ndị ohi.", daysAgoSubmitted: 30 },
+    { residentIndex: 13, ratings: { power: 4, roads_flooding: 3 }, text: "Wuta tana nan kusan kullum. Titin yana da kyau, amma idan ruwan sama ya yi yawa sai ruwa ya cika shi.", daysAgoSubmitted: 33 },
     { residentIndex: 14, ratings: { security: 3, water: 4, power: 3 }, text: "Quiet, established neighbourhood — one of the better parts of Ikeja for power supply.", daysAgoSubmitted: 35 },
   ],
   "Lekki Phase 1": [
     { residentIndex: 1, ratings: { power: 4, water: 4, security: 4, accessibility: 3 }, text: "Great place to live if you can handle the Third Mainland Bridge traffic to get here.", daysAgoSubmitted: 4 },
-    { residentIndex: 2, ratings: { power: 4, security: 4, roads_flooding: 3 }, daysAgoSubmitted: 9 },
-    { residentIndex: 3, ratings: { power: 3, water: 4, accessibility: 4 }, daysAgoSubmitted: 15 },
+    { residentIndex: 2, ratings: { power: 4, security: 4, roads_flooding: 3 }, text: "Iná mànàmáná dúró dáadáa, ààbò sì dára nínú estate wa. Ṣùgbọ́n omi máa ń kún ọ̀nà kan nígbà òjò.", daysAgoSubmitted: 9 },
+    { residentIndex: 3, ratings: { power: 3, water: 4, accessibility: 4 }, text: "Water dey run every day, we no dey buy water again. Light dey try small. E easy to waka reach market and bus stop.", daysAgoSubmitted: 15 },
     { residentIndex: 4, ratings: { security: 4, power: 4, water: 3 }, text: "Private estate security is solid — haven't had any issues in two years here.", daysAgoSubmitted: 21 },
     { residentIndex: 5, ratings: { power: 3, roads_flooding: 2, accessibility: 3 }, text: "Flooding near the lekki-epe expressway side is a real problem in the rainy season.", daysAgoSubmitted: 27 },
     { residentIndex: 6, ratings: { power: 4, water: 4, security: 3 }, daysAgoSubmitted: 40 },
   ],
   "Wuse 2": [
     { residentIndex: 7, ratings: { power: 5, water: 4, security: 4 }, text: "Central, well-planned, and power is far more stable than most of Abuja.", daysAgoSubmitted: 6 },
-    { residentIndex: 8, ratings: { power: 5, accessibility: 3, water: 3 }, daysAgoSubmitted: 19 },
-    { residentIndex: 9, ratings: { security: 2, power: 4, roads_flooding: 3 }, daysAgoSubmitted: 31 },
+    { residentIndex: 8, ratings: { power: 5, accessibility: 3, water: 3 }, text: "Ọkụ adịghị anyụ ebe a, ọ bụ nke kacha mma n'Abuja. Mmiri na-abịa mgbe ụfọdụ, ọ bụghị kwa ụbọchị.", daysAgoSubmitted: 19 },
+    { residentIndex: 9, ratings: { security: 2, power: 4, roads_flooding: 3 }, text: "Night time no safe for this side at all, thief dey operate. Light sef dey constant, na only security be the wahala.", daysAgoSubmitted: 31 },
   ],
   "Independence Layout": [
     { residentIndex: 10, ratings: { power: 4, water: 1, roads_flooding: 2, accessibility: 3 }, text: "Water supply is basically nonexistent — everyone here relies on boreholes.", daysAgoSubmitted: 11 },
   ],
   "Bodija Estate": [
     { residentIndex: 0, ratings: { security: 1, power: 4, water: 4 }, text: "Loved living here until a spate of armed robberies on our street last quarter.", daysAgoSubmitted: 2 },
-    { residentIndex: 2, ratings: { security: 2, power: 3, roads_flooding: 3 }, daysAgoSubmitted: 7 },
+    { residentIndex: 2, ratings: { security: 2, power: 3, roads_flooding: 3 }, text: "Ẹ̀rù ń bà wá lálẹ́ nítorí àwọn olè ti pọ̀ sí i ládùúgbò yìí. Iná máa ń wá díẹ̀díẹ̀.", daysAgoSubmitted: 7 },
     { residentIndex: 5, ratings: { security: 1, water: 4 }, text: "Reported two incidents to the police this year alone — security here has gotten worse.", daysAgoSubmitted: 13 },
     { residentIndex: 8, ratings: { security: 2, power: 4, accessibility: 4 }, daysAgoSubmitted: 17 },
     { residentIndex: 11, ratings: { security: 1, water: 3 }, daysAgoSubmitted: 23 },
     { residentIndex: 12, ratings: { security: 2, power: 3, roads_flooding: 4 }, text: "Good schools nearby and the market is convenient, but I don't feel safe at night anymore.", daysAgoSubmitted: 29 },
-    { residentIndex: 13, ratings: { security: 1, power: 4 }, daysAgoSubmitted: 34 },
+    { residentIndex: 13, ratings: { security: 1, power: 4 }, text: "Tsaro ya lalace gaba ɗaya a unguwar nan, 'yan fashi suna shigowa da dare. Wuta kam tana nan lafiya.", daysAgoSubmitted: 34 },
     { residentIndex: 14, ratings: { security: 2, water: 4, accessibility: 3 }, daysAgoSubmitted: 38 },
     { residentIndex: 3, ratings: { security: 1, power: 3, water: 3 }, daysAgoSubmitted: 42 },
   ],
