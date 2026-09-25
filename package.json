@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch index.ts",
-    "build": "tsc",
+    "build": "prisma generate && tsc && cp -r src/generated dist/src/",
     "start": "node dist/index.js",
+    "db:deploy": "prisma migrate deploy",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "nlp:backfill": "tsx scripts/nlp-backfill.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.0",
