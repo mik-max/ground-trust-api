@@ -28,6 +28,21 @@ export const MIN_WEEKS_PERSISTENT = Number(process.env.MIN_WEEKS_PERSISTENT ?? 4
 // project direction, not a schema-level distinction (files/HANDOFF.md §2.5.4).
 export const FLAGGABLE_ASPECTS = ASPECTS;
 
+// The study is scoped to Lagos State: location search and area proposals
+// are limited to it. Bounds are Lagos State's bounding box from
+// OpenStreetMap; the box also clips edges of Ogun State, so callers check
+// the state name as well.
+export const SERVICE_STATE_BOUNDS = { minLat: 6.3667, maxLat: 6.6968, minLng: 2.706, maxLng: 4.3509 };
+
+export function isInServiceState(state: string | undefined): boolean {
+  return (state ?? "").trim().toLowerCase().replace(/\s+state$/, "") === "lagos";
+}
+
+export function isWithinServiceBounds(lat: number, lng: number): boolean {
+  const b = SERVICE_STATE_BOUNDS;
+  return lat >= b.minLat && lat <= b.maxLat && lng >= b.minLng && lng <= b.maxLng;
+}
+
 // Tier -> trust weight multiplier, per files/HANDOFF.md §2.1.
 export const TRUST_WEIGHT_BY_TIER = {
   tier0: 0.3,

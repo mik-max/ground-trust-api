@@ -4,7 +4,14 @@ import { Aspect } from "../generated/prisma";
 import { bandFromScore, confidenceFromN, recomputeAreaScore } from "../services/scoring.service";
 import { processReview } from "../services/nlp.service";
 import { haversineDistanceMeters } from "../services/verification.service";
-import { ASPECTS, RATING_FIELD_BY_ASPECT, TRUST_WEIGHT_BY_TIER, tierFromWeight } from "../config/constants";
+import {
+  ASPECTS,
+  RATING_FIELD_BY_ASPECT,
+  TRUST_WEIGHT_BY_TIER,
+  isInServiceState,
+  isWithinServiceBounds,
+  tierFromWeight,
+} from "../config/constants";
 
 // Shared by listAreas (compact Evidence Stacks) and getArea (full stack) so
 // both surfaces stay consistent with a single source of computation.
@@ -270,6 +277,9 @@ export async function createArea(req: Request, res: Response) {
   }
   if (geoCentroidLat < -90 || geoCentroidLat > 90 || geoCentroidLng < -180 || geoCentroidLng > 180) {
     return res.status(400).json({ error: "geoCentroidLat/geoCentroidLng out of range" });
+  }
+  if (!isInServiceState(state) || !isWithinServiceBounds(geoCentroidLat, geoCentroidLng)) {
+    return res.status(400).json({ error: "GroundTrust currently covers areas in Lagos State only" });
   }
   const radius = geoRadiusMeters ?? DEFAULT_RADIUS_METERS;
   if (radius < MIN_RADIUS_METERS || radius > MAX_RADIUS_METERS) {

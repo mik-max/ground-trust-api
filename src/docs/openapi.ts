@@ -363,7 +363,7 @@ export const openApiSpec = {
     "/geocode/search": {
       get: {
         tags: ["Geocode"],
-        summary: "Search real-world Nigerian locations",
+        summary: "Search real-world locations in Lagos State",
         parameters: [{ name: "q", in: "query", required: true, schema: { type: "string" } }],
         responses: {
           200: ok("Up to 6 results (empty on no match or upstream failure)", {
