@@ -37,15 +37,19 @@ export async function getVerificationStatus(req: Request, res: Response) {
       where: { userId, eventType: "gps_sample", sampledAtNight: true },
       _count: true,
     }),
-    prisma.review.findMany({ where: { userId }, select: { areaId: true }, distinct: ["areaId"] }),
+    prisma.review.groupBy({ by: ["areaId"], where: { userId }, _max: { submittedAt: true } }),
   ]);
 
-  const reviewedSet = new Set(reviewedAreaIds.map((r) => r.areaId));
+  // lastReviewedAt lets My Contributions ask residents whose rating is old
+  // whether anything has changed, since their latest rating replaces older ones.
+  const lastReviewedByArea = new Map(reviewedAreaIds.map((r) => [r.areaId, r._max.submittedAt]));
+  const reviewedSet = new Set(lastReviewedByArea.keys());
   const nightCountByArea = new Map(nightCounts.map((c) => [c.areaId, c._count]));
   const withProgress = residencies
     .filter((r) => reviewedSet.has(r.areaId))
     .map((r) => ({
       ...r,
+      lastReviewedAt: lastReviewedByArea.get(r.areaId) ?? null,
       progress: tierProgress(r.verificationTier, r.confirmedSince, nightCountByArea.get(r.areaId) ?? 0),
     }));
 
