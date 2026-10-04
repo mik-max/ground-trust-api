@@ -62,6 +62,13 @@ enum ModerationStatus {
 // A government account's acknowledgement of a flag. Deliberately separate
 // from Flag.resolved: only residents' recovering scores resolve a flag —
 // government can say it has seen and is acting on one, not close it.
+enum ReviewReportReason {
+  false_information
+  offensive
+  spam
+  other
+}
+
 enum FlagResponseStatus {
   unacknowledged
   acknowledged
@@ -82,6 +89,7 @@ model User {
   residencies         UserAreaResidency[]
   createdAreas        Area[]
   flagResponses       Flag[]
+  reviewReports       ReviewReport[]
 }
 
 // Append-only log powering tier computation. Raw GPS coordinates are never
@@ -168,6 +176,8 @@ model Review {
   // Only 'approved' reviews are included in recomputeAreaScore.
   moderationStatus ModerationStatus @default(approved)
 
+  reports ReviewReport[]
+
   @@index([areaId])
   @@index([userId])
 }
@@ -203,4 +213,23 @@ model Flag {
   respondedBy         User?              @relation(fields: [respondedByUserId], references: [id])
 
   @@index([areaId, resolved])
+}
+
+// A signed-in user's report that a review is false or abusive. A report
+// never hides a review by itself (that would let anyone silence true
+// reviews); it puts the review in the administrator's moderation queue,
+// where it is either kept (reports resolved) or removed (review rejected).
+model ReviewReport {
+  id             String             @id @default(cuid())
+  reviewId       String
+  review         Review             @relation(fields: [reviewId], references: [id])
+  reporterUserId String
+  reporter       User               @relation(fields: [reporterUserId], references: [id])
+  reason         ReviewReportReason
+  note           String?
+  resolved       Boolean            @default(false)
+  createdAt      DateTime           @default(now())
+
+  @@unique([reviewId, reporterUserId])
+  @@index([resolved])
 }

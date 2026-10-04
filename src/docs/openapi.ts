@@ -450,6 +450,32 @@ export const openApiSpec = {
         },
       },
     },
+    "/reviews/{id}/report": {
+      post: {
+        tags: ["Areas"],
+        summary: "Report a review as false, offensive or spam (queued for an administrator; does not hide it)",
+        security: auth,
+        parameters: [idParam("Review ID")],
+        requestBody: {
+          required: true,
+          ...json({
+            type: "object",
+            required: ["reason"],
+            properties: {
+              reason: { type: "string", enum: ["false_information", "offensive", "spam", "other"] },
+              note: { type: "string", maxLength: 500 },
+            },
+          }),
+        },
+        responses: {
+          201: ok("Reported", { type: "object", properties: { report: { type: "object" } } }),
+          400: err("Invalid reason or note, or reporting your own review"),
+          404: err("Review not found"),
+          409: err("Already reported by this user"),
+          ...AUTH_ERRORS,
+        },
+      },
+    },
     "/admin/reviews/pending": {
       get: {
         tags: ["Admin"],
@@ -470,6 +496,32 @@ export const openApiSpec = {
           400: err("Invalid decision"),
           404: err("Review not found"),
           409: err("Already moderated"),
+          ...AUTH_ERRORS,
+        },
+      },
+    },
+    "/admin/reviews/reported": {
+      get: {
+        tags: ["Admin"],
+        summary: "Reviews with unresolved reports from users, with each report's reason",
+        security: auth,
+        responses: { 200: ok("Reported reviews", { type: "object", properties: { reviews: { type: "array", items: ref("Review") } } }), ...AUTH_ERRORS },
+      },
+    },
+    "/admin/reviews/{id}/reports/resolve": {
+      post: {
+        tags: ["Admin"],
+        summary: "Keep a reported review (resolve its reports) or remove it (reject it and recompute scores)",
+        security: auth,
+        parameters: [idParam("Review ID")],
+        requestBody: {
+          required: true,
+          ...json({ type: "object", required: ["decision"], properties: { decision: { type: "string", enum: ["keep", "remove"] } } }),
+        },
+        responses: {
+          200: ok("Resolved", { type: "object", properties: { review: ref("Review") } }),
+          400: err("Invalid decision"),
+          404: err("Review not found"),
           ...AUTH_ERRORS,
         },
       },
