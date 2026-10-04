@@ -18,15 +18,40 @@ import {
 
 // Shared by listAreas (compact Evidence Stacks) and getArea (full stack) so
 // both surfaces stay consistent with a single source of computation.
-async function computeEvidence(areaId: string) {
+// How many residents gave each rating (1-5) per aspect, counting only each
+// resident's most recent approved rating — the same rule the score uses —
+// so the profile can show disagreement that an average would hide.
+async function ratingDistribution(areaId: string) {
+  const reviews = await prisma.review.findMany({
+    where: { areaId, moderationStatus: "approved" },
+    select: { userId: true, ratingPower: true, ratingWater: true, ratingSecurity: true, ratingRoadsFlooding: true, ratingAccessibility: true },
+    orderBy: { submittedAt: "desc" },
+  });
+  const result = {} as Record<Aspect, number[]>;
+  for (const aspect of ASPECTS) {
+    const counts = [0, 0, 0, 0, 0];
+    const seen = new Set<string>();
+    for (const r of reviews) {
+      const rating = r[RATING_FIELD_BY_ASPECT[aspect]];
+      if (rating === null || seen.has(r.userId)) continue;
+      seen.add(r.userId);
+      counts[rating - 1] += 1;
+    }
+    result[aspect] = counts;
+  }
+  return result;
+}
+
+async function computeEvidence(areaId: string, withDistribution = false) {
   const scores = await prisma.areaScore.findMany({ where: { areaId } });
+  const distribution = withDistribution ? await ratingDistribution(areaId) : null;
   const scoreByAspect = new Map(scores.map((s) => [s.aspect, s]));
 
   const aspects = ASPECTS.map((aspect) => {
     const s = scoreByAspect.get(aspect);
     return s
-      ? { aspect, score: s.score, band: s.band, N: s.contributorCount, confidence: s.confidenceLevel }
-      : { aspect, score: null, band: null, N: 0, confidence: "low" as const };
+      ? { aspect, score: s.score, band: s.band, N: s.contributorCount, confidence: s.confidenceLevel, distribution: distribution?.[aspect] }
+      : { aspect, score: null, band: null, N: 0, confidence: "low" as const, distribution: distribution?.[aspect] };
   });
 
   const contributors = await prisma.review.groupBy({
@@ -92,7 +117,7 @@ export async function getArea(req: Request, res: Response) {
     return res.status(404).json({ error: "Area not found" });
   }
 
-  const { overall, aspects } = await computeEvidence(id);
+  const { overall, aspects } = await computeEvidence(id, true);
   return res.json({ area, overall, aspects });
 }
 
