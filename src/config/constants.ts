@@ -23,6 +23,10 @@ export const MIN_N_MEDIUM = Number(process.env.MIN_N_MEDIUM ?? 5);
 export const MIN_N_HIGH = Number(process.env.MIN_N_HIGH ?? 15);
 export const FLAG_THRESHOLD = Number(process.env.FLAG_THRESHOLD ?? 2.0);
 export const MIN_WEEKS_PERSISTENT = Number(process.env.MIN_WEEKS_PERSISTENT ?? 4);
+// Of the MIN_N_FOR_FLAG contributors, at least this many must be location-
+// confirmed (tier1 or above), so a flag can't be raised by a group of newly
+// registered, unverified accounts alone.
+export const MIN_VERIFIED_FOR_FLAG = Number(process.env.MIN_VERIFIED_FOR_FLAG ?? 5);
 
 // All five aspects are flaggable — security is simply the primary one by
 // project direction, not a schema-level distinction (files/HANDOFF.md §2.5.4).
