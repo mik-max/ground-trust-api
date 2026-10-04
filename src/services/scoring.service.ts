@@ -4,6 +4,7 @@ import {
   FLAGGABLE_ASPECTS,
   FLAG_THRESHOLD,
   MIN_N_FOR_FLAG,
+  MIN_VERIFIED_FOR_FLAG,
   MIN_N_HIGH,
   MIN_N_MEDIUM,
   MIN_WEEKS_PERSISTENT,
@@ -67,6 +68,7 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
     where: { areaId, userId: { in: reviews.map((r) => r.userId) } },
   });
   const weightByUser = new Map(residencies.map((r) => [r.userId, r.trustWeight]));
+  const tierByUser = new Map(residencies.map((r) => [r.userId, r.verificationTier]));
 
   let weightedSum = 0;
   let weightTotal = 0;
@@ -83,6 +85,7 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
 
   const score = weightedSum / weightTotal;
   const contributorCount = distinctUsers.size;
+  const verifiedCount = [...distinctUsers].filter((u) => (tierByUser.get(u) ?? "tier0") !== "tier0").length;
   const confidence = confidenceFromN(contributorCount);
   const band = bandFromScore(score);
 
@@ -95,7 +98,8 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
   if (
     (FLAGGABLE_ASPECTS as readonly string[]).includes(aspect) &&
     score <= FLAG_THRESHOLD &&
-    contributorCount >= MIN_N_FOR_FLAG
+    contributorCount >= MIN_N_FOR_FLAG &&
+    verifiedCount >= MIN_VERIFIED_FOR_FLAG
   ) {
     await bumpFlagStreak(areaId, aspect);
   } else {
