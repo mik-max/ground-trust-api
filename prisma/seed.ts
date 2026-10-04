@@ -103,11 +103,6 @@ const REVIEW_PLANS: Record<(typeof AREAS)[number]["name"], ReviewPlan[]> = {
     { residentIndex: 4, ratings: { power: 4, water: 4, accessibility: 3 }, text: "Wutar lantarki tana zuwa sosai a nan, ruwan famfo ma yana samuwa kullum. Amma hanyoyin tafiya ba su da sauƙi ga tsofaffi.", daysAgoSubmitted: 12 },
     { residentIndex: 5, ratings: { power: 2, security: 2, water: 3 }, text: "We've had a few break-ins reported on the estate WhatsApp group recently.", daysAgoSubmitted: 14 },
     { residentIndex: 6, ratings: { power: 3, roads_flooding: 3, accessibility: 4 }, text: "Iná mànàmáná máa ń wá, ṣùgbọ́n kì í pẹ́. Ọ̀nà wa kò burú, àwọn àgbàlagbà sì lè rìn dé ọjà láìsí wàhálà.", daysAgoSubmitted: 16 },
-    { residentIndex: 7, ratings: { security: 1, power: 3 }, text: "This is placeholder text simulating a review that gets flagged by moderation for testing.", daysAgoSubmitted: 18, moderationStatus: "pending" },
-    // Same resident, a separate approved review — a realistic follow-up,
-    // and keeps Ikoyi's overall approved-contributor count at a clean
-    // 15 (the pending row above doesn't count) so it actually clears
-    // MIN_N_HIGH and renders "high confidence", not just "medium".
     { residentIndex: 7, ratings: { water: 3, accessibility: 3 }, daysAgoSubmitted: 17 },
     { residentIndex: 8, ratings: { power: 4, water: 3, security: 2 }, daysAgoSubmitted: 20 },
     { residentIndex: 9, ratings: { power: 3, security: 3, accessibility: 3 }, daysAgoSubmitted: 22 },
