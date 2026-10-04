@@ -144,7 +144,6 @@ export async function getAreaReviews(req: Request, res: Response) {
       orderBy: { submittedAt: "desc" },
       skip: (page - 1) * pageSize,
       take: pageSize,
-      include: { user: { select: { id: true, fullName: true } } },
     }),
     prisma.review.count({ where: { areaId: id, moderationStatus: "approved" } }),
   ]);
@@ -162,8 +161,12 @@ export async function getAreaReviews(req: Request, res: Response) {
   // Reviewer's tier isn't stored directly on Review (only the weight
   // snapshot is, for historical explainability) — derive it for display,
   // per GroundTruth_Design_Implementation_Guide.md §3.9's Review card spec.
-  const reviewsWithTier = reviews.map((r) => ({
+  // Privacy: reviewers' identities are never sent publicly — no name and no
+  // account id. isOwn tells a signed-in viewer which reviews are theirs
+  // (so the UI can hide "Report" on them) without revealing who wrote the rest.
+  const reviewsWithTier = reviews.map(({ userId, ...r }) => ({
     ...r,
+    isOwn: req.auth?.userId === userId,
     // hasVoiceRecording survives even when the audio itself is hidden, so
     // the UI can still say "this was a voice review" (transparency) without
     // exposing the recording to non-government viewers.
