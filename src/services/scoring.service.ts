@@ -45,6 +45,10 @@ export interface RecomputeResult {
 export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promise<RecomputeResult | null> {
   const ratingField = RATING_FIELD_BY_ASPECT[aspect];
 
+  // Newest first, so the loop below can keep only each resident's most
+  // recent rating for this aspect: one person posting many reviews must not
+  // count many times over (contributorCount already counted people, but the
+  // weighted mean counted every review).
   const reviews = await prisma.review.findMany({
     where: {
       areaId,
@@ -52,6 +56,7 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
       [ratingField]: { not: null },
     },
     select: { userId: true, [ratingField]: true },
+    orderBy: { submittedAt: "desc" },
   });
 
   if (reviews.length === 0) {
@@ -68,6 +73,7 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
   const distinctUsers = new Set<string>();
 
   for (const review of reviews) {
+    if (distinctUsers.has(review.userId)) continue;
     const rating = review[ratingField as keyof typeof review] as number;
     const weight = weightByUser.get(review.userId) ?? TRUST_WEIGHT_BY_TIER.tier0;
     weightedSum += rating * weight;
