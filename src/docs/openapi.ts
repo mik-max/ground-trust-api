@@ -97,7 +97,7 @@ export const openApiSpec = {
           ratings: ref("Ratings"),
           originalText: { type: "string", description: "Optional comment, in any supported language" },
           originalLanguage: { type: "string", description: "Optional language override; otherwise detected" },
-          originalAudioRef: { type: "string", description: "URL returned by POST /uploads/audio", example: "/uploads/audio/abc123.webm" },
+          originalAudioRef: { type: "string", description: "Reference returned by POST /uploads/audio (on submit), or a one-hour signed playback link (in responses to government and administrator accounts)", example: "cloudinary:groundtrust/audio/abc123.webm" },
         },
       },
       NlpAspect: {
@@ -354,8 +354,9 @@ export const openApiSpec = {
           content: { "multipart/form-data": { schema: { type: "object", properties: { audio: { type: "string", format: "binary" } } } } },
         },
         responses: {
-          201: ok("Stored; pass the URL as originalAudioRef", { type: "object", properties: { url: { type: "string" } } }),
+          201: ok("Stored privately in Cloudinary; pass the returned reference as originalAudioRef", { type: "object", properties: { url: { type: "string" } } }),
           400: err("No file, wrong type, or too large"),
+          502: err("The recording couldn't be stored"),
           ...AUTH_ERRORS,
         },
       },

@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import prisma from "../config/prisma";
 import { recomputeReviewAspects } from "../services/scoring.service";
 import { haversineDistanceMeters } from "../services/verification.service";
+import { audioPlaybackUrl } from "../config/cloudinary";
 
 // Government accounts are never self-service — an authenticated admin
 // provisions them directly, per files/HANDOFF.md §2.5. No invite-email flow
@@ -50,7 +51,8 @@ export async function listPendingReviews(_req: Request, res: Response) {
       area: { select: { id: true, name: true, city: true, state: true } },
     },
   });
-  return res.json({ reviews });
+  // Administrators listen to held voice reviews through a one-hour signed link.
+  return res.json({ reviews: reviews.map((r) => ({ ...r, originalAudioRef: audioPlaybackUrl(r.originalAudioRef) })) });
 }
 
 // Reviews with unresolved reports, newest report first, each with its
@@ -69,7 +71,7 @@ export async function listReportedReviews(_req: Request, res: Response) {
     },
   });
   reviews.sort((a, b) => b.reports[0].createdAt.getTime() - a.reports[0].createdAt.getTime());
-  return res.json({ reviews });
+  return res.json({ reviews: reviews.map((r) => ({ ...r, originalAudioRef: audioPlaybackUrl(r.originalAudioRef) })) });
 }
 
 // "keep" resolves the reports and leaves the review public; "remove"

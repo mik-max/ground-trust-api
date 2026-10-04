@@ -1,14 +1,7 @@
-import fs from "fs";
+import { toFile } from "groq-sdk";
 import { getGroqClient } from "../config/groq";
-import { audioRefToFilePath } from "../config/upload";
+import { audioPlaybackUrl } from "../config/cloudinary";
 
-// files/HANDOFF.md §3 — speech-to-text step of the NLP pipeline (the piece
-// still missing when the translate/classify half shipped — see BACKLOG.md).
-// Whisper-family per HANDOFF's own suggestion, via Groq rather than OpenAI:
-// same whisper-large-v3 model, genuinely free tier at this project's scale
-// (see BACKLOG.md's cost notes). Returns null — never throws — on any
-// failure so a transcription problem can't block review submission, mirroring
-// nlp.service.ts's graceful-degradation pattern for the same reason.
 export async function transcribeAudio(originalAudioRef: string): Promise<string | null> {
   const client = getGroqClient();
   if (!client) {
@@ -16,15 +9,22 @@ export async function transcribeAudio(originalAudioRef: string): Promise<string 
     return null;
   }
 
-  const filePath = audioRefToFilePath(originalAudioRef);
-  if (!fs.existsSync(filePath)) {
-    console.error(`[stt] Audio file not found on disk: ${filePath}`);
+  const url = audioPlaybackUrl(originalAudioRef);
+  if (!url) {
+    console.error(`[stt] Not a stored recording reference: ${originalAudioRef}`);
     return null;
   }
 
   try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(`[stt] Couldn't fetch ${originalAudioRef} from Cloudinary: HTTP ${response.status}`);
+      return null;
+    }
+    const format = originalAudioRef.slice(originalAudioRef.lastIndexOf(".") + 1);
+    const file = await toFile(Buffer.from(await response.arrayBuffer()), `recording.${format}`);
     const transcription = await client.audio.transcriptions.create({
-      file: fs.createReadStream(filePath),
+      file,
       model: "whisper-large-v3-turbo",
       response_format: "json",
     });

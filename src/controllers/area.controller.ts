@@ -4,6 +4,7 @@ import { Aspect } from "../generated/prisma";
 import { bandFromScore, confidenceFromN, recomputeAreaScore } from "../services/scoring.service";
 import { processReview } from "../services/nlp.service";
 import { haversineDistanceMeters } from "../services/verification.service";
+import { AUDIO_REF_PATTERN, audioPlaybackUrl } from "../config/cloudinary";
 import {
   ASPECTS,
   BURST_NEW_ACCOUNT_DAYS,
@@ -201,7 +202,8 @@ export async function getAreaReviews(req: Request, res: Response) {
     // the UI can still say "this was a voice review" (transparency) without
     // exposing the recording to non-government viewers.
     hasVoiceRecording: r.originalAudioRef !== null,
-    originalAudioRef: isGovernment ? r.originalAudioRef : null,
+    // A one-hour signed link, generated per request — never a stored URL.
+    originalAudioRef: isGovernment ? audioPlaybackUrl(r.originalAudioRef) : null,
     tierAtSubmission: tierFromWeight(r.trustWeightAtSubmission),
   }));
 
@@ -244,7 +246,7 @@ function validateReviewInput(input: ReviewInput): string | null {
   if (!input.ratings || Object.keys(input.ratings).length === 0) {
     return "At least one aspect rating is required";
   }
-  if (input.originalAudioRef && !/^\/uploads\/audio\/[\w-]+\.\w+$/.test(input.originalAudioRef)) {
+  if (input.originalAudioRef && !AUDIO_REF_PATTERN.test(input.originalAudioRef)) {
     return "Invalid audio reference";
   }
   for (const [aspect, rating] of Object.entries(input.ratings)) {

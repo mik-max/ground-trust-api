@@ -10,14 +10,12 @@ import govRoutes from "./routes/gov.routes";
 import internalRoutes from "./routes/internal.routes";
 import uploadRoutes from "./routes/upload.routes";
 import verificationRoutes from "./routes/verification.routes";
-import { UPLOADS_DIR } from "./config/upload";
 import { openApiSpec } from "./docs/openapi";
 
 const app = express();
 
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
-app.use("/uploads", express.static(UPLOADS_DIR));
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
