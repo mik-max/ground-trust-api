@@ -10,6 +10,9 @@ import {
   BURST_THRESHOLD,
   BURST_WINDOW_HOURS,
   RATING_FIELD_BY_ASPECT,
+  TREND_MIN_CHANGE,
+  TREND_MIN_RESIDENTS,
+  TREND_RECENT_DAYS,
   TRUST_WEIGHT_BY_TIER,
   isInServiceState,
   isWithinServiceBounds,
@@ -18,26 +21,53 @@ import {
 
 // Shared by listAreas (compact Evidence Stacks) and getArea (full stack) so
 // both surfaces stay consistent with a single source of computation.
-// How many residents gave each rating (1-5) per aspect, counting only each
-// resident's most recent approved rating — the same rule the score uses —
-// so the profile can show disagreement that an average would hide.
+type Trend = "improving" | "declining" | null;
+
+// Per aspect: how many residents gave each rating (1-5), and whether recent
+// ratings differ clearly from earlier ones. Both count only each resident's
+// most recent approved rating — the same rule the score uses — so the
+// profile can show disagreement and change that an average would hide.
 async function ratingDistribution(areaId: string) {
   const reviews = await prisma.review.findMany({
     where: { areaId, moderationStatus: "approved" },
-    select: { userId: true, ratingPower: true, ratingWater: true, ratingSecurity: true, ratingRoadsFlooding: true, ratingAccessibility: true },
+    select: {
+      userId: true,
+      submittedAt: true,
+      ratingPower: true,
+      ratingWater: true,
+      ratingSecurity: true,
+      ratingRoadsFlooding: true,
+      ratingAccessibility: true,
+    },
     orderBy: { submittedAt: "desc" },
   });
-  const result = {} as Record<Aspect, number[]>;
+  const residencies = await prisma.userAreaResidency.findMany({ where: { areaId } });
+  const weightByUser = new Map(residencies.map((r) => [r.userId, r.trustWeight]));
+  const recentSince = Date.now() - TREND_RECENT_DAYS * 24 * 60 * 60 * 1000;
+
+  const result = {} as Record<Aspect, { distribution: number[]; trend: Trend }>;
   for (const aspect of ASPECTS) {
     const counts = [0, 0, 0, 0, 0];
     const seen = new Set<string>();
+    const sides = { recent: { sum: 0, weight: 0, n: 0 }, older: { sum: 0, weight: 0, n: 0 } };
     for (const r of reviews) {
       const rating = r[RATING_FIELD_BY_ASPECT[aspect]];
       if (rating === null || seen.has(r.userId)) continue;
       seen.add(r.userId);
       counts[rating - 1] += 1;
+      const side = r.submittedAt.getTime() >= recentSince ? sides.recent : sides.older;
+      const w = weightByUser.get(r.userId) ?? TRUST_WEIGHT_BY_TIER.tier0;
+      side.sum += rating * w;
+      side.weight += w;
+      side.n += 1;
     }
-    result[aspect] = counts;
+    let trend: Trend = null;
+    if (sides.recent.n >= TREND_MIN_RESIDENTS && sides.older.n >= TREND_MIN_RESIDENTS) {
+      const change = sides.recent.sum / sides.recent.weight - sides.older.sum / sides.older.weight;
+      if (change >= TREND_MIN_CHANGE) trend = "improving";
+      else if (change <= -TREND_MIN_CHANGE) trend = "declining";
+    }
+    result[aspect] = { distribution: counts, trend };
   }
   return result;
 }
@@ -50,8 +80,8 @@ async function computeEvidence(areaId: string, withDistribution = false) {
   const aspects = ASPECTS.map((aspect) => {
     const s = scoreByAspect.get(aspect);
     return s
-      ? { aspect, score: s.score, band: s.band, N: s.contributorCount, confidence: s.confidenceLevel, distribution: distribution?.[aspect] }
-      : { aspect, score: null, band: null, N: 0, confidence: "low" as const, distribution: distribution?.[aspect] };
+      ? { aspect, score: s.score, band: s.band, N: s.contributorCount, confidence: s.confidenceLevel, distribution: distribution?.[aspect].distribution, trend: distribution?.[aspect].trend }
+      : { aspect, score: null, band: null, N: 0, confidence: "low" as const, distribution: distribution?.[aspect].distribution, trend: distribution?.[aspect].trend };
   });
 
   const contributors = await prisma.review.groupBy({

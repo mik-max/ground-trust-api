@@ -32,6 +32,15 @@ export const MIN_VERIFIED_FOR_FLAG = Number(process.env.MIN_VERIFIED_FOR_FLAG ??
 // project direction, not a schema-level distinction (files/HANDOFF.md §2.5.4).
 export const FLAGGABLE_ASPECTS = ASPECTS;
 
+// Trend label on the area profile: residents' latest ratings from the last
+// TREND_RECENT_DAYS are compared with earlier ones, and the category is
+// marked improving or declining only when each side has at least
+// TREND_MIN_RESIDENTS residents and the trust-weighted means differ by at
+// least TREND_MIN_CHANGE.
+export const TREND_RECENT_DAYS = Number(process.env.TREND_RECENT_DAYS ?? 90);
+export const TREND_MIN_RESIDENTS = Number(process.env.TREND_MIN_RESIDENTS ?? 3);
+export const TREND_MIN_CHANGE = Number(process.env.TREND_MIN_CHANGE ?? 0.5);
+
 // Burst detection: if this many reviews of one area arrive within
 // BURST_WINDOW_HOURS from accounts younger than BURST_NEW_ACCOUNT_DAYS
 // (counting the one being submitted), the new review is held for an
