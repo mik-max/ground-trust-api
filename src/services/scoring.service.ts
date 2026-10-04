@@ -8,6 +8,7 @@ import {
   MIN_N_HIGH,
   MIN_N_MEDIUM,
   MIN_WEEKS_PERSISTENT,
+  RATING_HALF_LIFE_DAYS,
   RATING_FIELD_BY_ASPECT,
   TRUST_WEIGHT_BY_TIER,
 } from "../config/constants";
@@ -56,7 +57,15 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
       moderationStatus: "approved",
       [ratingField]: { not: null },
     },
-    select: { userId: true, ratingPower: true, ratingWater: true, ratingSecurity: true, ratingRoadsFlooding: true, ratingAccessibility: true },
+    select: {
+      userId: true,
+      submittedAt: true,
+      ratingPower: true,
+      ratingWater: true,
+      ratingSecurity: true,
+      ratingRoadsFlooding: true,
+      ratingAccessibility: true,
+    },
     orderBy: { submittedAt: "desc" },
   });
 
@@ -77,7 +86,9 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
   for (const review of reviews) {
     if (distinctUsers.has(review.userId)) continue;
     const rating = review[ratingField] as number;
-    const weight = weightByUser.get(review.userId) ?? TRUST_WEIGHT_BY_TIER.tier0;
+    const ageDays = Math.max(0, (Date.now() - review.submittedAt.getTime()) / (24 * 60 * 60 * 1000));
+    const recency = Math.pow(0.5, ageDays / RATING_HALF_LIFE_DAYS);
+    const weight = (weightByUser.get(review.userId) ?? TRUST_WEIGHT_BY_TIER.tier0) * recency;
     weightedSum += rating * weight;
     weightTotal += weight;
     distinctUsers.add(review.userId);

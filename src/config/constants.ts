@@ -32,6 +32,11 @@ export const MIN_VERIFIED_FOR_FLAG = Number(process.env.MIN_VERIFIED_FOR_FLAG ??
 // project direction, not a schema-level distinction (files/HANDOFF.md §2.5.4).
 export const FLAGGABLE_ASPECTS = ASPECTS;
 
+// A rating's weight halves every RATING_HALF_LIFE_DAYS, so when conditions
+// in an area change, recent experience leads the score instead of being
+// outweighed by old ratings that residents never come back to update.
+export const RATING_HALF_LIFE_DAYS = Number(process.env.RATING_HALF_LIFE_DAYS ?? 180);
+
 // Burst detection: if this many reviews of one area arrive within
 // BURST_WINDOW_HOURS from accounts younger than BURST_NEW_ACCOUNT_DAYS
 // (counting the one being submitted), the new review is held for an
