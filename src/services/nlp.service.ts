@@ -109,7 +109,9 @@ export async function processReview(reviewId: string): Promise<void> {
     review.originalAudioRef && review.moderationStatus === "approved" && review.nlpAspects === null;
   if (review.moderationStatus === "pending" || voiceReviewNeedsFirstCheck) {
     const decision = await moderateText(originalText);
-    if (decision !== review.moderationStatus) {
+    // A held review (see area.controller.ts's burstHoldReason) waits for an
+    // administrator even if its text passes automated moderation.
+    if (decision !== review.moderationStatus && !review.holdReason) {
       review = await prisma.review.update({ where: { id: reviewId }, data: { moderationStatus: decision } });
       await recomputeReviewAspects(review);
     }

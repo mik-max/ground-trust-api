@@ -167,6 +167,10 @@ model Review {
 
   // Only 'approved' reviews are included in recomputeAreaScore.
   moderationStatus ModerationStatus @default(approved)
+  // Set when a review is held for an administrator for a reason other than
+  // its content (e.g. a burst of reviews from new accounts); automated
+  // moderation never releases a held review.
+  holdReason       String?
 
   @@index([areaId])
   @@index([userId])
