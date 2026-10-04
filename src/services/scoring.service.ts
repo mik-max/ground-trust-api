@@ -56,7 +56,7 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
       moderationStatus: "approved",
       [ratingField]: { not: null },
     },
-    select: { userId: true, [ratingField]: true },
+    select: { userId: true, ratingPower: true, ratingWater: true, ratingSecurity: true, ratingRoadsFlooding: true, ratingAccessibility: true },
     orderBy: { submittedAt: "desc" },
   });
 
@@ -76,7 +76,7 @@ export async function recomputeAreaScore(areaId: string, aspect: Aspect): Promis
 
   for (const review of reviews) {
     if (distinctUsers.has(review.userId)) continue;
-    const rating = review[ratingField as keyof typeof review] as number;
+    const rating = review[ratingField] as number;
     const weight = weightByUser.get(review.userId) ?? TRUST_WEIGHT_BY_TIER.tier0;
     weightedSum += rating * weight;
     weightTotal += weight;

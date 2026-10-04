@@ -3,6 +3,7 @@ import express from "express";
 import swaggerUi from "swagger-ui-express";
 import adminRoutes from "./routes/admin.routes";
 import areaRoutes from "./routes/area.routes";
+import reviewRoutes from "./routes/review.routes";
 import authRoutes from "./routes/auth.routes";
 import geocodeRoutes from "./routes/geocode.routes";
 import govRoutes from "./routes/gov.routes";
@@ -25,6 +26,7 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(openApiSpec, { customSiteT
 
 app.use("/api/auth", authRoutes);
 app.use("/api/areas", areaRoutes);
+app.use("/api/reviews", reviewRoutes);
 app.use("/api/verification", verificationRoutes);
 app.use("/api/gov", govRoutes);
 app.use("/api/admin", adminRoutes);

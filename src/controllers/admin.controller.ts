@@ -53,6 +53,55 @@ export async function listPendingReviews(_req: Request, res: Response) {
   return res.json({ reviews });
 }
 
+// Reviews with unresolved reports, newest report first, each with its
+// reports so the administrator can see why it was flagged.
+export async function listReportedReviews(_req: Request, res: Response) {
+  const reviews = await prisma.review.findMany({
+    where: { reports: { some: { resolved: false } } },
+    include: {
+      user: { select: { id: true, fullName: true } },
+      area: { select: { id: true, name: true, city: true, state: true } },
+      reports: {
+        where: { resolved: false },
+        orderBy: { createdAt: "desc" },
+        select: { id: true, reason: true, note: true, createdAt: true },
+      },
+    },
+  });
+  reviews.sort((a, b) => b.reports[0].createdAt.getTime() - a.reports[0].createdAt.getTime());
+  return res.json({ reviews });
+}
+
+// "keep" resolves the reports and leaves the review public; "remove"
+// rejects the review (so it stops counting) and resolves the reports.
+export async function resolveReportedReview(req: Request, res: Response) {
+  const { id } = req.params;
+  const { decision } = req.body as { decision?: "keep" | "remove" };
+
+  if (decision !== "keep" && decision !== "remove") {
+    return res.status(400).json({ error: "decision must be 'keep' or 'remove'" });
+  }
+
+  const review = await prisma.review.findUnique({ where: { id } });
+  if (!review) {
+    return res.status(404).json({ error: "Review not found" });
+  }
+
+  const [updated] = await prisma.$transaction([
+    prisma.review.update({
+      where: { id },
+      data: decision === "remove" ? { moderationStatus: "rejected" } : {},
+    }),
+    prisma.reviewReport.updateMany({ where: { reviewId: id, resolved: false }, data: { resolved: true } }),
+  ]);
+
+  if (decision === "remove") {
+    await recomputeReviewAspects(updated);
+  }
+
+  return res.json({ review: updated });
+}
+
 export async function moderateReview(req: Request, res: Response) {
   const { id } = req.params;
   const { decision } = req.body as { decision?: "approved" | "rejected" };
