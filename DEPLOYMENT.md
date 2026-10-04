@@ -25,16 +25,18 @@ Render's own free PostgreSQL also works, but it is deleted 30 days after creatio
    | `GROQ_API_KEY` | Same as local `.env` |
    | `OPENAI_API_KEY` | Same as local `.env` |
    | `GOOGLE_CLIENT_ID` | Same as local `.env` |
+   | `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | From the Cloudinary dashboard (voice recordings) |
 
    `JWT_SECRET` is generated automatically.
-3. Deploy. The start command applies database migrations, then starts the server.
+3. Deploy. Migrations are **not** applied automatically: apply them yourself, before
+   deploying code that needs them (see "Applying migrations to production" below).
    Check `https://groundtrust-api.onrender.com/health` returns `{"status":"ok"}`.
    If Render assigns a different URL, update both destinations in the frontend's `vercel.json`.
 4. Seed demo data once, from your machine, against the production database:
 
    ```bash
-   DATABASE_URL="<neon connection string>" yarn db:seed
-   DATABASE_URL="<neon connection string>" yarn nlp:backfill
+   (set -a; . ./.env; set +a; DATABASE_URL="$PRODUCTION_DATABASE_URL" yarn db:seed)
+   (set -a; . ./.env; set +a; DATABASE_URL="$PRODUCTION_DATABASE_URL" yarn nlp:backfill)
    ```
 
    The second command translates and classifies the seeded comments (it uses
@@ -44,9 +46,34 @@ Render's own free PostgreSQL also works, but it is deleted 30 days after creatio
 
 - **Cold starts.** Render's free service sleeps after 15 minutes idle and takes
   around a minute to wake. Open `/health` shortly before a demo.
-- **Voice recordings are not persistent.** Render's free disk is wiped on every
-  deploy and restart, so uploaded audio files disappear (their transcripts and
-  translations stay in the database).
 - **Weekly recompute job.** It runs inside the server, so it only fires if the
   server is awake at that moment. Scores still recompute on every new review.
 - **API docs** are at `/api/docs`.
+
+## Local development and production safety
+
+`backend/.env` has two database addresses:
+
+- `DATABASE_URL` is a **local** PostgreSQL database (`groundtrust_dev`). Everything
+  you run locally (`yarn dev`, `yarn db:seed`, `prisma migrate dev`) uses it, so it is
+  safe to reset and re-seed. Create it once with `createdb groundtrust_dev`, then
+  `yarn db:deploy && yarn db:seed`.
+- `PRODUCTION_DATABASE_URL` is the live Neon database. Nothing uses it unless you
+  pass it explicitly, as below.
+
+Local voice uploads go to the Cloudinary folder in `CLOUDINARY_AUDIO_FOLDER`
+(`groundtrust/dev`), separate from the live site's recordings.
+
+## Applying migrations to production
+
+Migrations only ever add to the schema unless written otherwise; read the new
+`migration.sql` files before applying them. Check what is pending, then apply:
+
+```bash
+cd backend
+(set -a; . ./.env; set +a; DATABASE_URL="$PRODUCTION_DATABASE_URL" yarn prisma migrate status)
+(set -a; . ./.env; set +a; DATABASE_URL="$PRODUCTION_DATABASE_URL" yarn prisma migrate deploy)
+```
+
+Apply migrations **before** pushing code that depends on them.
+
