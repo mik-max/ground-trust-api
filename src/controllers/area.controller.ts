@@ -6,6 +6,9 @@ import { processReview } from "../services/nlp.service";
 import { haversineDistanceMeters } from "../services/verification.service";
 import {
   ASPECTS,
+  BURST_NEW_ACCOUNT_DAYS,
+  BURST_THRESHOLD,
+  BURST_WINDOW_HOURS,
   RATING_FIELD_BY_ASPECT,
   TRUST_WEIGHT_BY_TIER,
   isInServiceState,
@@ -201,6 +204,29 @@ function validateReviewInput(input: ReviewInput): string | null {
 // Auto-provisions the submitter's UserAreaResidency at tier0 if this is
 // their first review for this area (GPS-based tier upgrades aren't built
 // yet — see files/HANDOFF.md §2.1).
+const HOUR_MS = 60 * 60 * 1000;
+
+// Returns a hold reason when the submitter is a new account and the area is
+// receiving a burst of reviews from new accounts; null otherwise.
+async function burstHoldReason(areaId: string, userId: string): Promise<string | null> {
+  const newAccountSince = new Date(Date.now() - BURST_NEW_ACCOUNT_DAYS * 24 * HOUR_MS);
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { createdAt: true } });
+  if (!user || user.createdAt < newAccountSince) {
+    return null;
+  }
+  const recentFromNewAccounts = await prisma.review.count({
+    where: {
+      areaId,
+      submittedAt: { gte: new Date(Date.now() - BURST_WINDOW_HOURS * HOUR_MS) },
+      user: { createdAt: { gte: newAccountSince } },
+    },
+  });
+  if (recentFromNewAccounts + 1 < BURST_THRESHOLD) {
+    return null;
+  }
+  return `Held automatically: ${recentFromNewAccounts + 1} reviews of this area from accounts under ${BURST_NEW_ACCOUNT_DAYS} days old in the last ${BURST_WINDOW_HOURS} hours.`;
+}
+
 async function submitReviewForArea(areaId: string, userId: string, input: ReviewInput) {
   const { originalText, originalLanguage, originalAudioRef, ratings } = input;
 
@@ -212,6 +238,8 @@ async function submitReviewForArea(areaId: string, userId: string, input: Review
       data: { userId, areaId, verificationTier: "tier0", trustWeight: TRUST_WEIGHT_BY_TIER.tier0 },
     });
   }
+
+  const holdReason = await burstHoldReason(areaId, userId);
 
   const ratingData: Record<string, number> = {};
   for (const [aspect, rating] of Object.entries(ratings!)) {
@@ -233,7 +261,8 @@ async function submitReviewForArea(areaId: string, userId: string, input: Review
       originalLanguage,
       originalAudioRef,
       trustWeightAtSubmission: residency.trustWeight,
-      moderationStatus: originalText ? "pending" : "approved",
+      moderationStatus: holdReason || originalText ? "pending" : "approved",
+      holdReason,
       ...ratingData,
     },
   });

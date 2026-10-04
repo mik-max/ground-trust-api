@@ -32,6 +32,15 @@ export const MIN_VERIFIED_FOR_FLAG = Number(process.env.MIN_VERIFIED_FOR_FLAG ??
 // project direction, not a schema-level distinction (files/HANDOFF.md §2.5.4).
 export const FLAGGABLE_ASPECTS = ASPECTS;
 
+// Burst detection: if this many reviews of one area arrive within
+// BURST_WINDOW_HOURS from accounts younger than BURST_NEW_ACCOUNT_DAYS
+// (counting the one being submitted), the new review is held for an
+// administrator instead of counting straight away, so a coordinated group
+// of new accounts can't move a score before anyone has looked.
+export const BURST_THRESHOLD = Number(process.env.BURST_THRESHOLD ?? 5);
+export const BURST_WINDOW_HOURS = Number(process.env.BURST_WINDOW_HOURS ?? 24);
+export const BURST_NEW_ACCOUNT_DAYS = Number(process.env.BURST_NEW_ACCOUNT_DAYS ?? 7);
+
 // The study is scoped to Lagos State: location search and area proposals
 // are limited to it. Bounds are Lagos State's bounding box from
 // OpenStreetMap; the box also clips edges of Ogun State, so callers check
