@@ -11,7 +11,8 @@
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
-    "nlp:backfill": "tsx scripts/nlp-backfill.ts"
+    "nlp:backfill": "tsx scripts/nlp-backfill.ts",
+    "areas:import": "tsx prisma/import-areas.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.0",

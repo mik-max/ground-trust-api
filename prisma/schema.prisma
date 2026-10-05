@@ -137,6 +137,14 @@ model Area {
   // until an admin approves it — same moderation shape reviews already use.
   status          ModerationStatus  @default(approved)
   createdByUserId String?
+  // Directory fields (see prisma/import-areas.ts): the local government
+  // area, other names residents search by ("; "-separated), where the area
+  // came from (inec-ward, openstreetmap, resident, seed) and what kind of
+  // place it is (ward, suburb, estate, village, ...).
+  lga             String?
+  aliases         String?
+  source          String?
+  kind            String?
   createdBy       User?             @relation(fields: [createdByUserId], references: [id])
 
   reviews            Review[]

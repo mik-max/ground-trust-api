@@ -1,0 +1,758 @@
+name,also_known_as,lga,latitude,longitude,radius_m,kind,source
+Agege,,Agege,6.62292,3.32034,1500,suburb,OpenStreetMap
+Alagba,,Agege,6.62148,3.3025,1000,village,OpenStreetMap
+Atobaje,,Agege,6.62482,3.32178,400,ward,INEC ward (GRID3)
+Awori Oniwaya,,Agege,6.61882,3.31608,550,ward,INEC ward (GRID3)
+Dairy Farm Low Cost Housing Estate,,Agege,6.62478,3.32788,600,estate,OpenStreetMap
+Dopemu,,Agege,6.60849,3.31854,500,ward,INEC ward (GRID3)
+Isale Odo / Ayige,Ayige; Isale Odo,Agege,6.62786,3.30386,600,ward,INEC ward (GRID3)
+Isale Oja,,Agege,6.61341,3.32337,600,ward,INEC ward (GRID3)
+Keke,,Agege,6.6236,3.33083,550,ward,INEC ward (GRID3)
+New Dairy Farm Housing Estate,,Agege,6.62711,3.32608,600,estate,OpenStreetMap
+Okekoto,,Agege,6.62808,3.31674,450,ward,INEC ward (GRID3)
+Orile,,Agege,6.63981,3.30904,750,ward,INEC ward (GRID3)
+Oyewole / Alaagba,Alaagba; Oyewole,Agege,6.6206,3.30442,400,ward,INEC ward (GRID3)
+Papa Ashafa,,Agege,6.61776,3.30926,600,ward,INEC ward (GRID3)
+Papa Uku / Olusanya,Olusanya; Papa Uku,Agege,6.62109,3.32221,400,ward,INEC ward (GRID3)
+Powerline / Oko-Oba,Oko-Oba; Powerline,Agege,6.63644,3.31595,500,ward,INEC ward (GRID3)
+Sango,,Agege,6.6156,3.32998,550,ward,INEC ward (GRID3)
+Aiyetoro,,Ajeromi-Ifelodun,6.459,3.3478,450,ward,INEC ward (GRID3)
+Alaba,,Ajeromi-Ifelodun,6.46176,3.3352,450,ward,INEC ward (GRID3)
+Alaiyabiagba,,Ajeromi-Ifelodun,6.44992,3.33327,1000,village,OpenStreetMap
+Alakoto / Ibafon,Alakoto; Ibafon,Ajeromi-Ifelodun,6.44267,3.33771,450,ward,INEC ward (GRID3)
+Amukoko,,Ajeromi-Ifelodun,6.46523,3.34682,450,ward,INEC ward (GRID3)
+Apasa Amukoko,,Ajeromi-Ifelodun,6.46741,3.3343,400,ward,INEC ward (GRID3)
+Awodi-Ora,,Ajeromi-Ifelodun,6.45392,3.32737,600,ward,INEC ward (GRID3)
+Bale Alayabiagba,,Ajeromi-Ifelodun,6.45913,3.3537,400,ward,INEC ward (GRID3)
+Ibafon,,Ajeromi-Ifelodun,6.44456,3.32821,550,ward,INEC ward (GRID3)
+Layeni-Okoya,,Ajeromi-Ifelodun,6.46039,3.3406,400,ward,INEC ward (GRID3)
+Ojora Amukoko,,Ajeromi-Ifelodun,6.4709,3.34052,400,ward,INEC ward (GRID3)
+Oke Oja,,Ajeromi-Ifelodun,6.46922,3.34829,400,ward,INEC ward (GRID3)
+Oluwa / Akere,Akere; Oluwa,Ajeromi-Ifelodun,6.44986,3.33387,700,ward,INEC ward (GRID3)
+Owoyemi,,Ajeromi-Ifelodun,6.46031,3.3253,650,ward,INEC ward (GRID3)
+Temidire,,Ajeromi-Ifelodun,6.44203,3.34331,450,ward,INEC ward (GRID3)
+Tolu,,Ajeromi-Ifelodun,6.44481,3.34828,400,ward,INEC ward (GRID3)
+Abaranje / Okerube,Abaranje; Okerube,Alimosho,6.53236,3.2457,1750,ward,INEC ward (GRID3)
+Abesan,,Alimosho,6.6119,3.268,750,ward,INEC ward (GRID3)
+Aboru,,Alimosho,6.62436,3.2783,1100,ward,INEC ward (GRID3)
+Abule Egba,,Alimosho,6.65153,3.29033,1250,ward,INEC ward (GRID3)
+Agbelekale,,Alimosho,6.64549,3.27,1600,ward,INEC ward (GRID3)
+Ajasa / Amikanle,Ajasa; Amikanle,Alimosho,6.63737,3.24896,1750,ward,INEC ward (GRID3)
+Akesan,,Alimosho,6.53777,3.22336,1500,suburb,OpenStreetMap
+Akesan-Obadore,,Alimosho,6.53382,3.21498,1700,ward,INEC ward (GRID3)
+Akowonjo / Ilupeju,Akowonjo; Ilupeju,Alimosho,6.59689,3.30217,450,ward,INEC ward (GRID3)
+Alabata,,Alimosho,6.60339,3.29641,450,ward,INEC ward (GRID3)
+Alagbado / Alakuko,Alagbado; Alakuko,Alimosho,6.66904,3.25731,1600,ward,INEC ward (GRID3)
+Alaguntan,,Alimosho,6.61174,3.30031,550,ward,INEC ward (GRID3)
+Alimosho,,Alimosho,6.63003,3.27823,1500,suburb,OpenStreetMap
+Ashipa,,Alimosho,6.58278,3.25528,1000,village,OpenStreetMap
+Atan Lagos,,Alimosho,6.59645,3.25344,950,ward,INEC ward (GRID3)
+Ayobo,,Alimosho,6.60658,3.23828,900,ward,INEC ward (GRID3)
+Bada-Megida,,Alimosho,6.58013,3.21988,2500,ward,INEC ward (GRID3)
+Baruwa,,Alimosho,6.59106,3.26206,1150,ward,INEC ward (GRID3)
+Egan,,Alimosho,6.55337,3.22197,1400,ward,INEC ward (GRID3)
+Egbe,,Alimosho,6.54375,3.27823,1500,suburb,OpenStreetMap
+Egbe-Agodo,,Alimosho,6.53406,3.27915,1100,ward,INEC ward (GRID3)
+Egbe-Liasu,,Alimosho,6.54927,3.27908,900,ward,INEC ward (GRID3)
+Egbeda,,Alimosho,6.5914,3.29224,700,ward,INEC ward (GRID3)
+Gowon Estate,,Alimosho,6.60352,3.28398,750,ward,INEC ward (GRID3)
+Idimu,,Alimosho,6.56173,3.27983,800,ward,INEC ward (GRID3)
+Igando,,Alimosho,6.55808,3.23964,1300,ward,INEC ward (GRID3)
+Ijagemo,,Alimosho,6.50504,3.22514,1000,village,OpenStreetMap
+Ije Ododo,,Alimosho,6.49912,3.2487,1000,village,OpenStreetMap
+Ijegun,,Alimosho,6.50261,3.24222,2500,ward,INEC ward (GRID3)
+Ikotun,,Alimosho,6.56031,3.25599,1300,ward,INEC ward (GRID3)
+Ipaja,,Alimosho,6.61234,3.2509,950,ward,INEC ward (GRID3)
+Isheri Oshun,,Alimosho,6.50528,3.27322,2200,ward,INEC ward (GRID3)
+Isheri-Olofin,,Alimosho,6.57465,3.27037,1550,ward,INEC ward (GRID3)
+Iyana Ipaja,,Alimosho,6.61731,3.29734,1500,suburb,OpenStreetMap
+Mosan / Akinoggun,Akinoggun; Mosan,Alimosho,6.61168,3.2829,850,ward,INEC ward (GRID3)
+Oguntade / Bameke,Bameke; Oguntade,Alimosho,6.58132,3.30146,1000,ward,INEC ward (GRID3)
+Oke-Odo,,Alimosho,6.63461,3.28795,1200,ward,INEC ward (GRID3)
+Oki,,Alimosho,6.61976,3.29598,550,ward,INEC ward (GRID3)
+Okunola,,Alimosho,6.59476,3.28171,750,ward,INEC ward (GRID3)
+Omituntun-Olori,,Alimosho,6.60625,3.30553,500,ward,INEC ward (GRID3)
+Santos / Ilupeju,Ilupeju; Santos,Alimosho,6.59816,3.30855,600,ward,INEC ward (GRID3)
+Unity Estate,,Alimosho,6.57755,3.28866,700,ward,INEC ward (GRID3)
+Abule Osun Onireke,,Amuwo-Odofin,6.45334,3.24833,1750,ward,INEC ward (GRID3)
+Ado Soba,,Amuwo-Odofin,6.46722,3.26349,1250,ward,INEC ward (GRID3)
+Agboju and Environ,,Amuwo-Odofin,6.45487,3.28148,700,ward,INEC ward (GRID3)
+Aiyetoto-Asogun,,Amuwo-Odofin,6.45089,3.24476,1000,village,OpenStreetMap
+Amuwo Odofin,,Amuwo-Odofin,6.47815,3.31155,1500,suburb,OpenStreetMap
+Eko Akete,,Amuwo-Odofin,6.47761,3.31091,1650,ward,INEC ward (GRID3)
+Elachi,,Amuwo-Odofin,6.41527,3.28319,1000,village,OpenStreetMap
+Festac,,Amuwo-Odofin,6.46827,3.28394,2500,town,OpenStreetMap
+I Irede,,Amuwo-Odofin,6.42335,3.22474,2600,ward,INEC ward (GRID3)
+Ibasa,,Amuwo-Odofin,6.42378,3.25487,1000,village,OpenStreetMap
+Ibese,,Amuwo-Odofin,6.41244,3.25491,1000,village,OpenStreetMap
+Ibeshe and Environ,,Amuwo-Odofin,6.41699,3.27907,2650,ward,INEC ward (GRID3)
+Ifelodun,,Amuwo-Odofin,6.47235,3.29222,950,ward,INEC ward (GRID3)
+Igbologun,,Amuwo-Odofin,6.41908,3.32967,1000,village,OpenStreetMap
+Ijegun,,Amuwo-Odofin,6.44063,3.26906,1400,ward,INEC ward (GRID3)
+Ilado Tomaro,,Amuwo-Odofin,6.41519,3.33187,2350,ward,INEC ward (GRID3)
+Ilashe,,Amuwo-Odofin,6.40648,3.27887,1000,village,OpenStreetMap
+Irede,,Amuwo-Odofin,6.42698,3.2337,1000,village,OpenStreetMap
+Irepodun,,Amuwo-Odofin,6.47036,3.27641,700,ward,INEC ward (GRID3)
+Isunba,,Amuwo-Odofin,6.447,3.28423,1000,village,OpenStreetMap
+Kirikiri,,Amuwo-Odofin,6.44258,3.31137,1500,suburb,OpenStreetMap
+Kirikiri and Environ,,Amuwo-Odofin,6.44301,3.30105,1800,ward,INEC ward (GRID3)
+Kuje,,Amuwo-Odofin,6.45467,3.2964,800,ward,INEC ward (GRID3)
+Mile 2,,Amuwo-Odofin,6.45879,3.3134,2500,town,OpenStreetMap
+Odofin,,Amuwo-Odofin,6.46256,3.31077,500,ward,INEC ward (GRID3)
+Orire,,Amuwo-Odofin,6.4708,3.28382,900,ward,INEC ward (GRID3)
+Satellite Town,,Amuwo-Odofin,6.44974,3.25584,1500,suburb,OpenStreetMap
+Abete,,Apapa,6.46493,3.35909,400,ward,INEC ward (GRID3)
+Abraham Adesanya,,Apapa,6.42438,3.37288,2750,ward,INEC ward (GRID3)
+Agala,,Apapa,6.41126,3.36313,600,estate,OpenStreetMap
+Alafia,,Apapa,6.47444,3.34517,400,ward,INEC ward (GRID3)
+Anjorin,,Apapa,6.45017,3.38153,1150,ward,INEC ward (GRID3)
+Apapa,,Apapa,6.44911,3.36151,650,ward,INEC ward (GRID3)
+Badia,,Apapa,6.46935,3.36043,400,ward,INEC ward (GRID3)
+Badia East,,Apapa,6.47266,3.36176,800,neighbourhood,OpenStreetMap
+Gaskiya,,Apapa,6.46972,3.3527,400,ward,INEC ward (GRID3)
+Ijora,,Apapa,6.46924,3.369,650,ward,INEC ward (GRID3)
+Ilado,,Apapa,6.43233,3.37958,1000,village,OpenStreetMap
+Marine Beach,,Apapa,6.45896,3.36544,750,ward,INEC ward (GRID3)
+Oduduwa,,Apapa,6.44626,3.35376,650,ward,INEC ward (GRID3)
+Orile Iganmu,,Apapa,6.47733,3.34577,1500,suburb,OpenStreetMap
+Orisunmibare Community,,Apapa,6.46356,3.35902,600,estate,OpenStreetMap
+Owoseni,,Apapa,6.47083,3.35746,400,ward,INEC ward (GRID3)
+Sari,,Apapa,6.47584,3.3509,400,ward,INEC ward (GRID3)
+Adougbé Gbago,,Badagry,6.38792,2.71073,800,neighbourhood,OpenStreetMap
+Afowo Doforo,,Badagry,6.42661,2.84272,1000,village,OpenStreetMap
+Agaw Awusa,,Badagry,6.40112,2.85288,1000,village,OpenStreetMap
+Ahovikoh,,Badagry,6.42422,2.90351,750,ward,INEC ward (GRID3)
+Ajara,,Badagry,6.43333,2.9,1000,village,OpenStreetMap
+Ajara Topa,,Badagry,6.43604,2.8674,1700,ward,INEC ward (GRID3)
+Ajara Vetho,,Badagry,6.44872,2.92001,2550,ward,INEC ward (GRID3)
+Ajibo,,Badagry,6.48333,2.91667,1000,village,OpenStreetMap
+Ajido,,Badagry,6.41847,2.97221,3000,ward,INEC ward (GRID3)
+Akarakumo,,Badagry,6.41449,2.96625,600,estate,OpenStreetMap
+Akarakumoh,,Badagry,6.41175,2.95948,1000,village,OpenStreetMap
+Akoko,,Badagry,6.43333,2.73693,1000,village,OpenStreetMap
+Akoro,,Badagry,6.39805,2.83408,2250,ward,INEC ward (GRID3)
+Apa,,Badagry,6.42857,2.82273,3000,ward,INEC ward (GRID3)
+Appa,,Badagry,6.43188,2.82023,1000,village,OpenStreetMap
+Aradagun-Mowo,,Badagry,6.45226,2.97097,1600,ward,INEC ward (GRID3)
+Araromi-Ale,,Badagry,6.47037,3.0563,3000,ward,INEC ward (GRID3)
+Awhanjigoh,,Badagry,6.41267,2.90735,1550,ward,INEC ward (GRID3)
+Badagry,,Badagry,6.41673,2.88461,3000,city,OpenStreetMap
+Erekiti,,Badagry,6.48333,2.91667,1000,village,OpenStreetMap
+Gan'ingbo,,Badagry,6.4166,2.84182,1000,village,OpenStreetMap
+Ganyingbo,,Badagry,6.42323,2.85057,1000,village,OpenStreetMap
+Gbaj,,Badagry,6.4167,2.86095,1000,village,OpenStreetMap
+Gbethrome,,Badagry,6.40014,2.7442,3000,ward,INEC ward (GRID3)
+Ibereko,,Badagry,6.49251,3.04844,1650,ward,INEC ward (GRID3)
+Ijotan,,Badagry,6.48339,2.98475,1000,village,OpenStreetMap
+Ikoga,,Badagry,6.41091,2.93189,2150,ward,INEC ward (GRID3)
+Ikotun,,Badagry,6.45161,3.08845,1000,village,OpenStreetMap
+Ilogbo,,Badagry,6.4877,2.98975,2750,ward,INEC ward (GRID3)
+Ipota,,Badagry,6.48312,2.96861,1000,village,OpenStreetMap
+Isalu,,Badagry,6.43686,2.89413,600,estate,OpenStreetMap
+Isalu / Iyafin,Isalu; Iyafin,Badagry,6.49347,2.92554,3000,ward,INEC ward (GRID3)
+Itoga,,Badagry,6.43346,2.93502,1000,village,OpenStreetMap
+Iworo,,Badagry,6.41442,3.01792,1000,village,OpenStreetMap
+Iworo-Gbanko,,Badagry,6.43291,3.04554,3000,ward,INEC ward (GRID3)
+Iyafin,,Badagry,6.43991,2.86254,1000,village,OpenStreetMap
+Jegba Quarters,,Badagry,6.4098,2.8863,1350,ward,INEC ward (GRID3)
+Kese,,Badagry,6.42287,2.75671,600,estate,OpenStreetMap
+Kweme,,Badagry,6.44127,2.71979,2450,ward,INEC ward (GRID3)
+Mosafejaw,,Badagry,6.43304,2.94815,1000,village,OpenStreetMap
+Mosafejo,,Badagry,6.43145,2.95029,1000,village,OpenStreetMap
+Posukoh,,Badagry,6.43093,2.90033,800,ward,INEC ward (GRID3)
+Seme Border,,Badagry,6.3821,2.72239,800,neighbourhood,OpenStreetMap
+Tawpo,,Badagry,6.41756,2.9356,1000,village,OpenStreetMap
+Tofa,,Badagry,6.46103,2.87325,1000,village,OpenStreetMap
+Topo,,Badagry,6.41338,2.9284,600,estate,OpenStreetMap
+Topo-Idale,,Badagry,6.46532,2.89917,2650,ward,INEC ward (GRID3)
+Wesere,,Badagry,6.43562,2.76163,2400,ward,INEC ward (GRID3)
+Weshere,,Badagry,6.42278,2.76707,600,estate,OpenStreetMap
+Aba-Onigbagbo,,Epe,6.50011,4.09101,1000,village,OpenStreetMap
+Aba-Oriyanrin,,Epe,6.45455,4.14378,1000,village,OpenStreetMap
+Abegede,,Epe,6.50238,3.73183,1000,village,OpenStreetMap
+Agbole,,Epe,6.66029,3.7372,1000,village,OpenStreetMap
+Agbowa,,Epe,6.65408,3.70703,900,ward,INEC ward (GRID3)
+Agbowa 2 / Ado,Ado; Agbowa 2,Epe,6.62815,3.70809,2400,ward,INEC ward (GRID3)
+Aiyetoro / Lagbade / Agbala / Olota,Agbala; Aiyetoro; Lagbade; Olota,Epe,6.57662,3.96162,1250,ward,INEC ward (GRID3)
+Ajaganabe,,Epe,6.58944,3.97468,700,ward,INEC ward (GRID3)
+Ajebo,,Epe,6.64603,3.77142,1000,village,OpenStreetMap
+Ajebo Orugbo,,Epe,6.6544,3.73343,3000,ward,INEC ward (GRID3)
+Alaro City,,Epe,6.55881,3.94496,2500,town,OpenStreetMap
+Arapagi,,Epe,6.50903,3.77718,1000,village,OpenStreetMap
+Araromi-Tope,,Epe,6.50962,3.78827,1000,village,OpenStreetMap
+Augustine University,,Epe,6.66021,4.00762,600,estate,OpenStreetMap
+Bado / Ebole / Etita / Iberikodo,Bado; Ebole; Etita; Iberikodo,Epe,6.58897,3.98121,400,ward,INEC ward (GRID3)
+Budo,,Epe,6.41361,4.34102,1000,village,OpenStreetMap
+Dongo,,Epe,6.49646,3.71891,1000,village,OpenStreetMap
+Ejirin / Ketu,Ejirin; Ketu,Epe,6.62107,3.88199,2150,ward,INEC ward (GRID3)
+Emina,,Epe,6.54686,4.0836,1000,village,OpenStreetMap
+Enuto,,Epe,6.57963,4.01274,1000,village,OpenStreetMap
+Epe,,Epe,6.58603,3.9694,600,estate,OpenStreetMap
+Ere-Ise,,Epe,6.56648,4.02685,1000,village,OpenStreetMap
+Eredo,,Epe,6.64236,3.98984,1000,village,OpenStreetMap
+Fawosedi,,Epe,6.61813,4.04863,1000,village,OpenStreetMap
+Ibon,,Epe,6.5458,3.7393,1000,village,OpenStreetMap
+Ibonwon,,Epe,6.63527,4.01895,2700,ward,INEC ward (GRID3)
+Ide,,Epe,6.43668,4.12454,1000,village,OpenStreetMap
+Ifesowapo / Temu Oke-Oso,Ifesowapo; Temu Oke-Oso,Epe,6.64664,3.86102,3000,ward,INEC ward (GRID3)
+Ikosi,,Epe,6.6132,3.70618,1000,village,OpenStreetMap
+Ilara,,Epe,6.66066,4.05288,3000,ward,INEC ward (GRID3)
+Imare,,Epe,6.58571,3.85052,1000,village,OpenStreetMap
+Imoba,,Epe,6.463,4.11212,1000,village,OpenStreetMap
+Isan Town,,Epe,6.51807,3.6757,1000,village,OpenStreetMap
+Ito-Omu,,Epe,6.50115,3.63107,1000,village,OpenStreetMap
+Itoikin,,Epe,6.65632,3.79487,1000,village,OpenStreetMap
+Iwaye,,Epe,6.6,4.0,1000,village,OpenStreetMap
+Ladeba,,Epe,6.51676,3.71536,1000,village,OpenStreetMap
+Ladeda Ebute,,Epe,6.52978,3.71364,1000,village,OpenStreetMap
+Ladugbo,,Epe,6.45154,4.08999,1000,village,OpenStreetMap
+Lekki Free Trade Zone,,Epe,6.53077,4.00042,1500,suburb,OpenStreetMap
+Mayunre-Oriba,,Epe,6.59107,4.0281,3000,ward,INEC ward (GRID3)
+Mayunre-Oriba / Orepete-Ito Omu,Mayunre-Oriba; Orepete-Ito Omu,Epe,6.54927,3.75645,3000,ward,INEC ward (GRID3)
+Moyopa,,Epe,6.55971,3.75324,1000,village,OpenStreetMap
+Naforija / Poka,Naforija; Poka,Epe,6.66793,3.99493,1350,ward,INEC ward (GRID3)
+Obada,,Epe,6.40821,4.26917,1000,village,OpenStreetMap
+Odo,,Epe,6.64339,3.7691,1000,village,OpenStreetMap
+Odo Ragun,,Epe,6.65791,3.99031,1000,village,OpenStreetMap
+Odo-Mola,,Epe,6.60713,3.98555,1000,village,OpenStreetMap
+Odomola,,Epe,6.6119,3.98205,1700,ward,INEC ward (GRID3)
+Odoragunsin,,Epe,6.64674,3.95433,3000,ward,INEC ward (GRID3)
+Oke-Odo,,Epe,6.64134,3.75541,1000,village,OpenStreetMap
+Oko Orisa,,Epe,6.59618,3.94089,1000,village,OpenStreetMap
+Oko-Abe,,Epe,6.49249,3.66763,1000,village,OpenStreetMap
+Okori Egun,,Epe,6.48789,3.63072,1000,village,OpenStreetMap
+Ologogoro,,Epe,6.59719,3.84022,1000,village,OpenStreetMap
+Olugbokere / Abomiti,Abomiti; Olugbokere,Epe,6.49682,4.12174,3000,ward,INEC ward (GRID3)
+Ori-Ita,,Epe,6.54844,4.07715,1000,village,OpenStreetMap
+Oriba,,Epe,6.59439,3.80316,1000,village,OpenStreetMap
+Orita-Bodun,,Epe,6.60758,3.87313,1000,village,OpenStreetMap
+Orugbo,,Epe,6.62634,3.773,1000,village,OpenStreetMap
+Owu / Ota,Ota; Owu,Epe,6.6337,3.7761,3000,ward,INEC ward (GRID3)
+Papa,,Epe,6.59009,3.96332,900,ward,INEC ward (GRID3)
+Poka,,Epe,6.62143,3.98353,1000,village,OpenStreetMap
+Sabi,,Epe,6.53839,3.9617,1000,village,OpenStreetMap
+Saga,,Epe,6.55855,4.08546,1000,village,OpenStreetMap
+Sagida / Okeposu,Okeposu; Sagida,Epe,6.58088,3.98225,650,ward,INEC ward (GRID3)
+Seidu,,Epe,6.56667,3.83333,1000,village,OpenStreetMap
+Sekungba,,Epe,6.63333,3.88333,1000,village,OpenStreetMap
+Tewon,,Epe,6.60206,3.94392,1000,village,OpenStreetMap
+1 Cooper Miramar Towers,,Eti-Osa,6.45037,3.43871,600,estate,OpenStreetMap
+1004 / Aboyade,1004; Aboyade,Eti-Osa,6.44331,3.44479,1150,ward,INEC ward (GRID3)
+1004 Estates,,Eti-Osa,6.43922,3.43368,600,estate,OpenStreetMap
+360 Degrees Towers,,Eti-Osa,6.45678,3.44327,600,estate,OpenStreetMap
+Abagbo,,Eti-Osa,6.40677,3.38027,1000,village,OpenStreetMap
+Abebe Court,,Eti-Osa,6.44619,3.43592,600,estate,OpenStreetMap
+Abraham Adesanya,,Eti-Osa,6.46767,3.58955,1500,suburb,OpenStreetMap
+Abraham's Court,,Eti-Osa,6.44813,3.43083,600,estate,OpenStreetMap
+Addo / Okeira,Addo; Okeira,Eti-Osa,6.49156,3.59843,1750,ward,INEC ward (GRID3)
+Ado,,Eti-Osa,6.49587,3.58283,1000,village,OpenStreetMap
+Agungi,,Eti-Osa,6.447,3.51811,1500,suburb,OpenStreetMap
+Ajah,,Eti-Osa,6.458,3.57042,2000,ward,INEC ward (GRID3)
+Ajiran / Osapa,Ajiran; Osapa,Eti-Osa,6.45425,3.52958,2050,ward,INEC ward (GRID3)
+Alaguntan,,Eti-Osa,6.42487,3.49159,1000,village,OpenStreetMap
+Ancestors Court,,Eti-Osa,6.44701,3.43825,600,estate,OpenStreetMap
+Angelina Court,,Eti-Osa,6.44953,3.43059,600,estate,OpenStreetMap
+Apese / 6 Extension,6 Extension; Apese,Eti-Osa,6.42741,3.44536,1200,ward,INEC ward (GRID3)
+Arcadia Grove Estate,,Eti-Osa,6.45302,3.50512,600,estate,OpenStreetMap
+Atlantic Royal Gardens,,Eti-Osa,6.429,3.40768,600,estate,OpenStreetMap
+Awolowo Towers,,Eti-Osa,6.4432,3.41192,600,estate,OpenStreetMap
+A·A Court,,Eti-Osa,6.44659,3.43945,600,estate,OpenStreetMap
+Badore / Langbasa,Badore; Langbasa,Eti-Osa,6.50702,3.60056,1650,ward,INEC ward (GRID3)
+Banana Island,,Eti-Osa,6.46422,3.45287,1500,suburb,OpenStreetMap
+Beach Resort Estate,,Eti-Osa,6.45215,3.50091,600,estate,OpenStreetMap
+Bella Vista Apartments,,Eti-Osa,6.46805,3.44554,600,estate,OpenStreetMap
+Black Diamond Suites & Apartments,,Eti-Osa,6.43826,3.43959,600,estate,OpenStreetMap
+Blessing Kayode Gardens,,Eti-Osa,6.44559,3.4684,600,estate,OpenStreetMap
+Bourdillon Court,,Eti-Osa,6.44467,3.43402,600,estate,OpenStreetMap
+Bourdillon Court Estate,,Eti-Osa,6.45082,3.52777,600,estate,OpenStreetMap
+Bunu Sheriff Gardens,,Eti-Osa,6.44976,3.43946,600,estate,OpenStreetMap
+Cadogan place estate,,Eti-Osa,6.44535,3.50674,600,estate,OpenStreetMap
+Chevron,,Eti-Osa,6.44208,3.53109,1500,suburb,OpenStreetMap
+Chevyview Estate,,Eti-Osa,6.44367,3.52697,600,estate,OpenStreetMap
+Chisco,,Eti-Osa,6.43383,3.49046,1500,suburb,OpenStreetMap
+Clapton Court,,Eti-Osa,6.45192,3.44422,600,estate,OpenStreetMap
+Colonel Adekunle Fayuji Court,,Eti-Osa,6.45573,3.43302,600,estate,OpenStreetMap
+Cooperative Villas Residential Estate,,Eti-Osa,6.50536,3.61431,600,estate,OpenStreetMap
+Cooplag Gardens Lekki,,Eti-Osa,6.42953,3.57258,600,estate,OpenStreetMap
+Cowrie Creek Estate,,Eti-Osa,6.45206,3.49468,600,estate,OpenStreetMap
+Crown Estate,,Eti-Osa,6.46556,3.64728,600,estate,OpenStreetMap
+Divine Homes Estate,,Eti-Osa,6.47777,3.57938,600,estate,OpenStreetMap
+Dwellsworth Homes,,Eti-Osa,6.46504,3.58062,600,estate,OpenStreetMap
+Eagle Court,,Eti-Osa,6.45604,3.42635,600,estate,OpenStreetMap
+Eden Heights,,Eti-Osa,6.43182,3.41177,600,estate,OpenStreetMap
+Eko Court,,Eti-Osa,6.43651,3.42306,600,estate,OpenStreetMap
+Eleganza,,Eti-Osa,6.44676,3.54487,1500,suburb,OpenStreetMap
+Eleganza Gardens,,Eti-Osa,6.45983,3.55841,600,estate,OpenStreetMap
+Emerald Estate,,Eti-Osa,6.44635,3.56769,600,estate,OpenStreetMap
+Euro Court,,Eti-Osa,6.44799,3.44278,600,estate,OpenStreetMap
+Falomo / Oyinkan Abayomi,Falomo; Oyinkan Abayomi,Eti-Osa,6.44603,3.43936,950,ward,INEC ward (GRID3)
+Fara Park Estate,,Eti-Osa,6.46283,3.65287,600,estate,OpenStreetMap
+Femi Okunnu Housing Estate (Phase 1),,Eti-Osa,6.43857,3.50585,600,estate,OpenStreetMap
+Femi Okunnu Housing Estate (Phase 3),,Eti-Osa,6.44131,3.50627,600,estate,OpenStreetMap
+Friends Colony Estate,,Eti-Osa,6.45077,3.51615,600,estate,OpenStreetMap
+Funai Courts,,Eti-Osa,6.45169,3.44463,600,estate,OpenStreetMap
+G15,,Eti-Osa,6.46512,3.60389,600,estate,OpenStreetMap
+Goshen Beach Estate,,Eti-Osa,6.42383,3.47682,600,estate,OpenStreetMap
+Graceland Estate,,Eti-Osa,6.46673,3.58331,600,estate,OpenStreetMap
+Greenville estate,,Eti-Osa,6.51128,3.59606,600,estate,OpenStreetMap
+Hampton Bay Estate,,Eti-Osa,6.45009,3.49809,600,estate,OpenStreetMap
+Horizon Court Estate,,Eti-Osa,6.42927,3.48578,600,estate,OpenStreetMap
+Ideal Height,,Eti-Osa,6.44991,3.44159,600,estate,OpenStreetMap
+Igbo-Efon / Maiyegun,Igbo-Efon; Maiyegun,Eti-Osa,6.43412,3.54701,1950,ward,INEC ward (GRID3)
+Ijeh / Dolphin Estate,Dolphin Estate; Ijeh,Eti-Osa,6.45742,3.41354,750,ward,INEC ward (GRID3)
+Ikate / Lekki,Ikate; Lekki,Eti-Osa,6.44571,3.48147,2150,ward,INEC ward (GRID3)
+Ikota Estate,,Eti-Osa,6.45246,3.56,600,estate,OpenStreetMap
+Ilado,,Eti-Osa,6.42849,3.46674,1000,village,OpenStreetMap
+Ilasan / Orile,Ilasan; Orile,Eti-Osa,6.4261,3.48457,1700,ward,INEC ward (GRID3)
+Ilasan New Road,,Eti-Osa,6.43025,3.49607,1500,suburb,OpenStreetMap
+Insim Twin Towers,,Eti-Osa,6.42389,3.44039,600,estate,OpenStreetMap
+Iranla,,Eti-Osa,6.48883,3.61274,1000,village,OpenStreetMap
+Itirin,,Eti-Osa,6.43332,3.43333,1000,village,OpenStreetMap
+Jakande,,Eti-Osa,6.43442,3.50802,2500,town,OpenStreetMap
+kaplan shortlet,,Eti-Osa,6.44607,3.48571,600,estate,OpenStreetMap
+King's Court Apartments,,Eti-Osa,6.45586,3.42686,600,estate,OpenStreetMap
+Kuramo Beach Residences,,Eti-Osa,6.42328,3.42849,600,estate,OpenStreetMap
+Kuramo School / Lekki,Kuramo School; Lekki,Eti-Osa,6.4275,3.42726,550,ward,INEC ward (GRID3)
+Lafiaji Community,,Eti-Osa,6.42986,3.55752,1500,suburb,OpenStreetMap
+Lagoon View Garden,,Eti-Osa,6.44372,3.43241,600,estate,OpenStreetMap
+Lekki County Homes,,Eti-Osa,6.44332,3.55898,600,estate,OpenStreetMap
+Lekki Gardens Phase 2,,Eti-Osa,6.47764,3.59279,600,estate,OpenStreetMap
+Lekki Gardens Phase 3 Estate,,Eti-Osa,6.46562,3.60522,600,estate,OpenStreetMap
+Lekki Peninsula II,,Eti-Osa,6.43977,3.51984,2500,town,OpenStreetMap
+Lekki Phase I,,Eti-Osa,6.4414,3.47047,2500,town,OpenStreetMap
+Lekki Phase II,,Eti-Osa,6.45385,3.57818,1500,suburb,OpenStreetMap
+Lekki Pride 1.0 Estate,,Eti-Osa,6.46236,3.5808,600,estate,OpenStreetMap
+Llekki gardens estate phase1,,Eti-Osa,6.46844,3.61454,600,estate,OpenStreetMap
+Madiba Court,,Eti-Osa,6.44125,3.49064,600,estate,OpenStreetMap
+Madiba Enclave,,Eti-Osa,6.4417,3.49072,600,estate,OpenStreetMap
+Maroko,,Eti-Osa,6.42888,3.45514,1500,suburb,OpenStreetMap
+Maroko / Okun Alfa,Maroko; Okun Alfa,Eti-Osa,6.4303,3.51871,1150,ward,INEC ward (GRID3)
+Miserere,,Eti-Osa,6.45421,3.44184,600,estate,OpenStreetMap
+Moba,,Eti-Osa,6.45213,3.48085,1000,village,OpenStreetMap
+Mobolaji Johnson Place,,Eti-Osa,6.43363,3.46975,600,estate,OpenStreetMap
+Mopo-Akinlade,,Eti-Osa,6.42645,3.6213,1000,village,OpenStreetMap
+Nicon Town Estate,,Eti-Osa,6.44537,3.49995,600,estate,OpenStreetMap
+Niger Towers,,Eti-Osa,6.45135,3.44162,600,estate,OpenStreetMap
+Nordic Villas,,Eti-Osa,6.4541,3.44646,600,estate,OpenStreetMap
+Northern Foreshore Estate,,Eti-Osa,6.45982,3.52347,600,estate,OpenStreetMap
+Obalende,,Eti-Osa,6.44595,3.41307,600,ward,INEC ward (GRID3)
+Ocean Bay Estate,,Eti-Osa,6.4293,3.5519,600,estate,OpenStreetMap
+Ocean Palm Estate,,Eti-Osa,6.47115,3.61983,600,estate,OpenStreetMap
+Ocean Parade Estate,,Eti-Osa,6.46647,3.44484,600,estate,OpenStreetMap
+Ogombo,,Eti-Osa,6.45035,3.61374,1500,suburb,OpenStreetMap
+Ojomu,,Eti-Osa,6.45504,3.52063,1000,village,OpenStreetMap
+Oko Agbo,,Eti-Osa,6.40397,3.38221,1000,village,OpenStreetMap
+Okun Ajah / Okunmopo,Okun Ajah; Okunmopo,Eti-Osa,6.4405,3.60681,3000,ward,INEC ward (GRID3)
+Olokonla,,Eti-Osa,6.46779,3.60833,1500,suburb,OpenStreetMap
+Olori Omo-Oba's Place,,Eti-Osa,6.4515,3.44388,600,estate,OpenStreetMap
+Oramanya Mansion,,Eti-Osa,6.44339,3.43782,600,estate,OpenStreetMap
+Oriola Fagbeyiro Estate,,Eti-Osa,6.47164,3.56497,600,estate,OpenStreetMap
+Osapa London,,Eti-Osa,6.44454,3.50831,1500,suburb,OpenStreetMap
+Osborne Foreshore Estate,,Eti-Osa,6.46506,3.42516,600,estate,OpenStreetMap
+Parkview Estate,,Eti-Osa,6.46248,3.44288,600,estate,OpenStreetMap
+Pinnock Beach Estate,,Eti-Osa,6.4619,3.51164,600,estate,OpenStreetMap
+Police Barracks,,Eti-Osa,6.44747,3.40872,600,estate,OpenStreetMap
+Praises Palace,,Eti-Osa,6.44636,3.43877,600,estate,OpenStreetMap
+Primewaterview Gardens 1,,Eti-Osa,6.43634,3.48395,600,estate,OpenStreetMap
+Rebecca Court,,Eti-Osa,6.46022,3.44939,600,estate,OpenStreetMap
+Regents Court,,Eti-Osa,6.45584,3.42924,600,estate,OpenStreetMap
+Residential,,Eti-Osa,6.45688,3.41807,600,estate,OpenStreetMap
+Residential,,Eti-Osa,6.45569,3.52631,600,estate,OpenStreetMap
+Rogersville Estate,,Eti-Osa,6.43221,3.51618,600,estate,OpenStreetMap
+Royal Gardens Estate,,Eti-Osa,6.46428,3.5712,600,estate,OpenStreetMap
+S21,,Eti-Osa,6.46482,3.604,600,estate,OpenStreetMap
+Sangotedo,,Eti-Osa,6.47295,3.62956,3000,ward,INEC ward (GRID3)
+SAS Courts,,Eti-Osa,6.44646,3.46952,600,estate,OpenStreetMap
+Seaside Estate,,Eti-Osa,6.49785,3.61296,600,estate,OpenStreetMap
+South Port Harbour,,Eti-Osa,6.4243,3.43952,600,estate,OpenStreetMap
+southlake homes phase 1,,Eti-Osa,6.43254,3.51829,600,estate,OpenStreetMap
+southlake homes phase 2,,Eti-Osa,6.43254,3.51794,600,estate,OpenStreetMap
+southlake homes phase 3,,Eti-Osa,6.43253,3.51734,600,estate,OpenStreetMap
+Tango Towers,,Eti-Osa,6.44683,3.44019,600,estate,OpenStreetMap
+Tarino Tower,,Eti-Osa,6.45326,3.42991,600,estate,OpenStreetMap
+Tarkwa,,Eti-Osa,6.40227,3.39383,1500,suburb,OpenStreetMap
+Tarkwa Bay,,Eti-Osa,6.41265,3.39742,1350,ward,INEC ward (GRID3)
+Tera Haven Estate,,Eti-Osa,6.47014,3.57233,600,estate,OpenStreetMap
+The Grenadines Homes,,Eti-Osa,6.44688,3.63902,600,estate,OpenStreetMap
+The Seattle Residences,,Eti-Osa,6.44023,3.41019,600,estate,OpenStreetMap
+The Ultimate Apartments,,Eti-Osa,6.44975,3.44207,600,estate,OpenStreetMap
+Thomas Estate,,Eti-Osa,6.47596,3.57506,600,estate,OpenStreetMap
+Titanium Towers,,Eti-Osa,6.45415,3.44133,600,estate,OpenStreetMap
+Treasure Gardens,,Eti-Osa,6.43574,3.48313,600,estate,OpenStreetMap
+Twin Lakes Estate,,Eti-Osa,6.43256,3.53486,600,estate,OpenStreetMap
+UPDC Estate,,Eti-Osa,6.42768,3.47724,600,estate,OpenStreetMap
+Victoria Bay 2 Estate,,Eti-Osa,6.45715,3.51614,600,estate,OpenStreetMap
+Victoria Garden City,,Eti-Osa,6.46405,3.54652,800,neighbourhood,OpenStreetMap
+Victoria Island,,Eti-Osa,6.4312,3.4161,1150,ward,INEC ward (GRID3)
+Victory Estate,,Eti-Osa,6.47689,3.57357,600,estate,OpenStreetMap
+Vita Tower,,Eti-Osa,6.43507,3.41473,600,estate,OpenStreetMap
+Wemabod Towers,,Eti-Osa,6.4555,3.44456,600,estate,OpenStreetMap
+Whiteoak Estate,,Eti-Osa,6.43458,3.51536,600,estate,OpenStreetMap
+Adiva Plainfields Estate,,Ibeju-Lekki,6.46083,3.77279,600,estate,OpenStreetMap
+Aiyeteju,,Ibeju-Lekki,6.47095,3.81679,1500,suburb,OpenStreetMap
+Akodo,,Ibeju-Lekki,6.43546,3.93027,1000,village,OpenStreetMap
+Akodo,,Ibeju-Lekki,6.38943,4.21714,1000,village,OpenStreetMap
+Amen Estate,,Ibeju-Lekki,6.46286,3.85033,600,estate,OpenStreetMap
+Apakin,,Ibeju-Lekki,6.40818,4.13096,1500,suburb,OpenStreetMap
+Awoyaya,,Ibeju-Lekki,6.46971,3.70456,2500,town,OpenStreetMap
+Beechwood Estate,,Ibeju-Lekki,6.46972,3.77551,600,estate,OpenStreetMap
+Ebute Lekki,,Ibeju-Lekki,6.42433,4.09989,1000,village,OpenStreetMap
+Eko Akete,,Ibeju-Lekki,6.46106,3.68304,1500,suburb,OpenStreetMap
+Eleko,,Ibeju-Lekki,6.44092,3.85434,1500,suburb,OpenStreetMap
+Eleko,,Ibeju-Lekki,6.47516,3.84566,2500,town,OpenStreetMap
+Eputu,,Ibeju-Lekki,6.47518,3.7195,1500,suburb,OpenStreetMap
+Folu,,Ibeju-Lekki,6.3918,4.20809,1000,village,OpenStreetMap
+Gbogije,,Ibeju-Lekki,6.47555,3.75846,1500,suburb,OpenStreetMap
+House 13,,Ibeju-Lekki,6.44905,3.66141,600,estate,OpenStreetMap
+Ibeju,,Ibeju-Lekki,6.49656,3.86767,3000,ward,INEC ward (GRID3)
+Ibeju-Lekki,,Ibeju-Lekki,6.47061,3.80823,2500,town,OpenStreetMap
+Idaso,,Ibeju-Lekki,6.42836,3.98339,1000,village,OpenStreetMap
+Igando,,Ibeju-Lekki,6.44083,3.8195,1000,village,OpenStreetMap
+Ilagbo,,Ibeju-Lekki,6.41619,4.15698,1000,village,OpenStreetMap
+Ilumawfin,,Ibeju-Lekki,6.48665,4.00055,1000,village,OpenStreetMap
+Ise / Igbogun,Igbogun; Ise,Ibeju-Lekki,6.39165,4.23052,2150,ward,INEC ward (GRID3)
+Iwerekun,,Ibeju-Lekki,6.45857,3.71521,3000,ward,INEC ward (GRID3)
+Iwesolu,,Ibeju-Lekki,6.43612,3.76439,1000,village,OpenStreetMap
+Lakowe,,Ibeju-Lekki,6.46731,3.73185,1500,suburb,OpenStreetMap
+Lekki,,Ibeju-Lekki,6.44718,4.01311,3000,ward,INEC ward (GRID3)
+Mayfair Gardens Estate,,Ibeju-Lekki,6.4654,3.71323,600,estate,OpenStreetMap
+Mopo Onijebu,,Ibeju-Lekki,6.42584,3.63644,1000,village,OpenStreetMap
+Mosere Ikoga,,Ibeju-Lekki,6.42603,3.68277,1000,village,OpenStreetMap
+Ogogoro,,Ibeju-Lekki,6.49809,3.93486,1000,village,OpenStreetMap
+Okunegun,,Ibeju-Lekki,6.51386,3.89283,1000,village,OpenStreetMap
+Omu,,Ibeju-Lekki,6.49532,3.9736,1000,village,OpenStreetMap
+Orimedu,,Ibeju-Lekki,6.45502,3.86254,3000,ward,INEC ward (GRID3)
+Orimedu,,Ibeju-Lekki,6.43777,3.90273,1000,village,OpenStreetMap
+Otolu,,Ibeju-Lekki,6.39347,4.19398,1000,village,OpenStreetMap
+Sapphire Gardens Estate,,Ibeju-Lekki,6.4641,3.69998,600,estate,OpenStreetMap
+Siriwon,,Ibeju-Lekki,6.42312,4.1181,1000,village,OpenStreetMap
+Siriwon / Igbekodo,Igbekodo; Siriwon,Ibeju-Lekki,6.41091,4.16395,3000,ward,INEC ward (GRID3)
+5,,Ifako-Ijaiye,6.65262,3.31745,600,estate,OpenStreetMap
+Abule Egba / Ilupeju,Abule Egba; Ilupeju,Ifako-Ijaiye,6.65963,3.30246,1000,ward,INEC ward (GRID3)
+Agbado Dalemo,,Ifako-Ijaiye,6.64799,3.31793,950,ward,INEC ward (GRID3)
+Alagbado / Kollinton,Alagbado; Kollinton,Ifako-Ijaiye,6.68257,3.27775,700,ward,INEC ward (GRID3)
+Alakuko Ajegunle,,Ifako-Ijaiye,6.69194,3.26857,1000,ward,INEC ward (GRID3)
+Fagba,,Ifako-Ijaiye,6.65873,3.32698,600,estate,OpenStreetMap
+Ifako / Coker,Coker; Ifako,Ifako-Ijaiye,6.64001,3.32715,500,ward,INEC ward (GRID3)
+Ifako Ijaiye,,Ifako-Ijaiye,6.6636,3.28949,1500,suburb,OpenStreetMap
+Ifako Pele,,Ifako-Ijaiye,6.64722,3.33126,700,ward,INEC ward (GRID3)
+Ijaiye / Ifako,Ifako; Ijaiye,Ifako-Ijaiye,6.63232,3.3329,700,ward,INEC ward (GRID3)
+Ijaiye Gbirinmi,,Ifako-Ijaiye,6.67202,3.29648,900,ward,INEC ward (GRID3)
+Ijaiye Ojokoro,,Ifako-Ijaiye,6.67498,3.28437,1050,ward,INEC ward (GRID3)
+Ijaiye Oke-Ira,,Ifako-Ijaiye,6.64093,3.33905,550,ward,INEC ward (GRID3)
+Iju,,Ifako-Ijaiye,6.65075,3.32467,1500,suburb,OpenStreetMap
+Iju Ishaga,,Ifako-Ijaiye,6.66874,3.32003,700,ward,INEC ward (GRID3)
+Iju Obawole,,Ifako-Ijaiye,6.65717,3.33124,850,ward,INEC ward (GRID3)
+Iju Ogundimu,,Ifako-Ijaiye,6.66376,3.33946,1050,ward,INEC ward (GRID3)
+Ojokoro,,Ifako-Ijaiye,6.67114,3.30222,1500,suburb,OpenStreetMap
+Tabon Tabon / Egbir,Egbir; Tabon Tabon,Ifako-Ijaiye,6.66663,3.3122,700,ward,INEC ward (GRID3)
+411 Studio,,Ikeja,6.59667,3.35664,600,estate,OpenStreetMap
+Agidingbi,,Ikeja,6.62226,3.35561,1500,suburb,OpenStreetMap
+Aguda,,Ikeja,6.63818,3.34798,450,ward,INEC ward (GRID3)
+Akiode,,Ikeja,6.63229,3.36018,800,ward,INEC ward (GRID3)
+Alade,,Ikeja,6.60213,3.34772,400,ward,INEC ward (GRID3)
+Alausa,,Ikeja,6.61283,3.35805,950,ward,INEC ward (GRID3)
+Alfred Garden Estate,,Ikeja,6.59032,3.3718,600,estate,OpenStreetMap
+Anifowoshe,,Ikeja,6.60109,3.33674,600,ward,INEC ward (GRID3)
+CBQ 2,,Ikeja,6.57242,3.3613,600,estate,OpenStreetMap
+CBQ 3,,Ikeja,6.57282,3.36091,600,estate,OpenStreetMap
+Cornerstone Construction Estate,,Ikeja,6.62018,3.36225,600,estate,OpenStreetMap
+G R A,,Ikeja,6.58151,3.34995,1150,ward,INEC ward (GRID3)
+Ikeja,,Ikeja,6.60163,3.3516,3000,city,OpenStreetMap
+Ikeja G.R.A,,Ikeja,6.57762,3.35163,1500,suburb,OpenStreetMap
+Lagos State Secretariat / HOS Staff Quarter,,Ikeja,6.6201,3.35953,600,estate,OpenStreetMap
+M.K.O Abiola Gardens,,Ikeja,6.62295,3.36088,600,estate,OpenStreetMap
+Maryland,,Ikeja,6.57715,3.36619,1500,suburb,OpenStreetMap
+Oba Akran,,Ikeja,6.61239,3.33845,1500,suburb,OpenStreetMap
+Ogba / Oluwole,Ogba; Oluwole,Ikeja,6.62252,3.34583,1200,ward,INEC ward (GRID3)
+Ojodu,,Ikeja,6.64407,3.35957,850,ward,INEC ward (GRID3)
+Ojodu Berger,,Ikeja,6.64156,3.36851,1500,suburb,OpenStreetMap
+Oke-Ira Central,,Ikeja,6.6445,3.34769,400,ward,INEC ward (GRID3)
+Oke-Ira Powerline,,Ikeja,6.65131,3.34811,550,ward,INEC ward (GRID3)
+Olusosun,,Ikeja,6.59152,3.37538,750,ward,INEC ward (GRID3)
+Omole,,Ikeja,6.64178,3.36051,1500,suburb,OpenStreetMap
+Onigbongbo,,Ikeja,6.56515,3.35774,1000,ward,INEC ward (GRID3)
+Onilekere,,Ikeja,6.59398,3.32306,1450,ward,INEC ward (GRID3)
+Opebi,,Ikeja,6.5925,3.35894,900,ward,INEC ward (GRID3)
+Oregun,,Ikeja,6.59958,3.36757,700,ward,INEC ward (GRID3)
+Orile Ikeja,,Ikeja,6.59688,3.34691,450,ward,INEC ward (GRID3)
+Oshosun,,Ikeja,6.59096,3.3762,1500,suburb,OpenStreetMap
+reidential building,,Ikeja,6.57292,3.36153,600,estate,OpenStreetMap
+res1,,Ikeja,6.61162,3.3559,600,estate,OpenStreetMap
+Seriki-Aro,,Ikeja,6.6076,3.3415,700,ward,INEC ward (GRID3)
+Wasimi,,Ikeja,6.5797,3.3664,700,ward,INEC ward (GRID3)
+Abosan,,Ikorodu,6.57045,3.51905,3000,ward,INEC ward (GRID3)
+Aga / Ijomu,Aga; Ijomu,Ikorodu,6.60142,3.51006,1250,ward,INEC ward (GRID3)
+Agbaku,,Ikorodu,6.65,3.58333,1000,village,OpenStreetMap
+Agbala / Lasunwon,Agbala; Lasunwon,Ikorodu,6.66467,3.53851,2050,ward,INEC ward (GRID3)
+Agbede,,Ikorodu,6.66742,3.48934,1000,village,OpenStreetMap
+Agunfoye,,Ikorodu,6.64186,3.59995,1000,village,OpenStreetMap
+Agura,,Ikorodu,6.57506,3.62939,1000,village,OpenStreetMap
+Agura / Gberigbe,Agura; Gberigbe,Ikorodu,6.62287,3.59112,3000,ward,INEC ward (GRID3)
+Aige / Solomade,Aige; Solomade,Ikorodu,6.61528,3.4965,800,ward,INEC ward (GRID3)
+Ajaguro,,Ikorodu,6.65721,3.49274,2400,ward,INEC ward (GRID3)
+Ajebo,,Ikorodu,6.53362,3.53055,1000,village,OpenStreetMap
+Ajebo,,Ikorodu,6.65,3.6,1000,village,OpenStreetMap
+Ason,,Ikorodu,6.5722,3.51842,1000,village,OpenStreetMap
+Atere,,Ikorodu,6.63696,3.63004,3000,ward,INEC ward (GRID3)
+Ayangburen Jubilee Estate,,Ikorodu,6.63522,3.51534,600,estate,OpenStreetMap
+Ayegbami / Odoro,Ayegbami; Odoro,Ikorodu,6.56331,3.60735,1700,ward,INEC ward (GRID3)
+Baiyeku,,Ikorodu,6.53759,3.553,1000,village,OpenStreetMap
+Baiyeku / Orita / Offin,Baiyeku; Offin; Orita,Ikorodu,6.52934,3.51608,2000,ward,INEC ward (GRID3)
+Ebute Ikorodu,,Ikorodu,6.60367,3.49047,1000,village,OpenStreetMap
+Egbin / Itunoliwo,Egbin; Itunoliwo,Ikorodu,6.55595,3.62423,900,ward,INEC ward (GRID3)
+Egbin Housing Estate,,Ikorodu,6.5669,3.60052,600,estate,OpenStreetMap
+Elepe,,Ikorodu,6.56964,3.57092,1950,ward,INEC ward (GRID3)
+Elesin,,Ikorodu,6.61684,3.56777,1000,village,OpenStreetMap
+Erikorodo,,Ikorodu,6.66386,3.5663,2000,ward,INEC ward (GRID3)
+Ewu Ebi,,Ikorodu,6.55,3.51667,1000,village,OpenStreetMap
+Gberigbe,,Ikorodu,6.60122,3.6218,1000,village,OpenStreetMap
+Ginti,,Ikorodu,6.60576,3.57432,1000,village,OpenStreetMap
+Glory Garden,,Ikorodu,6.63624,3.51795,600,estate,OpenStreetMap
+His Glory Estate,,Ikorodu,6.63789,3.51586,600,estate,OpenStreetMap
+Ibeshe,,Ikorodu,6.54136,3.48241,1900,ward,INEC ward (GRID3)
+Igbaga,,Ikorodu,6.67479,3.58277,1000,village,OpenStreetMap
+Igbalu,,Ikorodu,6.5862,3.65335,1000,village,OpenStreetMap
+Igbe,,Ikorodu,6.58333,3.56667,1000,village,OpenStreetMap
+Igbe Ewoliwo,,Ikorodu,6.58333,3.56667,1000,village,OpenStreetMap
+Igbin,,Ikorodu,6.56232,3.6024,1000,village,OpenStreetMap
+Igbogbo,,Ikorodu,6.59131,3.51713,1000,village,OpenStreetMap
+Igbokin,,Ikorodu,6.58876,3.56571,1000,village,OpenStreetMap
+Igbokuta / Oke-Agbo / Igbalu,Igbalu; Igbokuta; Oke-Agbo,Ikorodu,6.6564,3.66324,2100,ward,INEC ward (GRID3)
+Igbopa,,Ikorodu,6.54608,3.5192,1000,village,OpenStreetMap
+Igbowore,,Ikorodu,6.55368,3.54106,1000,village,OpenStreetMap
+Ijede,,Ikorodu,6.56558,3.59186,1000,village,OpenStreetMap
+Ikorodu,,Ikorodu,6.61912,3.50413,3000,city,OpenStreetMap
+Ilado Ogunu,,Ikorodu,6.56667,3.53333,1000,village,OpenStreetMap
+Ilemere,,Ikorodu,6.54145,3.48494,1000,village,OpenStreetMap
+Imota,,Ikorodu,6.66362,3.66945,1000,village,OpenStreetMap
+Ipakodo,,Ikorodu,6.59017,3.48721,1250,ward,INEC ward (GRID3)
+Isawo,,Ikorodu,6.66542,3.45851,1950,ward,INEC ward (GRID3)
+Isele,,Ikorodu,6.6158,3.5064,400,ward,INEC ward (GRID3)
+Ishawo,,Ikorodu,6.66611,3.46438,1000,village,OpenStreetMap
+Isiu,,Ikorodu,6.67306,3.64072,2700,ward,INEC ward (GRID3)
+Isiwu,,Ikorodu,6.65961,3.61872,1000,village,OpenStreetMap
+Itamaga,,Ikorodu,6.63118,3.53282,1000,village,OpenStreetMap
+Itumokun,,Ikorodu,6.54403,3.55025,2300,ward,INEC ward (GRID3)
+Itunpate / Itumaja,Itumaja; Itunpate,Ikorodu,6.63444,3.52286,1600,ward,INEC ward (GRID3)
+Madigan,,Ikorodu,6.60533,3.60576,1000,village,OpenStreetMap
+Maja,,Ikorodu,6.60569,3.67509,3000,ward,INEC ward (GRID3)
+Majidun,,Ikorodu,6.61817,3.45977,2250,ward,INEC ward (GRID3)
+Maya,,Ikorodu,6.65202,3.57812,1000,village,OpenStreetMap
+Morekete,,Ikorodu,6.56175,3.53092,1000,village,OpenStreetMap
+Mowo,,Ikorodu,6.61763,3.60476,1000,village,OpenStreetMap
+oba Adeborua Housing Estate,,Ikorodu,6.56414,3.53627,600,estate,OpenStreetMap
+Odogunyan,,Ikorodu,6.67317,3.51171,1550,ward,INEC ward (GRID3)
+Ojagemo,,Ikorodu,6.57348,3.66034,1000,village,OpenStreetMap
+Oke,,Ikorodu,6.6237,3.57669,1000,village,OpenStreetMap
+Oke Agba,,Ikorodu,6.6,3.65,1000,village,OpenStreetMap
+Oke Oloku,,Ikorodu,6.58647,3.62523,1000,village,OpenStreetMap
+Oke-Eletu / Abule-Eko,Abule-Eko; Oke-Eletu,Ikorodu,6.59093,3.59566,1950,ward,INEC ward (GRID3)
+Oke-Lisa,,Ikorodu,6.59789,3.66026,1000,village,OpenStreetMap
+Oke-Oyinbo / Aiyetoro,Aiyetoro; Oke-Oyinbo,Ikorodu,6.56468,3.58934,1350,ward,INEC ward (GRID3)
+Oko Ito,,Ikorodu,6.61667,3.66667,1000,village,OpenStreetMap
+Ologode,,Ikorodu,6.61693,3.46827,1000,village,OpenStreetMap
+Olori / Eyita,Eyita; Olori,Ikorodu,6.62961,3.50179,800,ward,INEC ward (GRID3)
+Olorunda,,Ikorodu,6.67862,3.58904,800,ward,INEC ward (GRID3)
+Oreta,,Ikorodu,6.53229,3.52305,1000,village,OpenStreetMap
+Owutu,,Ikorodu,6.63303,3.47906,1700,ward,INEC ward (GRID3)
+Parafa,,Ikorodu,6.63892,3.54775,1000,village,OpenStreetMap
+Salabo,,Ikorodu,6.66667,3.63333,1000,village,OpenStreetMap
+Sholafun / Agbele,Agbele; Sholafun,Ikorodu,6.61128,3.54596,2750,ward,INEC ward (GRID3)
+Tonabu / Opopo,Opopo; Tonabu,Ikorodu,6.57981,3.64223,2600,ward,INEC ward (GRID3)
+Agboyi,,Kosofe,6.58009,3.41344,550,ward,INEC ward (GRID3)
+Agidi / Orishigun,Agidi; Orishigun,Kosofe,6.59487,3.40286,800,ward,INEC ward (GRID3)
+Agiliti / Maidan,Agiliti; Maidan,Kosofe,6.60679,3.38208,600,ward,INEC ward (GRID3)
+Anthony,,Kosofe,6.55976,3.37473,800,ward,INEC ward (GRID3)
+Araromi / Ifako,Araromi; Ifako,Kosofe,6.5583,3.38825,1050,ward,INEC ward (GRID3)
+Arowosegbe / Alapere,Alapere; Arowosegbe,Kosofe,6.58298,3.39978,800,ward,INEC ward (GRID3)
+Bamgbe / Elebiju,Bamgbe; Elebiju,Kosofe,6.59201,3.39052,650,ward,INEC ward (GRID3)
+Erukan / Orishigun,Erukan; Orishigun,Kosofe,6.60201,3.39346,500,ward,INEC ward (GRID3)
+Idera,,Kosofe,6.61405,3.40563,800,ward,INEC ward (GRID3)
+Ikosi Isheri,,Kosofe,6.62561,3.42434,2100,ward,INEC ward (GRID3)
+Ikosi-Oke,,Kosofe,6.60405,3.37664,600,ward,INEC ward (GRID3)
+Isheri / Olowora,Isheri; Olowora,Kosofe,6.63254,3.38232,1250,ward,INEC ward (GRID3)
+Ketu,,Kosofe,6.5928,3.39175,2500,town,OpenStreetMap
+Kosofe,,Kosofe,6.56942,3.38031,1500,suburb,OpenStreetMap
+Mende,,Kosofe,6.57068,3.3753,750,ward,INEC ward (GRID3)
+Mile 12,,Kosofe,6.60589,3.39526,2500,town,OpenStreetMap
+Millennium Estates,,Kosofe,6.55464,3.37758,600,estate,OpenStreetMap
+Odo-Ogun / Ajegunle,Ajegunle; Odo-Ogun,Kosofe,6.60237,3.42081,1300,ward,INEC ward (GRID3)
+Odogun,,Kosofe,6.6059,3.42878,800,neighbourhood,OpenStreetMap
+Ogudu,,Kosofe,6.57551,3.39112,1050,ward,INEC ward (GRID3)
+Ojota,,Kosofe,6.58405,3.38023,600,ward,INEC ward (GRID3)
+Olowoira,,Kosofe,6.62991,3.37249,1500,suburb,OpenStreetMap
+Olubori / Mosafejo,Mosafejo; Olubori,Kosofe,6.55654,3.39994,700,ward,INEC ward (GRID3)
+Orile Oworo,,Kosofe,6.5434,3.40358,650,ward,INEC ward (GRID3)
+Orile-Ikosi,,Kosofe,6.60576,3.38801,450,ward,INEC ward (GRID3)
+Orile-Ketu,,Kosofe,6.60991,3.39599,500,ward,INEC ward (GRID3)
+Orisigun,,Kosofe,6.60083,3.3912,1500,suburb,OpenStreetMap
+Oruba,,Kosofe,6.58312,3.40362,1500,suburb,OpenStreetMap
+Owode Onirin,,Kosofe,6.60855,3.41489,800,neighbourhood,OpenStreetMap
+Oworonṣoki,,Kosofe,6.55021,3.4022,1500,suburb,OpenStreetMap
+Shangisha / Magodo,Magodo; Shangisha,Kosofe,6.61886,3.38075,1500,ward,INEC ward (GRID3)
+Ajele,,Lagos Island,6.44937,3.39419,400,ward,INEC ward (GRID3)
+Alagba / Obadina,Alagba; Obadina,Lagos Island,6.45542,3.38973,400,ward,INEC ward (GRID3)
+Anikantamo,,Lagos Island,6.4573,3.39321,400,ward,INEC ward (GRID3)
+Araromi Odo,,Lagos Island,6.44488,3.40388,400,ward,INEC ward (GRID3)
+Balogun,,Lagos Island,6.45793,3.38435,400,ward,INEC ward (GRID3)
+Epetedo East,,Lagos Island,6.45376,3.40096,400,ward,INEC ward (GRID3)
+Epetedo West,,Lagos Island,6.45443,3.39822,400,ward,INEC ward (GRID3)
+Idumoyingbo,,Lagos Island,6.46346,3.3884,400,ward,INEC ward (GRID3)
+Idunganran / Idumagbo,Idumagbo; Idunganran,Lagos Island,6.46389,3.39154,400,ward,INEC ward (GRID3)
+Ilupesi / Ebute Awo,Ebute Awo; Ilupesi,Lagos Island,6.46075,3.39305,400,ward,INEC ward (GRID3)
+Isale Gangan,,Lagos Island,6.45789,3.39133,400,ward,INEC ward (GRID3)
+Lafiaji,,Lagos Island,6.45404,3.40472,450,ward,INEC ward (GRID3)
+Lagos,,Lagos Island,6.45506,3.39418,3000,city,OpenStreetMap
+Lagos Island,,Lagos Island,6.45459,3.3897,2500,town,OpenStreetMap
+Odam,,Lagos Island,6.44736,3.40009,400,ward,INEC ward (GRID3)
+Oke-Arin / Idumota,Idumota; Oke-Arin,Lagos Island,6.461,3.38578,400,ward,INEC ward (GRID3)
+Oke-Olowogbowo,,Lagos Island,6.45886,3.38162,400,ward,INEC ward (GRID3)
+Okepopo East,,Lagos Island,6.45697,3.39638,400,ward,INEC ward (GRID3)
+Okepopo West,,Lagos Island,6.45493,3.39376,400,ward,INEC ward (GRID3)
+Oko-Awo / Agarawu,Agarawu; Oko-Awo,Lagos Island,6.45896,3.3894,400,ward,INEC ward (GRID3)
+Olosun / Ojo Oto,Ojo Oto; Olosun,Lagos Island,6.4526,3.39009,400,ward,INEC ward (GRID3)
+Oluwole,,Lagos Island,6.455,3.38609,400,ward,INEC ward (GRID3)
+Abule Ijesha,,Lagos Mainland,6.52589,3.37813,400,ward,INEC ward (GRID3)
+Abule Oja,,Lagos Mainland,6.51168,3.3945,1250,ward,INEC ward (GRID3)
+Adekunle / Aiyetoro,Adekunle; Aiyetoro,Lagos Mainland,6.49341,3.38274,400,ward,INEC ward (GRID3)
+Aderupoko / Ijebu Qters,Aderupoko; Ijebu Qters,Lagos Mainland,6.50282,3.39093,450,ward,INEC ward (GRID3)
+Alagomeji,,Lagos Mainland,6.49953,3.38041,500,ward,INEC ward (GRID3)
+Aloba / Desalu,Aloba; Desalu,Lagos Mainland,6.48454,3.37086,400,ward,INEC ward (GRID3)
+Araromi,,Lagos Mainland,6.48274,3.38974,400,ward,INEC ward (GRID3)
+Botanical Garden,,Lagos Mainland,6.47725,3.37351,700,ward,INEC ward (GRID3)
+Ebute-Metta,,Lagos Mainland,6.48626,3.38561,1500,suburb,OpenStreetMap
+Freeman / Glover,Freeman; Glover,Lagos Mainland,6.48677,3.38351,400,ward,INEC ward (GRID3)
+Harvey,,Lagos Mainland,6.51571,3.37378,900,ward,INEC ward (GRID3)
+Iddo,,Lagos Mainland,6.47017,3.38111,1500,suburb,OpenStreetMap
+Iponri / Olaleye,Iponri; Olaleye,Lagos Mainland,6.49373,3.37254,900,ward,INEC ward (GRID3)
+Iwaya,,Lagos Mainland,6.5053,3.38985,600,estate,OpenStreetMap
+Jibowu,,Lagos Mainland,6.51727,3.36663,1500,suburb,OpenStreetMap
+Lagos State Development Property Council,,Lagos Mainland,6.49088,3.38641,600,estate,OpenStreetMap
+Makoko,,Lagos Mainland,6.49792,3.38785,450,ward,INEC ward (GRID3)
+Ojo-Oniyun,,Lagos Mainland,6.48408,3.37653,400,ward,INEC ward (GRID3)
+Okobaba,,Lagos Mainland,6.48882,3.38851,450,ward,INEC ward (GRID3)
+Onike / Oyadiran,Onike; Oyadiran,Lagos Mainland,6.51009,3.38163,550,ward,INEC ward (GRID3)
+Open field,,Lagos Mainland,6.52167,3.37246,600,estate,OpenStreetMap
+Otto,,Lagos Mainland,6.47266,3.38069,500,ward,INEC ward (GRID3)
+Oyingbo,,Lagos Mainland,6.47958,3.38576,400,ward,INEC ward (GRID3)
+Salami / Baiyewunmi,Baiyewunmi; Salami,Lagos Mainland,6.50881,3.38895,450,ward,INEC ward (GRID3)
+UNILAG New Hall,,Lagos Mainland,6.51997,3.3926,600,estate,OpenStreetMap
+Alafia / Adeoyo,Adeoyo; Alafia,Mushin,6.52668,3.34199,600,ward,INEC ward (GRID3)
+Alakara,,Mushin,6.52372,3.36548,400,ward,INEC ward (GRID3)
+Babalosa,,Mushin,6.5271,3.35677,550,ward,INEC ward (GRID3)
+Idi-Araba,,Mushin,6.51841,3.35624,550,ward,INEC ward (GRID3)
+Idi-Oro / Odi Olowo,Idi-Oro; Odi Olowo,Mushin,6.52738,3.36093,400,ward,INEC ward (GRID3)
+Igbehin,,Mushin,6.52098,3.34155,400,ward,INEC ward (GRID3)
+Ijesha,,Mushin,6.50037,3.32797,1500,suburb,OpenStreetMap
+Ilupeju,,Mushin,6.54222,3.36202,550,ward,INEC ward (GRID3)
+Ilupeju Industrial,,Mushin,6.5522,3.36028,750,ward,INEC ward (GRID3)
+Itire,,Mushin,6.50814,3.33005,1500,suburb,OpenStreetMap
+Kayode / Fadeyi,Fadeyi; Kayode,Mushin,6.5322,3.36467,400,ward,INEC ward (GRID3)
+Moshalashi / Agoro,Agoro; Moshalashi,Mushin,6.52127,3.34905,400,ward,INEC ward (GRID3)
+Odo Eran / Ogunlana,Odo Eran; Ogunlana,Mushin,6.50451,3.32672,450,ward,INEC ward (GRID3)
+Oduselu / Ola,Oduselu; Ola,Mushin,6.50973,3.33195,450,ward,INEC ward (GRID3)
+Ojuwoye,,Mushin,6.53568,3.35559,400,ward,INEC ward (GRID3)
+Olateju,,Mushin,6.53499,3.35976,400,ward,INEC ward (GRID3)
+Onitire,,Mushin,6.51485,3.33994,600,ward,INEC ward (GRID3)
+Owodunni,,Mushin,6.53703,3.36397,400,ward,INEC ward (GRID3)
+Papa Ajao,,Mushin,6.54354,3.34433,1000,ward,INEC ward (GRID3)
+Ajangbadi,,Ojo,6.48058,3.1652,1050,ward,INEC ward (GRID3)
+Alasia,,Ojo,6.49492,3.13741,1500,suburb,OpenStreetMap
+Egan,,Ojo,6.44322,3.13373,1750,ward,INEC ward (GRID3)
+Etegbin,,Ojo,6.45601,3.1197,1750,ward,INEC ward (GRID3)
+Iba,,Ojo,6.50851,3.19778,2050,ward,INEC ward (GRID3)
+Idoluwo,,Ojo,6.45206,3.10339,1000,village,OpenStreetMap
+Igando,,Ojo,6.44026,3.12624,1000,village,OpenStreetMap
+Igbede,,Ojo,6.45359,3.16059,1000,village,OpenStreetMap
+Igbo-Elerin,,Ojo,6.49242,3.18127,1950,ward,INEC ward (GRID3)
+Ijanikin,,Ojo,6.49816,3.13718,1650,ward,INEC ward (GRID3)
+Ikogbo,,Ojo,6.50591,3.19195,1500,suburb,OpenStreetMap
+Ilogbo- Elegba,,Ojo,6.46872,3.14079,2000,ward,INEC ward (GRID3)
+Ira,,Ojo,6.4695,3.22093,2400,ward,INEC ward (GRID3)
+Irewe,,Ojo,6.42791,3.16213,3000,ward,INEC ward (GRID3)
+Isasi,,Ojo,6.5,3.16667,1000,village,OpenStreetMap
+Kemberi,,Ojo,6.46834,3.18278,850,ward,INEC ward (GRID3)
+Ojo Town,,Ojo,6.4568,3.19639,1000,ward,INEC ward (GRID3)
+Okokomaiko,,Ojo,6.47917,3.18671,900,ward,INEC ward (GRID3)
+Oto-Awori,,Ojo,6.48741,3.13062,1500,ward,INEC ward (GRID3)
+Sabo-Oniba,,Ojo,6.45455,3.17406,1300,ward,INEC ward (GRID3)
+Shibiri,,Ojo,6.4612,3.14948,800,neighbourhood,OpenStreetMap
+Taffi,,Ojo,6.40565,3.10579,2900,ward,INEC ward (GRID3)
+Tafi,,Ojo,6.40766,3.07319,1000,village,OpenStreetMap
+Afariogun,,Oshodi-Isolo,6.55374,3.34203,500,ward,INEC ward (GRID3)
+Ago Palace,,Oshodi-Isolo,6.50304,3.30596,2500,town,OpenStreetMap
+Aigbaka,,Oshodi-Isolo,6.56264,3.29896,950,ward,INEC ward (GRID3)
+Ailegun,,Oshodi-Isolo,6.53115,3.29489,1000,ward,INEC ward (GRID3)
+Ajao Estate,,Oshodi-Isolo,6.54564,3.32615,950,ward,INEC ward (GRID3)
+Akingbaye,,Oshodi-Isolo,6.53254,3.32279,500,ward,INEC ward (GRID3)
+Alagbeji,,Oshodi-Isolo,6.53614,3.33164,600,ward,INEC ward (GRID3)
+Apena,,Oshodi-Isolo,6.50475,3.30186,1350,ward,INEC ward (GRID3)
+Cele,,Oshodi-Isolo,6.5074,3.32176,1500,suburb,OpenStreetMap
+Ejigbo,,Oshodi-Isolo,6.54945,3.29344,1500,suburb,OpenStreetMap
+Ewutuntun,,Oshodi-Isolo,6.56905,3.33922,500,ward,INEC ward (GRID3)
+Fadu,,Oshodi-Isolo,6.54543,3.30477,600,ward,INEC ward (GRID3)
+Ifoshin,,Oshodi-Isolo,6.5517,3.29225,1050,ward,INEC ward (GRID3)
+Igbehinadun,,Oshodi-Isolo,6.55922,3.34479,450,ward,INEC ward (GRID3)
+Ilamoshe,,Oshodi-Isolo,6.56234,3.31646,1850,ward,INEC ward (GRID3)
+Ilasamaja,,Oshodi-Isolo,6.51881,3.32853,800,ward,INEC ward (GRID3)
+Ishaga / Ire-Akari,Ire-Akari; Ishaga,Oshodi-Isolo,6.52439,3.3223,700,ward,INEC ward (GRID3)
+Isheri Osun,,Oshodi-Isolo,6.51844,3.28889,1500,suburb,OpenStreetMap
+Isolo,,Oshodi-Isolo,6.52851,3.31878,2500,town,OpenStreetMap
+Mafoluku,,Oshodi-Isolo,6.5552,3.33225,550,ward,INEC ward (GRID3)
+Ogunnoloko,,Oshodi-Isolo,6.56391,3.34077,500,ward,INEC ward (GRID3)
+Oke-Afa,,Oshodi-Isolo,6.52027,3.29946,1100,ward,INEC ward (GRID3)
+Okota,,Oshodi-Isolo,6.49881,3.31178,1250,ward,INEC ward (GRID3)
+Oluyeye,,Oshodi-Isolo,6.56212,3.32941,500,ward,INEC ward (GRID3)
+Orilowo Estate,,Oshodi-Isolo,6.54509,3.30185,600,estate,OpenStreetMap
+Oshodi,,Oshodi-Isolo,6.55703,3.34944,2500,town,OpenStreetMap
+Shogunle,,Oshodi-Isolo,6.57936,3.33764,700,ward,INEC ward (GRID3)
+Tawakalitu's Apartments,,Oshodi-Isolo,6.54422,3.30257,600,estate,OpenStreetMap
+Victory Estate,,Oshodi-Isolo,6.48898,3.30409,600,estate,OpenStreetMap
+Aiyetoro / Mafowoku,Aiyetoro; Mafowoku,Shomolu,6.53977,3.38697,400,ward,INEC ward (GRID3)
+Akoka / Anu-Oluwapo,Akoka; Anu-Oluwapo,Shomolu,6.52765,3.39282,600,ward,INEC ward (GRID3)
+Apelehin,,Shomolu,6.54509,3.38787,650,ward,INEC ward (GRID3)
+Bajulaiye,,Shomolu,6.52961,3.38093,400,ward,INEC ward (GRID3)
+Bariga,,Shomolu,6.54073,3.38804,2500,town,OpenStreetMap
+Bariga,,Shomolu,6.52899,3.39828,800,neighbourhood,OpenStreetMap
+Bashua East and West,,Shomolu,6.53135,3.37546,400,ward,INEC ward (GRID3)
+Ibuowo / Owotutu,Ibuowo; Owotutu,Shomolu,6.5409,3.3803,400,ward,INEC ward (GRID3)
+Igbari,,Shomolu,6.5272,3.38429,400,ward,INEC ward (GRID3)
+Igbobi / Fadeyi,Fadeyi; Igbobi,Shomolu,6.52937,3.37058,400,ward,INEC ward (GRID3)
+Ijebu Tedo,,Shomolu,6.54021,3.36987,400,ward,INEC ward (GRID3)
+Ilaje,,Shomolu,6.53449,3.3966,550,ward,INEC ward (GRID3)
+Obanikoro,,Shomolu,6.55234,3.37,1500,suburb,OpenStreetMap
+Okesuna / Alase,Alase; Okesuna,Shomolu,6.53312,3.37975,400,ward,INEC ward (GRID3)
+Onipanu,,Shomolu,6.53488,3.37028,400,ward,INEC ward (GRID3)
+Orile Somolu / Alade,Alade; Orile Somolu,Shomolu,6.53666,3.37548,400,ward,INEC ward (GRID3)
+Owode / Orile Bariga,Orile Bariga; Owode,Shomolu,6.5349,3.38538,400,ward,INEC ward (GRID3)
+Pedro / Gbagada,Gbagada; Pedro,Shomolu,6.54842,3.37223,700,ward,INEC ward (GRID3)
+Seriki-Okuta,,Shomolu,6.54351,3.39625,400,ward,INEC ward (GRID3)
+Somolu,,Shomolu,6.53836,3.37193,1500,suburb,OpenStreetMap
+Adeniran Ogunsanya,,Surulere,6.49445,3.35481,750,ward,INEC ward (GRID3)
+Agunbiade,,Surulere,6.49499,3.3304,400,ward,INEC ward (GRID3)
+Airways,,Surulere,6.48922,3.32792,450,ward,INEC ward (GRID3)
+Akinhanmi Cole,,Surulere,6.51476,3.36253,400,ward,INEC ward (GRID3)
+Animshaun,,Surulere,6.48334,3.35006,1000,village,OpenStreetMap
+Aralile,,Surulere,6.49853,3.36506,500,ward,INEC ward (GRID3)
+Babatunde Ayilara,,Surulere,6.50864,3.35419,550,ward,INEC ward (GRID3)
+Bale,,Surulere,6.47759,3.33883,400,ward,INEC ward (GRID3)
+Baruwa,,Surulere,6.50759,3.34193,400,ward,INEC ward (GRID3)
+Coker,,Surulere,6.47111,3.32744,750,ward,INEC ward (GRID3)
+Gbaja Obele-Odan,,Surulere,6.5038,3.36039,400,ward,INEC ward (GRID3)
+Iganmu,,Surulere,6.48242,3.36416,1500,suburb,OpenStreetMap
+Ijesha Tedo,,Surulere,6.48821,3.3334,1500,suburb,OpenStreetMap
+Iponri / Eric Moore,Eric Moore; Iponri,Surulere,6.48214,3.35777,950,ward,INEC ward (GRID3)
+Irone,,Surulere,6.48793,3.33364,500,ward,INEC ward (GRID3)
+Jinadu Aiyetoro,,Surulere,6.48942,3.34093,600,ward,INEC ward (GRID3)
+Mosafejo Ojuelegba,,Surulere,6.51041,3.367,500,ward,INEC ward (GRID3)
+Nuru Oniwo,,Surulere,6.49935,3.34329,550,ward,INEC ward (GRID3)
+Obele Oniwala,,Surulere,6.51426,3.35316,400,ward,INEC ward (GRID3)
+Odo-Olowu,,Surulere,6.49686,3.32388,400,ward,INEC ward (GRID3)
+Ogunsami / Karounwi,Karounwi; Ogunsami,Surulere,6.5046,3.33659,400,ward,INEC ward (GRID3)
+Ojuelegba,,Surulere,6.51077,3.3623,1500,suburb,OpenStreetMap
+Osho,,Surulere,6.48181,3.33939,400,ward,INEC ward (GRID3)
+Ramoni,,Surulere,6.50709,3.34641,400,ward,INEC ward (GRID3)
+Sanusi,,Surulere,6.49945,3.33256,400,ward,INEC ward (GRID3)
+Savage,,Surulere,6.48412,3.34624,450,ward,INEC ward (GRID3)
+Shitta Bank Olemoh,,Surulere,6.50236,3.35519,400,ward,INEC ward (GRID3)

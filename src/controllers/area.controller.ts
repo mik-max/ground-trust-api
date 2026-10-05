@@ -106,23 +106,45 @@ async function computeEvidence(areaId: string, withDistribution = false) {
   return { overall, aspects };
 }
 
-export async function listAreas(req: Request, res: Response) {
-  const query = typeof req.query.query === "string" ? req.query.query : undefined;
+// Without a query: the areas that have at least one approved review (home
+// page, map). With a query: a search across every approved area in the
+// directory — name, other names, LGA and city — best matches first, so a
+// resident can find their area and be the first to review it.
+const SEARCH_LIMIT = 20;
 
-  const areaRows = await prisma.area.findMany({
-    where: {
-      status: "approved",
-      ...(query
-        ? {
-            OR: [
-              { name: { contains: query, mode: "insensitive" } },
-              { city: { contains: query, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-    },
-    orderBy: { name: "asc" },
-  });
+export async function listAreas(req: Request, res: Response) {
+  const query = typeof req.query.query === "string" ? req.query.query.trim() : "";
+
+  let areaRows;
+  if (!query) {
+    areaRows = await prisma.area.findMany({
+      where: { status: "approved", reviews: { some: { moderationStatus: "approved" } } },
+      orderBy: { name: "asc" },
+    });
+  } else {
+    const contains = { contains: query, mode: "insensitive" as const };
+    const candidates = await prisma.area.findMany({
+      where: {
+        status: "approved",
+        OR: [{ name: contains }, { aliases: contains }, { lga: contains }, { city: contains }],
+      },
+      include: { _count: { select: { reviews: { where: { moderationStatus: "approved" } } } } },
+      take: 300,
+    });
+    const q = query.toLowerCase();
+    const rank = (a: (typeof candidates)[number]) => {
+      const name = a.name.toLowerCase();
+      if (name === q) return 0;
+      if (name.startsWith(q)) return 1;
+      if (name.includes(q)) return 2;
+      if ((a.aliases ?? "").toLowerCase().includes(q)) return 3;
+      return 4; // matched on LGA or city only
+    };
+    areaRows = candidates
+      .sort((a, b) => rank(a) - rank(b) || b._count.reviews - a._count.reviews || a.name.localeCompare(b.name))
+      .slice(0, SEARCH_LIMIT)
+      .map(({ _count, ...area }) => area);
+  }
 
   const areas = await Promise.all(
     areaRows.map(async (area) => ({ area, ...(await computeEvidence(area.id)) }))
@@ -391,6 +413,7 @@ export async function createArea(req: Request, res: Response) {
       geoRadiusMeters: radius,
       status: "pending",
       createdByUserId: userId,
+      source: "resident",
     },
   });
 

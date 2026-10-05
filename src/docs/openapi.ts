@@ -221,8 +221,8 @@ export const openApiSpec = {
     "/areas": {
       get: {
         tags: ["Areas"],
-        summary: "List approved areas with their evidence summary",
-        parameters: [{ name: "query", in: "query", schema: { type: "string" }, description: "Filter by name, city or state" }],
+        summary: "Without a query: approved areas that have reviews. With a query: search all approved areas (best 20 matches)",
+        parameters: [{ name: "query", in: "query", schema: { type: "string" }, description: "Search by area name, other names, LGA or city" }],
         responses: { 200: ok("Areas", { type: "object", properties: { areas: { type: "array", items: ref("Area") } } }) },
       },
       post: {
