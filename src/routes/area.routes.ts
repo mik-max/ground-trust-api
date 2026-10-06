@@ -7,6 +7,8 @@ import {
   getAreaReviews,
   listAreas,
 } from "../controllers/area.controller";
+import { uploadPhoto } from "../config/upload";
+import { addAreaPhoto } from "../controllers/photo.controller";
 import { optionalAuth, requireAuth, requireRole } from "../middleware/auth.middleware";
 
 const router = Router();
@@ -17,5 +19,7 @@ router.post("/", requireAuth, requireRole("resident"), createArea);
 router.get("/:id", optionalAuth, getArea);
 router.get("/:id/reviews", optionalAuth, getAreaReviews);
 router.post("/:id/reviews", requireAuth, requireRole("resident"), createReview);
+// Errors from uploadPhoto (too large, wrong type) reach app.ts's error handler via multer.
+router.post("/:id/photos", requireAuth, requireRole("resident"), uploadPhoto.single("photo"), addAreaPhoto);
 
 export default router;

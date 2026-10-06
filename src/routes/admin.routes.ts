@@ -9,6 +9,7 @@ import {
   moderateReview,
   resolveReportedReview,
 } from "../controllers/admin.controller";
+import { listPendingPhotos, moderatePhoto } from "../controllers/photo.controller";
 import { requireAuth, requireRole } from "../middleware/auth.middleware";
 
 const router = Router();
@@ -22,5 +23,7 @@ router.get("/reviews/reported", listReportedReviews);
 router.post("/reviews/:id/reports/resolve", resolveReportedReview);
 router.get("/areas/pending", listPendingAreas);
 router.post("/areas/:id/moderate", moderateArea);
+router.get("/photos/pending", listPendingPhotos);
+router.post("/photos/:id/moderate", moderatePhoto);
 
 export default router;

@@ -77,3 +77,20 @@ cd backend
 
 Apply migrations **before** pushing code that depends on them.
 
+
+## Area photos
+
+Curated area photos are listed in `prisma/data/area-photos.csv`: openly
+licensed Wikimedia Commons photos whose recorded location is inside the
+area, with the credit and licence each one requires. To add them to
+production (uploads to the `groundtrust/areas` Cloudinary folder; already
+imported photos are skipped):
+
+```bash
+(set -a; . ./.env; set +a; DATABASE_URL="$PRODUCTION_DATABASE_URL" CLOUDINARY_PHOTO_FOLDER="groundtrust/areas" yarn photos:import)
+```
+
+Residents' photos go to the same folder from the live API and wait in the
+Moderation queue; rejected ones are deleted from Cloudinary. Set
+`CLOUDINARY_PHOTO_FOLDER` on Render only if you want a folder other than
+`groundtrust/areas`.

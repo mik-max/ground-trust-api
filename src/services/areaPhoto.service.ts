@@ -29,8 +29,8 @@ export function toPublicPhoto(row: PhotoRow): PublicAreaPhoto {
     // Resident photos are credited to "a resident", never by name.
     credit: row.source === "resident" ? "Photo by a resident" : row.credit,
     creditUrl: row.source === "resident" ? null : row.creditUrl,
-    license: row.license,
-    licenseUrl: row.licenseUrl,
+    license: row.source === "resident" ? null : row.license,
+    licenseUrl: row.source === "resident" ? null : row.licenseUrl,
   };
 }
 
