@@ -59,3 +59,57 @@ export function audioPlaybackUrl(ref: string | null): string | null {
     expires_at: Math.floor(Date.now() / 1000) + PLAYBACK_LINK_SECONDS,
   });
 }
+
+// ---------- Area photos ----------
+// Public images (they're shown to everyone). Every upload is resized and
+// re-encoded on the way in, which also strips the file's metadata, so a
+// resident's photo never carries its GPS location or camera details.
+const PHOTO_FOLDER = process.env.CLOUDINARY_PHOTO_FOLDER ?? "groundtrust/areas";
+const MAX_PHOTO_EDGE = 2400;
+
+export interface UploadedPhoto {
+  publicId: string;
+  width: number;
+  height: number;
+}
+
+// `source` is the image bytes, or a URL Cloudinary fetches itself (curated photos).
+export function uploadAreaPhoto(source: Buffer | string, publicId?: string): Promise<UploadedPhoto> {
+  const options = {
+    resource_type: "image" as const,
+    type: "upload" as const,
+    folder: PHOTO_FOLDER,
+    public_id: publicId ?? crypto.randomUUID(),
+    overwrite: Boolean(publicId),
+    transformation: [{ width: MAX_PHOTO_EDGE, height: MAX_PHOTO_EDGE, crop: "limit", quality: "auto:good" }],
+  };
+  const done = (resolve: (p: UploadedPhoto) => void, reject: (e: unknown) => void) =>
+    (err: unknown, result?: { public_id: string; width: number; height: number }) => {
+      if (err || !result) return reject(err ?? new Error("Cloudinary upload returned no result"));
+      resolve({ publicId: result.public_id, width: result.width, height: result.height });
+    };
+  return new Promise((resolve, reject) => {
+    if (typeof source === "string") {
+      client().uploader.upload(source, options, done(resolve, reject));
+    } else {
+      client().uploader.upload_stream(options, done(resolve, reject)).end(source);
+    }
+  });
+}
+
+export function deleteAreaPhoto(publicId: string) {
+  return client().uploader.destroy(publicId, { resource_type: "image", invalidate: true });
+}
+
+// The sizes the app uses, cropped around the most interesting part of the
+// photo (g_auto) and served in the best format the browser accepts.
+export function areaPhotoUrls(publicId: string) {
+  const url = (transformation: Record<string, string | number>[]) =>
+    client().url(publicId, { secure: true, transformation });
+  return {
+    card: url([{ width: 800, height: 500, crop: "fill", gravity: "auto" }, { quality: "auto", fetch_format: "auto" }]),
+    banner: url([{ width: 1600, height: 480, crop: "fill", gravity: "auto" }, { quality: "auto", fetch_format: "auto" }]),
+    // For the server-drawn share cards, which need a plain JPEG.
+    share: url([{ width: 1200, crop: "limit" }, { quality: "auto:good", fetch_format: "jpg" }]),
+  };
+}

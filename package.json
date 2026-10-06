@@ -12,7 +12,8 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
     "nlp:backfill": "tsx scripts/nlp-backfill.ts",
-    "areas:import": "tsx prisma/import-areas.ts"
+    "areas:import": "tsx prisma/import-areas.ts",
+    "photos:import": "tsx prisma/import-photos.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.0",

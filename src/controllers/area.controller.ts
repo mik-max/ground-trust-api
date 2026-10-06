@@ -5,6 +5,7 @@ import { bandFromScore, confidenceFromN, recomputeAreaScore } from "../services/
 import { processReview } from "../services/nlp.service";
 import { haversineDistanceMeters } from "../services/verification.service";
 import { AUDIO_REF_PATTERN, audioPlaybackUrl } from "../config/cloudinary";
+import { coverPhotos } from "../services/areaPhoto.service";
 import {
   ASPECTS,
   BURST_NEW_ACCOUNT_DAYS,
@@ -146,8 +147,9 @@ export async function listAreas(req: Request, res: Response) {
       .map(({ _count, ...area }) => area);
   }
 
+  const photos = await coverPhotos(areaRows.map((a) => a.id));
   const areas = await Promise.all(
-    areaRows.map(async (area) => ({ area, ...(await computeEvidence(area.id)) }))
+    areaRows.map(async (area) => ({ area, ...(await computeEvidence(area.id)), photo: photos.get(area.id) ?? null }))
   );
 
   return res.json({ areas });
@@ -170,8 +172,8 @@ export async function getArea(req: Request, res: Response) {
     return res.status(404).json({ error: "Area not found" });
   }
 
-  const { overall, aspects } = await computeEvidence(id, true);
-  return res.json({ area, overall, aspects });
+  const [{ overall, aspects }, photos] = await Promise.all([computeEvidence(id, true), coverPhotos([id])]);
+  return res.json({ area, overall, aspects, photo: photos.get(id) ?? null });
 }
 
 export async function getAreaReviews(req: Request, res: Response) {

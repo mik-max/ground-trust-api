@@ -84,12 +84,13 @@ model User {
   role         Role
   createdAt    DateTime     @default(now())
 
-  reviews             Review[]
-  verificationEvents  VerificationEvent[]
-  residencies         UserAreaResidency[]
-  createdAreas        Area[]
-  flagResponses       Flag[]
-  reviewReports       ReviewReport[]
+  reviews            Review[]
+  verificationEvents VerificationEvent[]
+  residencies        UserAreaResidency[]
+  createdAreas       Area[]
+  flagResponses      Flag[]
+  reviewReports      ReviewReport[]
+  areaPhotos         AreaPhoto[]
 }
 
 // Append-only log powering tier computation. Raw GPS coordinates are never
@@ -123,19 +124,19 @@ model UserAreaResidency {
 }
 
 model Area {
-  id              String            @id @default(cuid())
+  id              String           @id @default(cuid())
   name            String
   city            String
   state           String
   geoCentroidLat  Float
   geoCentroidLng  Float
   geoRadiusMeters Int
-  createdAt       DateTime          @default(now())
+  createdAt       DateTime         @default(now())
   // Admin-curated seed areas default straight to approved (no one to
   // approve them against). A resident-proposed area (see area.controller.ts
   // createArea) starts pending and is excluded from every public listing
   // until an admin approves it — same moderation shape reviews already use.
-  status          ModerationStatus  @default(approved)
+  status          ModerationStatus @default(approved)
   createdByUserId String?
   // Directory fields (see prisma/import-areas.ts): the local government
   // area, other names residents search by ("; "-separated), where the area
@@ -145,13 +146,50 @@ model Area {
   aliases         String?
   source          String?
   kind            String?
-  createdBy       User?             @relation(fields: [createdByUserId], references: [id])
+  createdBy       User?            @relation(fields: [createdByUserId], references: [id])
 
   reviews            Review[]
   scores             AreaScore[]
   flags              Flag[]
   residencies        UserAreaResidency[]
   verificationEvents VerificationEvent[]
+  photos             AreaPhoto[]
+}
+
+// Where an area photo came from: picked by the team from openly licensed
+// sources (credited per its licence), or added by a resident (approved by
+// an admin before it shows).
+enum AreaPhotoSource {
+  curated
+  resident
+}
+
+// A photo of an area, stored on Cloudinary as a public image. Only approved
+// photos are ever shown; the area's cover is the approved photo marked
+// isCover, or else its most recently approved one.
+model AreaPhoto {
+  id               String           @id @default(cuid())
+  areaId           String
+  area             Area             @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  // Cloudinary public id; display sizes are built from it (see config/cloudinary.ts).
+  publicId         String           @unique
+  width            Int
+  height           Int
+  source           AreaPhotoSource
+  status           ModerationStatus @default(pending)
+  isCover          Boolean          @default(false)
+  // Attribution the licence requires, e.g. "Photo: Ada Obi / Wikimedia Commons", "CC BY-SA 4.0".
+  credit           String?
+  creditUrl        String?
+  license          String?
+  licenseUrl       String?
+  uploadedByUserId String?
+  uploadedBy       User?            @relation(fields: [uploadedByUserId], references: [id], onDelete: SetNull)
+  reviewedAt       DateTime?
+  createdAt        DateTime         @default(now())
+
+  @@index([areaId, status])
+  @@index([status, createdAt])
 }
 
 model Review {
@@ -168,11 +206,11 @@ model Review {
   submittedAt      DateTime @default(now())
 
   // Structured ratings, 1-5, nullable if that aspect wasn't rated.
-  ratingPower           Int?
-  ratingWater           Int?
-  ratingSecurity        Int?
-  ratingRoadsFlooding   Int?
-  ratingAccessibility   Int?
+  ratingPower         Int?
+  ratingWater         Int?
+  ratingSecurity      Int?
+  ratingRoadsFlooding Int?
+  ratingAccessibility Int?
 
   // [{aspect, sentiment, confidence}, ...] — populated once the NLP pipeline exists.
   nlpAspects Json?
@@ -218,11 +256,11 @@ model Flag {
   resolved                       Boolean   @default(false)
   resolvedAt                     DateTime?
 
-  responseStatus      FlagResponseStatus @default(unacknowledged)
-  responseNote        String?
-  respondedAt         DateTime?
-  respondedByUserId   String?
-  respondedBy         User?              @relation(fields: [respondedByUserId], references: [id])
+  responseStatus    FlagResponseStatus @default(unacknowledged)
+  responseNote      String?
+  respondedAt       DateTime?
+  respondedByUserId String?
+  respondedBy       User?              @relation(fields: [respondedByUserId], references: [id])
 
   @@index([areaId, resolved])
 }
