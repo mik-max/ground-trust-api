@@ -197,6 +197,36 @@ export const openApiSpec = {
         responses: { 200: ok("Signed in", ref("AuthResponse")), 400: err("Missing fields"), 401: err("Invalid email or password") },
       },
     },
+    "/auth/forgot-password": {
+      post: {
+        tags: ["Auth"],
+        summary: "Email a password reset link",
+        description:
+          "Always returns the same message, whether or not an account exists. Accounts that sign in with Google are emailed a reminder instead. Limited to 3 requests per email and 10 per network per hour.",
+        requestBody: { required: true, ...json({ type: "object", required: ["email"], properties: { email: { type: "string" } } }) },
+        responses: {
+          200: ok("Request accepted", { type: "object", properties: { message: { type: "string" } } }),
+          400: err("Missing or malformed email"),
+          429: err("Too many requests"),
+        },
+      },
+    },
+    "/auth/reset-password": {
+      post: {
+        tags: ["Auth"],
+        summary: "Set a new password with a reset link's token",
+        description: "The token works once, for an hour. Sessions issued before the reset stop working.",
+        requestBody: {
+          required: true,
+          ...json({ type: "object", required: ["token", "password"], properties: { token: { type: "string" }, password: { type: "string", minLength: 8 } } }),
+        },
+        responses: {
+          200: ok("Password changed", { type: "object", properties: { message: { type: "string" } } }),
+          400: err("Password too short, or the link has expired or been used"),
+          429: err("Too many requests"),
+        },
+      },
+    },
     "/auth/google": {
       post: {
         tags: ["Auth"],

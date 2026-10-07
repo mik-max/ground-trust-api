@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { googleAuth, login, signup } from "../controllers/auth.controller";
+import { forgotPassword, googleAuth, login, resetPassword, signup } from "../controllers/auth.controller";
+import { authLimiter, forgotEmailLimiter, forgotIpLimiter, loginAccountLimiter, resetLimiter } from "../middleware/rateLimit";
 
 const router = Router();
 
-router.post("/signup", signup);
-router.post("/login", login);
-router.post("/google", googleAuth);
+router.post("/signup", authLimiter, signup);
+router.post("/login", authLimiter, loginAccountLimiter, login);
+router.post("/google", authLimiter, googleAuth);
+router.post("/forgot-password", forgotIpLimiter, forgotEmailLimiter, forgotPassword);
+router.post("/reset-password", resetLimiter, resetPassword);
 
 export default router;

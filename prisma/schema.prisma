@@ -76,13 +76,16 @@ enum FlagResponseStatus {
 }
 
 model User {
-  id           String       @id @default(cuid())
-  fullName     String
-  email        String       @unique
-  passwordHash String?
-  authProvider AuthProvider @default(email)
-  role         Role
-  createdAt    DateTime     @default(now())
+  id                String       @id @default(cuid())
+  fullName          String
+  email             String       @unique
+  passwordHash      String?
+  authProvider      AuthProvider @default(email)
+  role              Role
+  createdAt         DateTime     @default(now())
+  // Set when the password is reset; sign-in tokens issued before it stop
+  // working (see auth.middleware.ts).
+  passwordChangedAt DateTime?
 
   reviews            Review[]
   verificationEvents VerificationEvent[]
@@ -91,6 +94,21 @@ model User {
   flagResponses      Flag[]
   reviewReports      ReviewReport[]
   areaPhotos         AreaPhoto[]
+  passwordResets     PasswordResetToken[]
+}
+
+// A single-use password reset link. Only a SHA-256 hash of the token is
+// stored, so the database alone can't be used to reset anyone's password.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
 }
 
 // Append-only log powering tier computation. Raw GPS coordinates are never

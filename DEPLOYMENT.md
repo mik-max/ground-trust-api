@@ -94,3 +94,24 @@ Residents' photos go to the same folder from the live API and wait in the
 Moderation queue; rejected ones are deleted from Cloudinary. Set
 `CLOUDINARY_PHOTO_FOLDER` on Render only if you want a folder other than
 `groundtrust/areas`.
+
+## Password reset email (Brevo)
+
+1. Create a free account at brevo.com.
+2. Senders, domains & dedicated IPs → Senders → add the address emails
+   should come from (for example your Gmail) and click the link Brevo sends.
+3. SMTP & API → API keys → generate a key.
+4. In Render → groundtrust-api → Environment, set `BREVO_API_KEY`,
+   `EMAIL_FROM` (the verified address) and `EMAIL_FROM_NAME` ("GroundTrust").
+   `CLIENT_URL` must be the live site (https://ground-trust.vercel.app); reset
+   links point there.
+
+Without these, production refuses to send (the request still answers
+normally, and the failure is logged).
+
+## Rate limits
+
+`src/middleware/rateLimit.ts` holds them, counted in memory per instance
+(they reset on redeploy). Visitors are identified by the first
+X-Forwarded-For entry, which Vercel sets; sign-in and reset limits also
+count per account or email.
