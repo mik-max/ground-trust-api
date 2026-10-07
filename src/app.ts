@@ -11,6 +11,7 @@ import internalRoutes from "./routes/internal.routes";
 import uploadRoutes from "./routes/upload.routes";
 import verificationRoutes from "./routes/verification.routes";
 import { openApiSpec } from "./docs/openapi";
+import { apiLimiter } from "./middleware/rateLimit";
 
 const app = express();
 
@@ -21,6 +22,9 @@ app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
 app.get("/api/docs/openapi.json", (_req, res) => res.json(openApiSpec));
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(openApiSpec, { customSiteTitle: "GroundTrust API" }));
+
+// A general ceiling on API use; stricter limits sit on individual routes.
+app.use("/api", apiLimiter);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/areas", areaRoutes);
