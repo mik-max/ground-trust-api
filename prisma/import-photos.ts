@@ -1,9 +1,12 @@
 // Imports curated area photos (prisma/data/area-photos.csv) into Cloudinary
 // and the AreaPhoto table, approved and credited per each photo's licence.
 //
-// Every curated photo must be verifiably of the area it's attached to: they
-// come from Wikimedia Commons photos whose recorded location falls inside
-// the area's boundary, checked by eye before being added to the CSV.
+// Two kinds of curated photo, both credited per their licence:
+// - verified: Wikimedia Commons photos whose recorded location falls inside
+//   the area's boundary, checked by eye before being added to the CSV;
+// - illustrative: a fitting Lagos photo (Unsplash) for a rated area with no
+//   verified one, credited as "Illustrative photo: ..." so it isn't taken
+//   for that exact place. A resident's approved photo can replace it.
 //
 // Safe to run repeatedly: a photo already imported (same area + source file)
 // is skipped. It never deletes anything.
