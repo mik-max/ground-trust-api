@@ -10,6 +10,7 @@ import {
   resolveReportedReview,
 } from "../controllers/admin.controller";
 import { listPendingPhotos, moderatePhoto } from "../controllers/photo.controller";
+import { activitySummary } from "../controllers/activity.controller";
 import { requireAuth, requireRole } from "../middleware/auth.middleware";
 
 const router = Router();
@@ -24,6 +25,7 @@ router.post("/reviews/:id/reports/resolve", resolveReportedReview);
 router.get("/areas/pending", listPendingAreas);
 router.post("/areas/:id/moderate", moderateArea);
 router.get("/photos/pending", listPendingPhotos);
+router.get("/activity", activitySummary);
 router.post("/photos/:id/moderate", moderatePhoto);
 
 export default router;

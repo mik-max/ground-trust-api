@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../config/prisma";
 import { Aspect, FlagResponseStatus } from "../generated/prisma";
 import { MIN_WEEKS_PERSISTENT_FOR_DISPLAY } from "../services/scoring.service";
+import { trackReq } from "../services/activity.service";
 
 // Only surfaces flags that have actually persisted for
 // MIN_WEEKS_PERSISTENT — earlier streaks exist in the Flag table for
@@ -79,5 +80,6 @@ export async function respondToFlag(req: Request, res: Response) {
     },
   });
 
+  trackReq(req, "flag_responded", { areaId: updated.areaId, meta: { status, aspect: updated.aspect } });
   return res.json({ flag: updated });
 }

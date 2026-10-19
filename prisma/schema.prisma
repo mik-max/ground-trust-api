@@ -301,3 +301,39 @@ model ReviewReport {
   @@unique([reviewId, reporterUserId])
   @@index([resolved])
 }
+
+// One thing that happened in the app, for the admin Activity page: a page
+// view, a sign-up, a review, a failed login, an upload... `type` is a short
+// name ("page_view", "login_failed"). Visitors are counted by a random id
+// kept in their browser, never by IP address. Kept for 180 days.
+model ActivityEvent {
+  id        String   @id @default(cuid())
+  type      String
+  userId    String?
+  role      Role?
+  visitorId String?
+  areaId    String?
+  path      String?
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([type, createdAt])
+}
+
+// API traffic, counted per hour, endpoint and status class (2xx/4xx/5xx),
+// so the Activity page can show volume, errors and response times without
+// storing every request.
+model ApiRequestStat {
+  id          String   @id @default(cuid())
+  hour        DateTime
+  method      String
+  route       String
+  statusClass String
+  count       Int      @default(0)
+  totalMs     Int      @default(0)
+  maxMs       Int      @default(0)
+
+  @@unique([hour, method, route, statusClass])
+  @@index([hour])
+}

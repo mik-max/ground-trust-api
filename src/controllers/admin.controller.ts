@@ -4,6 +4,7 @@ import prisma from "../config/prisma";
 import { recomputeReviewAspects } from "../services/scoring.service";
 import { haversineDistanceMeters } from "../services/verification.service";
 import { audioPlaybackUrl } from "../config/cloudinary";
+import { trackReq } from "../services/activity.service";
 
 // Government accounts are never self-service — an authenticated admin
 // provisions them directly, per files/HANDOFF.md §2.5. No invite-email flow
@@ -33,6 +34,7 @@ export async function createGovernmentAccount(req: Request, res: Response) {
     data: { fullName, email, passwordHash, role: "government", authProvider: "email" },
   });
 
+  trackReq(req, "admin_government_account_created");
   return res.status(201).json({
     account: { id: account.id, fullName: account.fullName, email: account.email },
   });
@@ -101,6 +103,7 @@ export async function resolveReportedReview(req: Request, res: Response) {
     await recomputeReviewAspects(updated);
   }
 
+  trackReq(req, "admin_report_resolved", { areaId: updated.areaId, meta: { decision } });
   return res.json({ review: updated });
 }
 
@@ -130,6 +133,7 @@ export async function moderateReview(req: Request, res: Response) {
   // either way — recomputeAreaScore just reflects whatever's in the DB now.
   await recomputeReviewAspects(updated);
 
+  trackReq(req, "admin_review_moderated", { areaId: updated.areaId, meta: { decision } });
   return res.json({ review: updated });
 }
 
@@ -203,5 +207,6 @@ export async function moderateArea(req: Request, res: Response) {
   }
 
   const updated = await prisma.area.update({ where: { id }, data: { status: decision } });
+  trackReq(req, "admin_area_moderated", { areaId: id, meta: { decision } });
   return res.json({ area: updated });
 }

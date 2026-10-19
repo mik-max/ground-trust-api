@@ -59,3 +59,6 @@ export const areaProposalLimiter = limiter(24 * HOUR, 10, byUser);
 // The place search passes through to OpenStreetMap's Nominatim, which asks
 // for light use.
 export const geocodeLimiter = limiter(MIN, 30, byIp);
+
+// The website's own activity pings (page views, shares, searches).
+export const activityLimiter = limiter(MIN, 120, byIp);

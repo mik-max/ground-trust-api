@@ -12,11 +12,15 @@ import uploadRoutes from "./routes/upload.routes";
 import verificationRoutes from "./routes/verification.routes";
 import { openApiSpec } from "./docs/openapi";
 import { apiLimiter } from "./middleware/rateLimit";
+import { requestStats } from "./services/activity.service";
+import activityRoutes from "./routes/activity.routes";
 
 const app = express();
 
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
+// Counts API requests per endpoint for the admin Activity page.
+app.use(requestStats);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
@@ -35,6 +39,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/internal", internalRoutes);
 app.use("/api/geocode", geocodeRoutes);
+app.use("/api/activity", activityRoutes);
 
 // Catches multer errors (oversized/wrong-mimetype uploads) and anything
 // else passed to next(err), so clients get JSON instead of Express's

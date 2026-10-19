@@ -7,6 +7,10 @@ import { getGoogleClient } from "../config/googleAuth";
 import { Role } from "../generated/prisma";
 import { emailLayout, sendEmail } from "../services/email.service";
 import { forgetPasswordChange } from "../middleware/auth.middleware";
+import { track } from "../services/activity.service";
+
+// For failed-login monitoring: enough to spot a targeted account, not the whole address.
+const maskEmail = (e: unknown) => (typeof e === "string" && e.includes("@") ? `${e.slice(0, 2)}…@${e.split("@")[1]}` : null);
 
 function signToken(userId: string, role: Role) {
   return jwt.sign({ userId, role }, process.env.JWT_SECRET as string, {
@@ -39,6 +43,7 @@ export async function signup(req: Request, res: Response) {
     data: { fullName, email, passwordHash, role: "resident", authProvider: "email" },
   });
 
+  track("signup", { userId: user.id, role: user.role, meta: { method: "email" } });
   const token = signToken(user.id, user.role);
   return res.status(201).json({
     token,
@@ -55,14 +60,17 @@ export async function login(req: Request, res: Response) {
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || !user.passwordHash) {
+    track("login_failed", { userId: user?.id ?? null, meta: { reason: user ? "google_account" : "no_account", email: maskEmail(email) } });
     return res.status(401).json({ error: "Invalid email or password" });
   }
 
   const valid = await bcrypt.compare(password, user.passwordHash);
   if (!valid) {
+    track("login_failed", { userId: user.id, role: user.role, meta: { reason: "wrong_password", email: maskEmail(email) } });
     return res.status(401).json({ error: "Invalid email or password" });
   }
 
+  track("login", { userId: user.id, role: user.role, meta: { method: "email" } });
   const token = signToken(user.id, user.role);
   return res.json({
     token,
@@ -117,6 +125,8 @@ export async function googleAuth(req: Request, res: Response) {
     isNewUser = true;
   }
 
+  track(isNewUser ? "signup" : "login", { userId: user.id, role: user.role, meta: { method: "google" } });
+
   // An existing email/password account signing in with Google on the same,
   // Google-verified email is treated as the same person — this doesn't
   // touch their password or authProvider, it's just an additional way in.
@@ -152,6 +162,7 @@ export async function forgotPassword(req: Request, res: Response) {
     where: { email: { equals: email, mode: "insensitive" } },
     select: { id: true, fullName: true, email: true, passwordHash: true },
   });
+  track("password_reset_requested", { userId: user?.id ?? null, meta: { known: Boolean(user) } });
   if (!user) return reply();
 
   try {
@@ -223,5 +234,6 @@ export async function resetPassword(req: Request, res: Response) {
     prisma.passwordResetToken.updateMany({ where: { userId: record.userId, usedAt: null }, data: { usedAt: now } }),
   ]);
   forgetPasswordChange(record.userId);
+  track("password_reset_completed", { userId: record.userId });
   return res.json({ message: "Your password has been changed. You can log in with it now." });
 }

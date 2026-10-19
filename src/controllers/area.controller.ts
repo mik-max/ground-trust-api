@@ -20,6 +20,7 @@ import {
   isWithinServiceBounds,
   tierFromWeight,
 } from "../config/constants";
+import { trackReq } from "../services/activity.service";
 
 // Shared by listAreas (compact Evidence Stacks) and getArea (full stack) so
 // both surfaces stay consistent with a single source of computation.
@@ -421,6 +422,7 @@ export async function createArea(req: Request, res: Response) {
 
   const createdReview = review ? await submitReviewForArea(area.id, userId, review) : null;
 
+  trackReq(req, "area_proposed", { areaId: area.id, meta: { name: area.name, withReview: Boolean(createdReview) } });
   return res.status(201).json({ area, review: createdReview });
 }
 
@@ -441,5 +443,9 @@ export async function createReview(req: Request, res: Response) {
   }
 
   const review = await submitReviewForArea(areaId, userId, input);
+  trackReq(req, "review_submitted", {
+    areaId,
+    meta: { status: review.moderationStatus, voice: Boolean(input.originalAudioRef), text: Boolean(input.originalText) },
+  });
   return res.status(201).json({ review });
 }

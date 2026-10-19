@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
 import { areaPhotoUrls, deleteAreaPhoto, uploadAreaPhoto } from "../config/cloudinary";
+import { trackReq } from "../services/activity.service";
 
 // A resident can send a few photos a day; each waits for an admin.
 const MAX_UPLOADS_PER_DAY = 5;
@@ -39,6 +40,7 @@ export async function addAreaPhoto(req: Request, res: Response) {
       },
       select: { id: true, status: true },
     });
+    trackReq(req, "photo_uploaded", { areaId: area.id });
     return res.status(201).json({ photo });
   } catch (err) {
     console.error("[photos] upload failed:", err);
@@ -95,6 +97,7 @@ export async function moderatePhoto(req: Request, res: Response) {
       console.error("[photos] couldn't delete rejected photo from storage:", err);
     }
     await prisma.areaPhoto.delete({ where: { id } });
+    trackReq(req, "admin_photo_rejected", { areaId: photo.areaId });
     return res.json({ photo: { id, status: "rejected" } });
   }
 
@@ -108,5 +111,6 @@ export async function moderatePhoto(req: Request, res: Response) {
       select: { id: true, status: true, isCover: true },
     });
   });
+  trackReq(req, "admin_photo_approved", { areaId: photo.areaId, meta: { cover: updated.isCover } });
   return res.json({ photo: updated });
 }

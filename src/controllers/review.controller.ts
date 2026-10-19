@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
 import { Prisma, ReviewReportReason } from "../generated/prisma";
+import { trackReq } from "../services/activity.service";
 
 const REASONS: ReviewReportReason[] = ["false_information", "offensive", "spam", "other"];
 const MAX_NOTE_LENGTH = 500;
@@ -33,6 +34,7 @@ export async function reportReview(req: Request, res: Response) {
     const report = await prisma.reviewReport.create({
       data: { reviewId: id, reporterUserId: userId, reason, note: note?.trim() || null },
     });
+    trackReq(req, "review_reported", { meta: { reason: report.reason } });
     return res.status(201).json({ report: { id: report.id, reason: report.reason } });
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
