@@ -164,10 +164,10 @@ async function main() {
 
   // --- Users (fixed demo accounts + numbered residents) ---
   for (const user of FIXED_USERS) {
-    await prisma.user.create({ data: { ...user, passwordHash, authProvider: "email" } });
+    await prisma.user.create({ data: { ...user, passwordHash, authProvider: "email", isDemo: true } });
   }
   for (const user of NUMBERED_RESIDENTS) {
-    await prisma.user.create({ data: { ...user, passwordHash, authProvider: "email" } });
+    await prisma.user.create({ data: { ...user, passwordHash, authProvider: "email", isDemo: true } });
   }
 
   const residentEmailByIndex = (i: number) => (i === 0 ? "resident@example.com" : `resident${i}@example.com`);

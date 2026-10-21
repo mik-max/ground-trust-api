@@ -91,6 +91,10 @@ model User {
   // Set when the password is reset; sign-in tokens issued before it stop
   // working (see auth.middleware.ts).
   passwordChangedAt DateTime?
+  // Seeded demonstration account. Its reviews still count in scores (so the
+  // product can be shown working) but are labelled "Demo data" wherever
+  // they appear, so nobody mistakes them for real residents.
+  isDemo            Boolean      @default(false)
 
   reviews            Review[]
   verificationEvents VerificationEvent[]

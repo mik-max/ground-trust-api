@@ -4,6 +4,17 @@ import { Aspect, FlagResponseStatus } from "../generated/prisma";
 import { MIN_WEEKS_PERSISTENT_FOR_DISPLAY } from "../services/scoring.service";
 import { trackReq } from "../services/activity.service";
 
+// Areas whose ratings include seeded demo accounts, so a flag raised on them
+// is labelled "Demo data" rather than read as a real residents' report.
+async function areasWithDemoRatings(areaIds: string[]): Promise<Set<string>> {
+  const rows = await prisma.review.findMany({
+    where: { areaId: { in: areaIds }, moderationStatus: "approved", user: { isDemo: true } },
+    select: { areaId: true },
+    distinct: ["areaId"],
+  });
+  return new Set(rows.map((r) => r.areaId));
+}
+
 // Only surfaces flags that have actually persisted for
 // MIN_WEEKS_PERSISTENT — earlier streaks exist in the Flag table for
 // internal tracking (see scoring.service.ts) but aren't shown to
@@ -23,8 +34,9 @@ export async function listFlags(req: Request, res: Response) {
     },
     orderBy: { consecutiveWeeksBelowThreshold: "desc" },
   });
+  const demoAreas = await areasWithDemoRatings(flags.map((f) => f.areaId));
 
-  return res.json({ flags });
+  return res.json({ flags: flags.map((f) => ({ ...f, isDemo: demoAreas.has(f.areaId) })) });
 }
 
 export async function getFlag(req: Request, res: Response) {
@@ -37,8 +49,9 @@ export async function getFlag(req: Request, res: Response) {
   if (!flag) {
     return res.status(404).json({ error: "Flag not found" });
   }
+  const demoAreas = await areasWithDemoRatings([flag.areaId]);
 
-  return res.json({ flag });
+  return res.json({ flag: { ...flag, isDemo: demoAreas.has(flag.areaId) } });
 }
 
 const RESPONSE_STATUSES: FlagResponseStatus[] = ["acknowledged", "in_progress"];

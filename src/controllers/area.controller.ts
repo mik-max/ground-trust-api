@@ -92,6 +92,9 @@ async function computeEvidence(areaId: string, withDistribution = false) {
     where: { areaId, moderationStatus: "approved" },
   });
   const overallN = contributors.length;
+  const demoN = overallN
+    ? await prisma.user.count({ where: { id: { in: contributors.map((c) => c.userId) }, isDemo: true } })
+    : 0;
 
   const ratedScores = scores.map((s) => s.score);
   const overallScore = ratedScores.length
@@ -103,6 +106,9 @@ async function computeEvidence(areaId: string, withDistribution = false) {
     band: overallScore !== null ? bandFromScore(overallScore) : null,
     N: overallN,
     confidence: confidenceFromN(overallN),
+    // Whether the score rests on seeded demo accounts, so every surface
+    // showing it can say so: "all" or "some" of its residents, or none.
+    demo: demoN === 0 ? null : demoN === overallN ? ("all" as const) : ("some" as const),
   };
 
   return { overall, aspects };
@@ -194,7 +200,7 @@ export async function getAreaReviews(req: Request, res: Response) {
     return res.status(404).json({ error: "Area not found" });
   }
 
-  const [reviews, total] = await Promise.all([
+  const [reviews, total, demoUsers] = await Promise.all([
     prisma.review.findMany({
       where: { areaId: id, moderationStatus: "approved" },
       orderBy: { submittedAt: "desc" },
@@ -202,7 +208,9 @@ export async function getAreaReviews(req: Request, res: Response) {
       take: pageSize,
     }),
     prisma.review.count({ where: { areaId: id, moderationStatus: "approved" } }),
+    prisma.user.findMany({ where: { isDemo: true, reviews: { some: { areaId: id } } }, select: { id: true } }),
   ]);
+  const demoUserIds = new Set(demoUsers.map((u) => u.id));
 
   // Privacy: a voice review's raw recording is the reviewer's actual voice,
   // not just their words — residents/newcomers/visitors only ever get the
@@ -223,6 +231,7 @@ export async function getAreaReviews(req: Request, res: Response) {
   const reviewsWithTier = reviews.map(({ userId, ...r }) => ({
     ...r,
     isOwn: req.auth?.userId === userId,
+    isDemo: demoUserIds.has(userId),
     // hasVoiceRecording survives even when the audio itself is hidden, so
     // the UI can still say "this was a voice review" (transparency) without
     // exposing the recording to non-government viewers.
