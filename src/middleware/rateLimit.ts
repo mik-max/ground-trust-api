@@ -55,6 +55,9 @@ export const reviewLimiter = limiter(HOUR, 10, byUser);
 export const reportLimiter = limiter(HOUR, 20, byUser);
 export const uploadLimiter = limiter(HOUR, 20, byUser);
 export const areaProposalLimiter = limiter(24 * HOUR, 10, byUser);
+// Residency location checks: a page load sends one per area the resident
+// has reviewed, so this allows normal use while stopping scripted floods.
+export const gpsSampleLimiter = limiter(HOUR, 60, byUser);
 
 // The place search passes through to OpenStreetMap's Nominatim, which asks
 // for light use.

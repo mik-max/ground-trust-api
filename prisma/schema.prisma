@@ -30,6 +30,11 @@ enum VerificationEventType {
   gps_sample
   tier_upgrade
   manual_review
+  // A tier lost because the night-time presence behind it stopped.
+  tier_downgrade
+  // A location check refused (reason in detail) — kept so repeated spoofing
+  // attempts are visible; never holds the coordinates themselves.
+  gps_rejected
 }
 
 enum Aspect {
@@ -121,9 +126,12 @@ model VerificationEvent {
   area           Area                  @relation(fields: [areaId], references: [id])
   eventType      VerificationEventType
   sampledAtNight Boolean               @default(false)
+  // Why a check was refused, or which tiers a change moved between.
+  detail         String?
   createdAt      DateTime              @default(now())
 
   @@index([userId, areaId])
+  @@index([userId, createdAt])
 }
 
 // Derived/summary table, recomputed from VerificationEvent. Kept separate so

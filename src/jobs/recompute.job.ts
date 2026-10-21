@@ -21,13 +21,26 @@ const ASPECTS: Aspect[] = ["power", "water", "security", "roads_flooding", "acce
 // construction) but still guards against an interleaved on-demand,
 // review-triggered call double-bumping the streak within the same week.
 //
-// Same underlying gap exists for UserAreaResidency: a resident who reaches
-// the tier2 day-threshold but stops sending GPS pings never gets swept for
-// the upgrade (files/HANDOFF.md §2.1) — recomputeResidencyTier() only ran
-// from an incoming ping. Included here since it's the identical fix (a
-// calendar-time transition needs a calendar-time trigger, not just an
-// event-driven one) using an already-built function, not a new mechanism.
+// Same underlying gap exists for UserAreaResidency: reaching the tier2
+// day-threshold, or a status lapsing when night-time checks stop, are both
+// calendar-time transitions (files/HANDOFF.md §2.1) that no incoming ping
+// would trigger, so they're swept here too.
 export async function recomputeAll(): Promise<void> {
+  // Tiers first, so the score sweep below already weighs every rating by
+  // its author's up-to-date status. All confirmed tiers are swept, not just
+  // tier1: tier2 can now fall back when night-time presence stops.
+  const confirmedResidencies = await prisma.userAreaResidency.findMany({
+    where: { verificationTier: { in: ["tier1", "tier2"] } },
+    select: { userId: true, areaId: true },
+  });
+  for (const r of confirmedResidencies) {
+    try {
+      await recomputeResidencyTier(r.userId, r.areaId);
+    } catch (err) {
+      console.error(`[recompute-job] Tier recompute failed for user ${r.userId} / area ${r.areaId}:`, err);
+    }
+  }
+
   const areas = await prisma.area.findMany({ select: { id: true } });
   for (const area of areas) {
     for (const aspect of ASPECTS) {
@@ -36,18 +49,6 @@ export async function recomputeAll(): Promise<void> {
       } catch (err) {
         console.error(`[recompute-job] Failed for area ${area.id} / ${aspect}:`, err);
       }
-    }
-  }
-
-  const tier1Residencies = await prisma.userAreaResidency.findMany({
-    where: { verificationTier: "tier1" },
-    select: { userId: true, areaId: true },
-  });
-  for (const r of tier1Residencies) {
-    try {
-      await recomputeResidencyTier(r.userId, r.areaId);
-    } catch (err) {
-      console.error(`[recompute-job] Tier recompute failed for user ${r.userId} / area ${r.areaId}:`, err);
     }
   }
 }

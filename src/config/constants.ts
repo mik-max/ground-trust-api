@@ -79,11 +79,37 @@ export const TRUST_WEIGHT_BY_TIER = {
 } as const;
 
 // Tier-progression thresholds, per files/HANDOFF.md §2.1. Starting values —
-// tune post-launch like the flag-engine thresholds above. HANDOFF gives an
-// explicit number for tier2 ("60+ days") but not tier1 ("repeated... samples")
-// — TIER1_MIN_NIGHT_SAMPLES is this project's own reasonable starting point.
-export const TIER1_MIN_NIGHT_SAMPLES = Number(process.env.TIER1_MIN_NIGHT_SAMPLES ?? 5);
+// tune post-launch like the flag-engine thresholds above.
+//
+// Tier1 counts distinct nights, not checks: five page loads during one
+// evening visit say nothing about where someone sleeps, while three
+// different nights within two weeks do.
+export const TIER1_MIN_NIGHTS = Number(process.env.TIER1_MIN_NIGHTS ?? 3);
+export const TIER1_WINDOW_DAYS = Number(process.env.TIER1_WINDOW_DAYS ?? 14);
 export const TIER2_MIN_DAYS_SINCE_CONFIRMED = Number(process.env.TIER2_MIN_DAYS_SINCE_CONFIRMED ?? 60);
+// Status follows continued presence, so someone who moves out stops carrying
+// a resident's weight: long-term needs a night check within this many days
+// (otherwise it falls back to tier1), and with no night check at all for
+// RESIDENCY_LAPSE_DAYS a confirmed residency returns to tier0.
+export const TIER2_RECENT_NIGHT_DAYS = Number(process.env.TIER2_RECENT_NIGHT_DAYS ?? 60);
+export const RESIDENCY_LAPSE_DAYS = Number(process.env.RESIDENCY_LAPSE_DAYS ?? 120);
+// A person sleeps in one place, so at most this many areas can be
+// location-confirmed (tier1+) for one account at a time — a home, plus
+// room for someone between two homes. A further area can be confirmed once
+// one of these lapses.
+export const MAX_CONFIRMED_AREAS = Number(process.env.MAX_CONFIRMED_AREAS ?? 2);
+
+// Location checks that can't support a residency claim are refused rather
+// than counted: a reading less precise than this (or than the area's own
+// radius, if smaller) — typically a desktop browser's network-based guess.
+export const GPS_MAX_ACCURACY_METERS = Number(process.env.GPS_MAX_ACCURACY_METERS ?? 200);
+// Repeat checks for the same area within this window are acknowledged but
+// not logged again, which keeps the event log a record of separate visits.
+export const GPS_MIN_INTERVAL_MINUTES = Number(process.env.GPS_MIN_INTERVAL_MINUTES ?? 30);
+// Faster than this between two accepted checks (measured between the areas'
+// nearest edges) isn't possible across Lagos by road, so the newer check is
+// refused as likely spoofed.
+export const GPS_MAX_TRAVEL_KMH = Number(process.env.GPS_MAX_TRAVEL_KMH ?? 120);
 
 // Nigeria runs a single fixed offset (WAT, UTC+1, no DST) — cheaper and more
 // robust than a timezone library or trusting a client-supplied timestamp for
